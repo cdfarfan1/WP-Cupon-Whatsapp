@@ -95,3 +95,9 @@ require_once WPCW_PLUGIN_DIR . 'includes/recaptcha-integration.php';
 require_once WPCW_PLUGIN_DIR . 'includes/application-processing.php';
 // Include public shortcodes
 require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
+
+// Admin specific includes
+if ( is_admin() ) {
+    require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
+    // Futuras inclusiones específicas de admin podrían ir aquí también.
+}
