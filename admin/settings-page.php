@@ -148,6 +148,58 @@ function wpcw_settings_api_init() {
         $page_slug,
         'wpcw_utilities_section'
     );
+
+    // Añadir Sección para Exportar Datos
+    add_settings_section(
+        'wpcw_export_data_section', // ID de la sección
+        __( 'Exportar Datos a CSV', 'wp-cupon-whatsapp' ), // Título
+        'wpcw_export_data_section_callback', // Callback para descripción
+        $page_slug
+    );
+
+    $export_buttons = array(
+        'comercios' => array(
+            'label' => __('Exportar Comercios', 'wp-cupon-whatsapp'),
+            'action_name' => 'wpcw_export_comercios_action', // Este será el 'name' del botón submit
+            'nonce_action' => 'wpcw_export_comercios_nonce', // Para wp_nonce_field y check_admin_referer
+            'description' => __('Descarga un archivo CSV con todos los datos de los comercios registrados.', 'wp-cupon-whatsapp')
+        ),
+        'instituciones' => array(
+            'label' => __('Exportar Instituciones', 'wp-cupon-whatsapp'),
+            'action_name' => 'wpcw_export_instituciones_action',
+            'nonce_action' => 'wpcw_export_instituciones_nonce',
+            'description' => __('Descarga un archivo CSV con todos los datos de las instituciones registradas.', 'wp-cupon-whatsapp')
+        ),
+        'clientes' => array(
+            'label' => __('Exportar Clientes (WPCW)', 'wp-cupon-whatsapp'),
+            'action_name' => 'wpcw_export_clientes_action',
+            'nonce_action' => 'wpcw_export_clientes_nonce',
+            'description' => __('Descarga un archivo CSV con los datos de los clientes (rol "customer") y sus campos WPCW asociados.', 'wp-cupon-whatsapp')
+        ),
+        'cupones' => array(
+            'label' => __('Exportar Cupones (WPCW)', 'wp-cupon-whatsapp'),
+            'action_name' => 'wpcw_export_cupones_action',
+            'nonce_action' => 'wpcw_export_cupones_nonce',
+            'description' => __('Descarga un archivo CSV con los cupones de WooCommerce y sus campos WPCW asociados.', 'wp-cupon-whatsapp')
+        ),
+        'canjes' => array(
+            'label' => __('Exportar Historial de Canjes', 'wp-cupon-whatsapp'),
+            'action_name' => 'wpcw_export_canjes_action',
+            'nonce_action' => 'wpcw_export_canjes_nonce',
+            'description' => __('Descarga un archivo CSV con todos los registros de la tabla de canjes.', 'wp-cupon-whatsapp')
+        ),
+    );
+
+    foreach ( $export_buttons as $key => $button_args ) {
+        add_settings_field(
+            'wpcw_field_export_' . $key, // ID del campo
+            $button_args['label'], // Título del campo (label del botón)
+            'wpcw_render_export_button_field', // Callback para renderizar el botón y su form
+            $page_slug,
+            'wpcw_export_data_section', // ID de la sección
+            $button_args // Pasar todos los args al callback
+        );
+    }
 }
 add_action( 'admin_init', 'wpcw_settings_api_init' );
 
@@ -157,6 +209,45 @@ add_action( 'admin_init', 'wpcw_settings_api_init' );
 function wpcw_recaptcha_section_callback() {
     echo '<p>' . esc_html__( 'Configura las claves de API para Google reCAPTCHA v2 para proteger tus formularios.', 'wp-cupon-whatsapp' ) . '</p>';
 }
+
+/**
+ * Callback para la descripción de la sección de Exportar Datos.
+ */
+function wpcw_export_data_section_callback() {
+    echo '<p>' . esc_html__( 'Herramientas para descargar datos del plugin en formato CSV.', 'wp-cupon-whatsapp' ) . '</p>';
+}
+
+/**
+ * Renderiza un formulario con un botón para una acción de exportación específica.
+ *
+ * @param array $args Argumentos pasados desde add_settings_field.
+ *                    Debe incluir 'action_name', 'label' (para el botón), 'nonce_action'.
+ *                    'description' es opcional para mostrar junto al botón.
+ */
+function wpcw_render_export_button_field( $args ) {
+    $action_name = isset($args['action_name']) ? $args['action_name'] : 'wpcw_export_default_action';
+    $button_label = isset($args['label']) ? $args['label'] : __('Exportar Datos', 'wp-cupon-whatsapp');
+    // El nonce_action es el 'action' para wp_nonce_field, y el 'name' del campo nonce será $args['nonce_action'] . '_field'
+    $nonce_action_string = isset($args['nonce_action']) ? $args['nonce_action'] : 'wpcw_export_default_nonce';
+    $nonce_field_name = $nonce_action_string . '_nonce_name'; // Nombre único para el campo nonce en POST
+    $description = isset($args['description']) ? $args['description'] : '';
+
+    // Nonce para la acción específica de exportación.
+    wp_nonce_field( $nonce_action_string, $nonce_field_name );
+
+    submit_button(
+        $button_label,
+        'secondary', // tipo
+        $action_name, // name del botón submit
+        false,        // wrap: false para no envolver en <p> automáticamente, lo controlamos nosotros.
+        null         // otros atributos
+    );
+
+    if ( !empty($description) ) {
+        echo '<p class="description" style="margin-top:0;">' . esc_html( $description ) . '</p>';
+    }
+}
+
 
 /**
  * Renderiza un campo de input de texto genérico para la Settings API.
@@ -248,13 +339,86 @@ function wpcw_render_create_pages_button_field() {
  * Handles admin actions triggered from settings page or other admin areas.
  */
 function wpcw_handle_admin_actions() {
+    // Manejar Acción de Crear Páginas (código existente)
     if ( isset( $_POST['wpcw_create_pages_action'] ) ) {
+        // El segundo argumento de check_admin_referer debe ser el 'name' del campo nonce en $_POST.
         check_admin_referer( 'wpcw_create_pages_action_nonce', 'wpcw_nonce_create_pages' );
+
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'No tienes permisos para realizar esta acción.', 'wp-cupon-whatsapp' ) );
         }
         wpcw_do_create_plugin_pages();
+        // No hacer exit aquí para que los settings_errors se muestren
+        // La página de ajustes se recargará y mostrará los mensajes.
+        // Un wp_redirect podría ser útil aquí si se quiere limpiar el POST y evitar re-ejecución al recargar.
+        // Por ejemplo: wp_redirect( admin_url( 'admin.php?page=wpcw-main-menu&wpcw_pages_action_done=true' ) ); exit;
+        // Y luego manejar el 'wpcw_pages_action_done' para mostrar los settings_errors.
+        // Por ahora, confiamos en que settings_errors se muestre correctamente en el flujo actual.
     }
+
+    // Definir las acciones de exportación y sus detalles
+    $export_actions = array(
+        'wpcw_export_comercios_action' => array(
+            'nonce_field_name' => 'wpcw_export_comercios_nonce_nonce_name', // Concatenado como en el render
+            'nonce_action'     => 'wpcw_export_comercios_nonce',     // Acción del nonce usado en wp_nonce_field
+            'export_type'      => 'comercios'
+        ),
+        'wpcw_export_instituciones_action' => array(
+            'nonce_field_name' => 'wpcw_export_instituciones_nonce_nonce_name',
+            'nonce_action'     => 'wpcw_export_instituciones_nonce',
+            'export_type'      => 'instituciones'
+        ),
+        'wpcw_export_clientes_action' => array(
+            'nonce_field_name' => 'wpcw_export_clientes_nonce_nonce_name',
+            'nonce_action'     => 'wpcw_export_clientes_nonce',
+            'export_type'      => 'clientes'
+        ),
+        'wpcw_export_cupones_action' => array(
+            'nonce_field_name' => 'wpcw_export_cupones_nonce_nonce_name',
+            'nonce_action'     => 'wpcw_export_cupones_nonce',
+            'export_type'      => 'cupones'
+        ),
+        'wpcw_export_canjes_action' => array(
+            'nonce_field_name' => 'wpcw_export_canjes_nonce_nonce_name',
+            'nonce_action'     => 'wpcw_export_canjes_nonce',
+            'export_type'      => 'canjes'
+        ),
+    );
+
+    // Iterar sobre las acciones de exportación definidas
+    foreach ( $export_actions as $action_name => $config ) {
+        if ( isset( $_POST[$action_name] ) ) {
+            // Verificar Nonce específico para esta acción de exportación
+            // El segundo argumento de check_admin_referer es el 'name' del campo nonce que se envió.
+            // En wpcw_render_export_button_field, el nombre del campo nonce es $args['nonce_action'] . '_nonce_name'.
+            check_admin_referer( $config['nonce_action'], $config['nonce_action'] . '_nonce_name' );
+
+            // Verificar Permisos
+            if ( ! current_user_can( 'manage_options' ) ) {
+                wp_die( esc_html__( 'No tienes permisos para realizar esta acción de exportación.', 'wp-cupon-whatsapp' ) );
+            }
+
+            // Llamar a la función que genera el CSV y fuerza la descarga
+            // Esta función (a implementar en includes/export-functions.php) debe manejar el exit()
+            if ( function_exists('wpcw_generate_and_download_csv') ) {
+                wpcw_generate_and_download_csv( $config['export_type'] );
+                // La función de exportación debe llamar a exit() después de enviar el archivo.
+                // Si no lo hace, podemos añadir exit aquí para estar seguros.
+                exit;
+            } else {
+                // Mostrar un error de WordPress si la función no está disponible
+                add_settings_error(
+                    'wpcw_options_group',
+                    'export_function_missing',
+                    sprintf( __('Error: La función de exportación para "%s" no está disponible.', 'wp-cupon-whatsapp'), $config['export_type'] ),
+                    'error'
+                );
+                // No hacer exit aquí para que el error se muestre en la página de ajustes
+            }
+        }
+    }
+
+    // TODO: Manejar otras acciones de admin aquí si es necesario en el futuro.
 }
 add_action( 'admin_init', 'wpcw_handle_admin_actions' );
 
