@@ -99,6 +99,8 @@ require_once WPCW_PLUGIN_DIR . 'includes/ajax-handlers.php';
 require_once WPCW_PLUGIN_DIR . 'includes/rest-api.php';
 // Include redemption logic
 require_once WPCW_PLUGIN_DIR . 'includes/redemption-logic.php';
+// Include statistics functions
+require_once WPCW_PLUGIN_DIR . 'includes/stats-functions.php';
 // Include public shortcodes
 require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
 // Include My Account endpoint functions
