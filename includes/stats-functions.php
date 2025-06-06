@@ -332,4 +332,50 @@ function wpcw_stats_get_canjes_count_for_institution_coupons( $institution_user_
     return (int) $wpdb->get_var( $wpdb->prepare( $sql, $params ) );
 }
 
+/**
+ * Get top redeemed coupons for a specific business.
+ *
+ * @param int   $business_cpt_id The Post ID of the wpcw_business CPT.
+ * @param int   $limit Number of top coupons to return.
+ * @param array $filters Filters (e.g., date range - for future use).
+ * @return array Array of objects (cupon_id, coupon_title, count).
+ */
+function wpcw_stats_get_top_redeemed_coupons_for_business( $business_cpt_id, $limit = 5, $filters = array() ) {
+    global $wpdb;
+    $tabla_canjes = WPCW_CANJES_TABLE_NAME;
+    $business_cpt_id = absint( $business_cpt_id );
+    $limit = absint( $limit );
+
+    if ( $business_cpt_id <= 0 ) {
+        return array();
+    }
+
+    $redeemed_statuses = "'confirmado_por_negocio', 'utilizado_en_pedido_wc'";
+
+    $sql = $wpdb->prepare(
+        "SELECT cupon_id, COUNT(cupon_id) as redemption_count
+         FROM {$tabla_canjes}
+         WHERE comercio_id = %d AND estado_canje IN ({$redeemed_statuses})
+         GROUP BY cupon_id
+         ORDER BY redemption_count DESC
+         LIMIT %d",
+        $business_cpt_id,
+        $limit
+    );
+
+    $results = $wpdb->get_results( $sql );
+    $top_coupons = array();
+
+    if ( $results ) {
+        foreach ( $results as $result ) {
+            $coupon_title = get_the_title( $result->cupon_id );
+            $top_coupons[] = (object) array(
+                'cupon_id'       => (int) $result->cupon_id,
+                'coupon_title'   => $coupon_title ? $coupon_title : __('Cupón Desconocido', 'wp-cupon-whatsapp'),
+                'count'          => (int) $result->redemption_count,
+            );
+        }
+    }
+    return $top_coupons;
+}
 ?>

@@ -15,9 +15,11 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function wpcw_add_roles() {
     // Business Owner Role
+    // Remove the role first to ensure capabilities are updated if they change.
+    remove_role( 'wpcw_business_owner' );
     add_role(
         'wpcw_business_owner',
-        __( 'Business Owner', 'wp-cupon-whatsapp' ),
+        __( 'Business Owner', 'wp-cupon-whatsapp' ), // Consider changing display name if needed e.g. "Dueño de Comercio WPCW"
         array(
             'read' => true,
             'upload_files' => true,
@@ -49,13 +51,17 @@ function wpcw_add_roles() {
             'delete_others_wpcw_businesses' => false,
             'edit_published_wpcw_businesses' => true,
             'create_wpcw_businesses' => true,
+            // Nueva capacidad
+            'wpcw_view_own_business_stats' => true,
         )
     );
 
     // Institution Manager Role
+    // Remove the role first to ensure capabilities are updated if they change.
+    remove_role( 'wpcw_institution_manager' );
     add_role(
         'wpcw_institution_manager',
-        __( 'Institution Manager', 'wp-cupon-whatsapp' ),
+        __( 'Institution Manager', 'wp-cupon-whatsapp' ), // Consider changing display name
         array(
             'read' => true,
             'upload_files' => true,
