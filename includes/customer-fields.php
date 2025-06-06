@@ -100,43 +100,53 @@ add_action( 'woocommerce_register_form', 'wpcw_add_custom_register_fields' );
  * @return WP_Error
  */
 function wpcw_validate_custom_register_fields( $username, $email, $validation_errors ) {
-    if ( empty( $_POST['wpcw_dni_number'] ) ) {
-        $validation_errors->add( 'wpcw_dni_error', __( 'Por favor, introduce tu DNI.', 'wp-cupon-whatsapp' ) );
+    $required_settings = get_option('wpcw_required_fields_settings', array());
+
+    // DNI
+    if ( !empty($required_settings['dni_number']) && $required_settings['dni_number'] === '1' ) {
+        if ( empty($_POST['wpcw_dni_number']) ) {
+            $validation_errors->add('wpcw_dni_error', __('Por favor, introduce tu DNI.', 'wp-cupon-whatsapp'));
+        }
+    }
+    // DNI format validation (optional, if DNI is provided, even if not required)
+    if ( !empty($_POST['wpcw_dni_number']) && !preg_match('/^[0-9]{7,8}[A-Za-z]?$/', $_POST['wpcw_dni_number']) && !preg_match('/^[0-9]{7,8}$/', $_POST['wpcw_dni_number']) ) {
+         // Example: allows 7-8 digits, or 7-8 digits followed by a letter. Adjust regex as needed.
+         // $validation_errors->add('wpcw_dni_format_error', __('El formato del DNI no es válido.', 'wp-cupon-whatsapp'));
     }
 
-    if ( empty( $_POST['wpcw_birth_date'] ) ) {
-        $validation_errors->add( 'wpcw_birth_date_error', __( 'Por favor, introduce tu fecha de nacimiento.', 'wp-cupon-whatsapp' ) );
-    } elseif ( ! empty( $_POST['wpcw_birth_date'] ) ) {
-        // Basic date validation (YYYY-MM-DD)
-        if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $_POST['wpcw_birth_date'] ) ) {
-            $validation_errors->add( 'wpcw_birth_date_format_error', __( 'Por favor, introduce una fecha de nacimiento válida (AAAA-MM-DD).', 'wp-cupon-whatsapp' ) );
-        } else {
-            // Check if date is a real date
-            $date_parts = explode( '-', $_POST['wpcw_birth_date'] );
-            if ( ! checkdate( $date_parts[1], $date_parts[2], $date_parts[0] ) ) {
-                $validation_errors->add( 'wpcw_birth_date_invalid_error', __( 'Por favor, introduce una fecha de nacimiento real.', 'wp-cupon-whatsapp' ) );
-            }
+
+    // Fecha de Nacimiento
+    $birth_date_value = isset($_POST['wpcw_birth_date']) ? trim($_POST['wpcw_birth_date']) : '';
+    if ( !empty($required_settings['birth_date']) && $required_settings['birth_date'] === '1' ) {
+        if ( empty($birth_date_value) ) {
+            $validation_errors->add('wpcw_birth_date_error', __('Por favor, introduce tu Fecha de Nacimiento.', 'wp-cupon-whatsapp'));
+        } elseif ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value) || !wp_checkdate(substr($birth_date_value, 5, 2), substr($birth_date_value, 8, 2), substr($birth_date_value, 0, 4), $birth_date_value) ) {
+            $validation_errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
+        }
+    } elseif (!empty($birth_date_value)) { // Validar formato si se ingresa algo, aunque no sea obligatorio
+         if ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value) || !wp_checkdate(substr($birth_date_value, 5, 2), substr($birth_date_value, 8, 2), substr($birth_date_value, 0, 4), $birth_date_value) ) {
+            $validation_errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
         }
     }
 
-    if ( empty( $_POST['wpcw_whatsapp_number'] ) ) {
-        $validation_errors->add( 'wpcw_whatsapp_number_error', __( 'Por favor, introduce tu número de WhatsApp.', 'wp-cupon-whatsapp' ) );
-    } elseif ( ! empty( $_POST['wpcw_whatsapp_number'] ) ) {
-        // Basic WhatsApp number validation (allows numbers, +, spaces, parentheses, hyphens)
-        // This can be made more strict if needed
-        if ( ! preg_match( '/^[0-9\s\+\(\)-]+$/', $_POST['wpcw_whatsapp_number'] ) ) {
-            $validation_errors->add( 'wpcw_whatsapp_number_format_error', __( 'Por favor, introduce un número de WhatsApp válido.', 'wp-cupon-whatsapp' ) );
+
+    // Número de WhatsApp
+    $whatsapp_number_value = isset($_POST['wpcw_whatsapp_number']) ? trim($_POST['wpcw_whatsapp_number']) : '';
+    if ( !empty($required_settings['whatsapp_number']) && $required_settings['whatsapp_number'] === '1' ) {
+        if ( empty($whatsapp_number_value) ) {
+            $validation_errors->add('wpcw_whatsapp_error', __('Por favor, introduce tu Número de WhatsApp.', 'wp-cupon-whatsapp'));
+        } elseif ( !preg_match('/^[\s0-9()+\-]+$/', $whatsapp_number_value) ) {
+            $validation_errors->add('wpcw_whatsapp_format_error', __('El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp'));
+        }
+    } elseif (!empty($whatsapp_number_value)) { // Validar formato si se ingresa algo, aunque no sea obligatorio
+        if ( !preg_match('/^[\s0-9()+\-]+$/', $whatsapp_number_value) ) {
+            $validation_errors->add('wpcw_whatsapp_format_error', __('El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp'));
         }
     }
 
-    // DNI basic validation (example: numbers and one optional letter at the end for some countries)
-    if ( ! empty( $_POST['wpcw_dni_number'] ) && ! preg_match( '/^[0-9]{7,8}[A-Za-z]?$/', $_POST['wpcw_dni_number'] ) ) {
-        // $validation_errors->add( 'wpcw_dni_format_error', __( 'Por favor, introduce un DNI válido (solo números o números seguidos de una letra).', 'wp-cupon-whatsapp' ) );
-        // For now, a simple non-empty check is done above. This is a placeholder for more specific DNI logic if required by the client.
-        // For a general plugin, DNI formats vary too much. Let's assume the initial non-empty check is sufficient for now,
-        // or the client will specify the exact format.
-    }
-
+    // Para user_institution_id y user_favorite_coupon_categories, la validación de "obligatorio"
+    // significaría que se debe seleccionar algo (no la opción por defecto para el select, o al menos un checkbox).
+    // Esto se puede abordar si se descomentan esos campos en los ajustes y se define la lógica de "no vacío".
 
     return $validation_errors;
 }
@@ -281,35 +291,52 @@ add_action( 'woocommerce_edit_account_form', 'wpcw_add_custom_account_fields' );
  * @param WP_User  $user   The current user object.
  */
 function wpcw_validate_custom_account_fields( &$errors, $user ) {
-    if ( empty( $_POST['wpcw_dni_number'] ) ) {
-        $errors->add( 'wpcw_dni_error', __( 'Por favor, introduce tu DNI.', 'wp-cupon-whatsapp' ) );
+    $required_settings = get_option('wpcw_required_fields_settings', array());
+    // $user_id = $user->ID; // No se usa directamente aquí, pero disponible.
+
+    // DNI
+    if ( !empty($required_settings['dni_number']) && $required_settings['dni_number'] === '1' ) {
+        if ( empty($_POST['wpcw_dni_number']) ) {
+            $errors->add('wpcw_dni_error', __('Por favor, introduce tu DNI.', 'wp-cupon-whatsapp'));
+        }
+    }
+    // DNI format validation (optional)
+    if ( !empty($_POST['wpcw_dni_number']) && !preg_match('/^[0-9]{7,8}[A-Za-z]?$/', $_POST['wpcw_dni_number']) && !preg_match('/^[0-9]{7,8}$/', $_POST['wpcw_dni_number']) ) {
+        // $errors->add('wpcw_dni_format_error', __('El formato del DNI no es válido.', 'wp-cupon-whatsapp'));
     }
 
-    if ( empty( $_POST['wpcw_birth_date'] ) ) {
-        $errors->add( 'wpcw_birth_date_error', __( 'Por favor, introduce tu fecha de nacimiento.', 'wp-cupon-whatsapp' ) );
-    } elseif ( ! empty( $_POST['wpcw_birth_date'] ) ) {
-        if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $_POST['wpcw_birth_date'] ) ) {
-            $errors->add( 'wpcw_birth_date_format_error', __( 'Por favor, introduce una fecha de nacimiento válida (AAAA-MM-DD).', 'wp-cupon-whatsapp' ) );
-        } else {
-            $date_parts = explode( '-', $_POST['wpcw_birth_date'] );
-            if ( ! checkdate( $date_parts[1], $date_parts[2], $date_parts[0] ) ) {
-                $errors->add( 'wpcw_birth_date_invalid_error', __( 'Por favor, introduce una fecha de nacimiento real.', 'wp-cupon-whatsapp' ) );
-            }
+
+    // Fecha de Nacimiento
+    $birth_date_value_acc = isset($_POST['wpcw_birth_date']) ? trim($_POST['wpcw_birth_date']) : '';
+    if ( !empty($required_settings['birth_date']) && $required_settings['birth_date'] === '1' ) {
+        if ( empty($birth_date_value_acc) ) {
+            $errors->add('wpcw_birth_date_error', __('Por favor, introduce tu Fecha de Nacimiento.', 'wp-cupon-whatsapp'));
+        } elseif ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value_acc) || !wp_checkdate(substr($birth_date_value_acc, 5, 2), substr($birth_date_value_acc, 8, 2), substr($birth_date_value_acc, 0, 4), $birth_date_value_acc) ) {
+            $errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
+        }
+    } elseif (!empty($birth_date_value_acc)) { // Validar formato si se ingresa algo, aunque no sea obligatorio
+         if ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value_acc) || !wp_checkdate(substr($birth_date_value_acc, 5, 2), substr($birth_date_value_acc, 8, 2), substr($birth_date_value_acc, 0, 4), $birth_date_value_acc) ) {
+            $errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
         }
     }
 
-    if ( empty( $_POST['wpcw_whatsapp_number'] ) ) {
-        $errors->add( 'wpcw_whatsapp_number_error', __( 'Por favor, introduce tu número de WhatsApp.', 'wp-cupon-whatsapp' ) );
-    } elseif ( ! empty( $_POST['wpcw_whatsapp_number'] ) ) {
-        if ( ! preg_match( '/^[0-9\s\+\(\)-]+$/', $_POST['wpcw_whatsapp_number'] ) ) {
-            $errors->add( 'wpcw_whatsapp_number_format_error', __( 'Por favor, introduce un número de WhatsApp válido.', 'wp-cupon-whatsapp' ) );
+    // Número de WhatsApp
+    $whatsapp_number_value_acc = isset($_POST['wpcw_whatsapp_number']) ? trim($_POST['wpcw_whatsapp_number']) : '';
+    if ( !empty($required_settings['whatsapp_number']) && $required_settings['whatsapp_number'] === '1' ) {
+        if ( empty($whatsapp_number_value_acc) ) {
+            $errors->add('wpcw_whatsapp_error', __('Por favor, introduce tu Número de WhatsApp.', 'wp-cupon-whatsapp'));
+        } elseif ( !preg_match('/^[\s0-9()+\-]+$/', $whatsapp_number_value_acc) ) {
+            $errors->add('wpcw_whatsapp_format_error', __('El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp'));
+        }
+    } elseif (!empty($whatsapp_number_value_acc)) { // Validar formato si se ingresa algo, aunque no sea obligatorio
+        if ( !preg_match('/^[\s0-9()+\-]+$/', $whatsapp_number_value_acc) ) {
+            $errors->add('wpcw_whatsapp_format_error', __('El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp'));
         }
     }
-    // DNI basic validation (example: numbers and one optional letter at the end for some countries)
-    if ( ! empty( $_POST['wpcw_dni_number'] ) && ! preg_match( '/^[0-9]{7,8}[A-Za-z]?$/', $_POST['wpcw_dni_number'] ) ) {
-        // $errors->add( 'wpcw_dni_format_error', __( 'Por favor, introduce un DNI válido (solo números o números seguidos de una letra).', 'wp-cupon-whatsapp' ) );
-        // As with registration, keeping DNI validation simple unless specific format is required.
-    }
+
+    // No se validan user_institution_id ni user_favorite_coupon_categories como obligatorios aquí,
+    // ya que su obligatoriedad se define por si el admin los marca, pero su naturaleza es opcional en el perfil.
+    // Si se quisiera hacerlos obligatorios desde el perfil, se necesitaría una lógica similar.
 }
 add_action( 'woocommerce_save_account_details_errors', 'wpcw_validate_custom_account_fields', 10, 2 );
 
