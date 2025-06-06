@@ -62,6 +62,16 @@ function wpcw_register_plugin_admin_menu() {
         'wpcw-business-stats',                    // Slug de este submenú
         'wpcw_render_business_stats_page_content_wrapper' // Callback (definida en admin/business-stats-page.php)
     );
+
+    // Submenú para Estadísticas de la Institución (wpcw_institution_manager)
+    add_submenu_page(
+        'wpcw-main-menu',                         // Slug del menú padre
+        __( 'Estadísticas de Mi Institución', 'wp-cupon-whatsapp' ), // Título de la página
+        __( 'Mis Estadísticas', 'wp-cupon-whatsapp' ),    // Título del submenú (mismo que para comercio, se muestra según rol/cap)
+        'wpcw_view_own_institution_stats',        // Capacidad requerida (definida en roles.php)
+        'wpcw-institution-stats',                 // Slug de este submenú
+        'wpcw_render_institution_stats_page_content_wrapper' // Callback (a definir su wrapper y la función real)
+    );
 }
 add_action( 'admin_menu', 'wpcw_register_plugin_admin_menu' );
 
@@ -109,7 +119,20 @@ if ( ! function_exists( 'wpcw_render_business_stats_page_content_wrapper' ) ) {
     }
 }
 
-// Las funciones de renderizado real (wpcw_render_superadmin_stats_page y wpcw_render_business_stats_page_content)
-// se definirán en sus respectivos archivos (stats-page.php y business-stats-page.php).
+// Crear el wrapper para el callback de institution-stats, similar a los otros.
+if ( ! function_exists( 'wpcw_render_institution_stats_page_content_wrapper' ) ) {
+    function wpcw_render_institution_stats_page_content_wrapper() {
+        // require_once WPCW_PLUGIN_DIR . 'admin/institution-stats-page.php'; // Ya incluido globalmente en admin
+
+        if ( function_exists( 'wpcw_render_institution_stats_page_content' ) ) {
+            wpcw_render_institution_stats_page_content();
+        } else {
+            echo '<div class="wrap"><h1>' . esc_html__( 'Error', 'wp-cupon-whatsapp' ) . '</h1><p>' . esc_html__( 'La función para renderizar la página de estadísticas de la institución no está disponible.', 'wp-cupon-whatsapp' ) . '</p></div>';
+        }
+    }
+}
+
+// Las funciones de renderizado real (wpcw_render_superadmin_stats_page, wpcw_render_business_stats_page_content y wpcw_render_institution_stats_page_content)
+// se definirán en sus respectivos archivos.
 
 ?>
