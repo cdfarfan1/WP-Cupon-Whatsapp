@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: WP Cupon WhatsApp
- * Plugin URI: https://example.com/wp-cupon-whatsapp
- * Description: A plugin to manage and redeem cupons via WhatsApp.
+ * Plugin Name: WP Canje Cupon Whatsapp
+ * Plugin URI: https://www.pragmaticsolutions.com.ar
+ * Description: Plugin para programa de fidelización y canje de cupones por WhatsApp integrado con WooCommerce.
  * Version: 1.0.0
- * Author: Your Name
- * Author URI: https://example.com
+ * Author: Cristian Farfan, Pragmatic Solutions
+ * Author URI: https://www.pragmaticsolutions.com.ar
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: wp-cupon-whatsapp
@@ -91,3 +91,5 @@ require_once WPCW_PLUGIN_DIR . 'includes/roles.php';
 require_once WPCW_PLUGIN_DIR . 'includes/customer-fields.php';
 // Include reCAPTCHA integration
 require_once WPCW_PLUGIN_DIR . 'includes/recaptcha-integration.php';
+// Include public shortcodes
+require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
