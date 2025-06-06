@@ -109,6 +109,7 @@ require_once WPCW_PLUGIN_DIR . 'public/my-account-endpoints.php';
 // Admin specific includes
 if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
+    require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
     // Futuras inclusiones específicas de admin podrían ir aquí también.
 }
 
