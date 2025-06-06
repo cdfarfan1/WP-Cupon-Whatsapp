@@ -19,7 +19,7 @@ function wpcw_register_plugin_admin_menu() {
         __( 'WP Canje Cupon', 'wp-cupon-whatsapp' ), // Título del menú
         'manage_options',                         // Capacidad requerida (Superadmin)
         'wpcw-main-menu',                         // Slug del menú (para identificarlo)
-        'wpcw_render_main_admin_page_placeholder', // Función callback para el contenido de la página principal
+        'wpcw_render_plugin_settings_page',       // NUEVO CALLBACK
         'dashicons-tickets-alt',                  // Icono (Dashicon)
         30                                        // Posición en el menú
     );
@@ -75,19 +75,9 @@ function wpcw_register_plugin_admin_menu() {
 }
 add_action( 'admin_menu', 'wpcw_register_plugin_admin_menu' );
 
-/**
- * Placeholder callback para la página principal del menú del plugin.
- */
-if ( ! function_exists( 'wpcw_render_main_admin_page_placeholder' ) ) {
-    function wpcw_render_main_admin_page_placeholder() {
-        echo '<div class="wrap">';
-        echo '<h1>' . esc_html__( 'Bienvenido a WP Canje Cupon Whatsapp', 'wp-cupon-whatsapp' ) . '</h1>';
-        echo '<p>' . esc_html__( 'Esta es la página principal del plugin. Selecciona una opción del submenú.', 'wp-cupon-whatsapp' ) . '</p>';
-        echo '<p>' . sprintf( wp_kses_post( __( 'Puedes ver las <a href="%s">Estadísticas Generales</a>.', 'wp-cupon-whatsapp' ) ), esc_url( admin_url( 'admin.php?page=wpcw-stats' ) ) ) . '</p>';
-        // Aquí se podrían mostrar algunos KIPs o enlaces rápidos en el futuro.
-        echo '</div>';
-    }
-}
+// La función wpcw_render_main_admin_page_placeholder() ya no es necesaria,
+// ya que la página principal del menú será la página de Ajustes.
+// Su definición será eliminada.
 
 /**
  * Wrapper function for rendering the superadmin stats page.
