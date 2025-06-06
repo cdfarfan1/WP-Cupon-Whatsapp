@@ -23,13 +23,8 @@ function wpcw_render_plugin_settings_page() {
 
         <form method="post" action="options.php">
             <?php
-            // Este grupo de ajustes ('wpcw_options_group') debe ser registrado en la función de inicialización de la API de Ajustes
             settings_fields( 'wpcw_options_group' );
-
-            // Este slug de página ('wpcw_plugin_settings') se usará para añadir secciones y campos
-            // El slug para do_settings_sections debe coincidir con el usado en add_settings_section
-            do_settings_sections( 'wpcw_plugin_settings_page_slug' ); // Usaremos este slug para las secciones
-
+            do_settings_sections( 'wpcw_plugin_settings_page_slug' );
             submit_button( __( 'Guardar Cambios', 'wp-cupon-whatsapp' ) );
             ?>
         </form>
@@ -41,10 +36,9 @@ function wpcw_render_plugin_settings_page() {
  * Initializes the WordPress Settings API for WPCW plugin.
  */
 function wpcw_settings_api_init() {
-    $page_slug = 'wpcw_plugin_settings_page_slug'; // Slug de la página de ajustes
-    $option_group = 'wpcw_options_group';     // Nombre del grupo de opciones
+    $page_slug = 'wpcw_plugin_settings_page_slug';
+    $option_group = 'wpcw_options_group';
 
-    // Registrar los ajustes (opciones que se guardarán en la tabla wp_options)
     register_setting(
         $option_group,
         'wpcw_recaptcha_site_key',
@@ -64,25 +58,23 @@ function wpcw_settings_api_init() {
         )
     );
 
-    // Añadir Sección para reCAPTCHA
     add_settings_section(
-        'wpcw_recaptcha_settings_section', // ID de la sección
-        __( 'Ajustes de Google reCAPTCHA v2', 'wp-cupon-whatsapp' ), // Título de la sección
-        'wpcw_recaptcha_section_callback', // Función callback para renderizar la descripción de la sección
-        $page_slug // Slug de la página donde se mostrará esta sección
+        'wpcw_recaptcha_settings_section',
+        __( 'Ajustes de Google reCAPTCHA v2', 'wp-cupon-whatsapp' ),
+        'wpcw_recaptcha_section_callback',
+        $page_slug
     );
 
-    // Añadir Campos a la Sección de reCAPTCHA
     add_settings_field(
-        'wpcw_field_recaptcha_site_key', // ID del campo
-        __( 'Site Key (Clave del Sitio)', 'wp-cupon-whatsapp' ), // Título del campo
-        'wpcw_render_text_input_field', // Función callback para renderizar el campo
-        $page_slug, // Slug de la página
-        'wpcw_recaptcha_settings_section', // ID de la sección a la que pertenece
-        array( // Argumentos para la función callback
+        'wpcw_field_recaptcha_site_key',
+        __( 'Site Key (Clave del Sitio)', 'wp-cupon-whatsapp' ),
+        'wpcw_render_text_input_field',
+        $page_slug,
+        'wpcw_recaptcha_settings_section',
+        array(
             'option_name' => 'wpcw_recaptcha_site_key',
-            'id'          => 'wpcw_recaptcha_site_key', // Coincide con la opción para el get_option
-            'label_for'   => 'wpcw_recaptcha_site_key', // Para que el label haga focus en el input
+            'id'          => 'wpcw_recaptcha_site_key',
+            'label_for'   => 'wpcw_recaptcha_site_key',
             'description' => __('Introduce tu Google reCAPTCHA v2 Site Key.', 'wp-cupon-whatsapp')
         )
     );
@@ -94,62 +86,68 @@ function wpcw_settings_api_init() {
         'wpcw_recaptcha_settings_section',
         array(
             'option_name' => 'wpcw_recaptcha_secret_key',
-            'id'          => 'wpcw_recaptcha_secret_key', // Coincide con la opción para el get_option
+            'id'          => 'wpcw_recaptcha_secret_key',
             'label_for'   => 'wpcw_recaptcha_secret_key',
             'description' => __('Introduce tu Google reCAPTCHA v2 Secret Key.', 'wp-cupon-whatsapp')
         )
     );
 
-    // TODO: Registrar otras secciones y campos aquí (Campos de Registro, Utilidades, Exportar)
-
-    // Registrar Opción para Campos Obligatorios
     register_setting(
-        $option_group, // 'wpcw_options_group'
+        $option_group,
         'wpcw_required_fields_settings',
         array(
             'type'              => 'array',
             'sanitize_callback' => 'wpcw_sanitize_required_fields_array',
-            'default'           => array(), // Default es un array vacío
+            'default'           => array(),
         )
     );
 
-    // Añadir Sección para Campos Obligatorios
     add_settings_section(
-        'wpcw_required_fields_section', // ID de la sección
-        __( 'Campos de Cliente Obligatorios en Registro/Perfil', 'wp-cupon-whatsapp' ), // Título
-        'wpcw_required_fields_section_callback', // Callback para descripción
-        $page_slug // 'wpcw_plugin_settings_page_slug'
+        'wpcw_required_fields_section',
+        __( 'Campos de Cliente Obligatorios en Registro/Perfil', 'wp-cupon-whatsapp' ),
+        'wpcw_required_fields_section_callback',
+        $page_slug
     );
 
-    // Los campos (checkboxes) para esta sección se añadirán en el siguiente paso del plan.
-
     $option_name_required = 'wpcw_required_fields_settings';
-
     $configurable_fields = array(
         'dni_number' => __('DNI', 'wp-cupon-whatsapp'),
         'birth_date' => __('Fecha de Nacimiento', 'wp-cupon-whatsapp'),
         'whatsapp_number' => __('Número de WhatsApp', 'wp-cupon-whatsapp'),
-        // 'user_institution_id' => __('Institución del Usuario', 'wp-cupon-whatsapp'), // Comentado porque es opcional en el form de registro
-        // 'user_favorite_coupon_categories' => __('Categorías de Cupones Favoritas', 'wp-cupon-whatsapp') // Comentado porque es opcional
     );
 
     foreach ( $configurable_fields as $key => $label ) {
         add_settings_field(
-            'wpcw_field_req_' . $key, // ID único para el campo
-            // El título del campo ahora se genera dentro del callback para un mejor control del 'for'
-            '', // Dejar el título vacío aquí
-            'wpcw_render_settings_checkbox_field', // Callback para renderizar
-            $page_slug, // Slug de la página
-            'wpcw_required_fields_section', // ID de la sección
-            array( // Argumentos para el callback
+            'wpcw_field_req_' . $key,
+            '',
+            'wpcw_render_settings_checkbox_field',
+            $page_slug,
+            'wpcw_required_fields_section',
+            array(
                 'option_name' => $option_name_required,
                 'field_key'   => $key,
                 'id'          => 'wpcw_req_' . $key,
-                'label'       => sprintf( __('Hacer obligatorio el campo "%s"', 'wp-cupon-whatsapp'), $label ), // Pasar el label al callback
-                // 'description' => sprintf( __('Marcar para hacer que el campo %s sea obligatorio.', 'wp-cupon-whatsapp'), $label) // Opcional si se prefiere junto al checkbox
+                'label'       => sprintf( __('Hacer obligatorio el campo "%s"', 'wp-cupon-whatsapp'), $label ),
             )
         );
     }
+
+    // Añadir Sección para Utilidades
+    add_settings_section(
+        'wpcw_utilities_section',
+        __( 'Utilidades del Plugin', 'wp-cupon-whatsapp' ),
+        'wpcw_utilities_section_callback',
+        $page_slug
+    );
+
+    // Añadir Campo para el Botón "Crear Páginas"
+    add_settings_field(
+        'wpcw_field_create_pages',
+        __( 'Páginas del Plugin', 'wp-cupon-whatsapp' ),
+        'wpcw_render_create_pages_button_field',
+        $page_slug,
+        'wpcw_utilities_section'
+    );
 }
 add_action( 'admin_init', 'wpcw_settings_api_init' );
 
@@ -158,33 +156,23 @@ add_action( 'admin_init', 'wpcw_settings_api_init' );
  */
 function wpcw_recaptcha_section_callback() {
     echo '<p>' . esc_html__( 'Configura las claves de API para Google reCAPTCHA v2 para proteger tus formularios.', 'wp-cupon-whatsapp' ) . '</p>';
-    // Podrías añadir un enlace a cómo obtener las claves de reCAPTCHA.
 }
 
 /**
  * Renderiza un campo de input de texto genérico para la Settings API.
- *
- * @param array $args Argumentos pasados desde add_settings_field.
- *                    Debe incluir 'option_name', 'id'. 'description' es opcional.
  */
 function wpcw_render_text_input_field( $args ) {
     $option_name = $args['option_name'];
-    // Obtener valor guardado, default vacío si no está seteado.
-    // El default de register_setting se usa si la opción NO EXISTE en la BD.
-    // Si existe pero está vacía, get_option devolverá vacío.
     $option_value = get_option( $option_name );
-    if ( $option_value === false && isset($args['default']) ) { // Si la opción no existe en la BD
+    if ( $option_value === false && isset($args['default']) ) {
         $option_value = $args['default'];
-    } elseif ($option_value === false) { // Si no existe y no hay default en args
+    } elseif ($option_value === false) {
         $option_value = '';
     }
-
     $id = isset( $args['id'] ) ? $args['id'] : $option_name;
-
     echo '<input type="text" id="' . esc_attr( $id ) . '" name="' . esc_attr( $option_name ) . '" value="' . esc_attr( $option_value ) . '" class="regular-text" />';
-
     if ( isset( $args['description'] ) && ! empty( $args['description'] ) ) {
-        echo '<p class="description">' . wp_kses_post( $args['description'] ) . '</p>'; // wp_kses_post si la descripción puede tener HTML simple
+        echo '<p class="description">' . wp_kses_post( $args['description'] ) . '</p>';
     }
 }
 
@@ -197,69 +185,174 @@ function wpcw_required_fields_section_callback() {
 
 /**
  * Sanitiza el array de ajustes para los campos obligatorios.
- *
- * @param array $input El array de entrada de los checkboxes.
- * @return array El array sanitizado.
  */
 function wpcw_sanitize_required_fields_array( $input ) {
     $sanitized_input = array();
-    // Define las claves de los campos que pueden ser configurados como obligatorios.
-    // Estas claves deben coincidir con las usadas en los formularios de registro y perfil.
     $allowed_field_keys = array(
-        'dni_number',                       // Corresponde a _wpcw_dni_number
-        'birth_date',                       // Corresponde a _wpcw_birth_date
-        'whatsapp_number',                  // Corresponde a _wpcw_whatsapp_number
-        'user_institution_id',              // Corresponde a _wpcw_user_institution_id
-        'user_favorite_coupon_categories'   // Corresponde a _wpcw_user_favorite_coupon_categories
-        // Añadir más claves aquí si se añaden más campos configurables en el futuro
+        'dni_number',
+        'birth_date',
+        'whatsapp_number',
+        'user_institution_id',
+        'user_favorite_coupon_categories'
     );
-
     if ( is_array( $input ) ) {
         foreach ( $allowed_field_keys as $key ) {
-            // Si el checkbox está marcado y enviado, $input[$key] será '1'.
-            // Si no está marcado, no estará en $input.
-            // Guardamos '1' para marcado, '0' para no marcado.
             $sanitized_input[$key] = ( isset( $input[$key] ) && $input[$key] == '1' ) ? '1' : '0';
         }
     }
-    // Ejemplo: si solo 'dni_number' y 'whatsapp_number' están marcados,
-    // $input podría ser: array('dni_number' => '1', 'whatsapp_number' => '1')
-    // $sanitized_input será: array('dni_number' => '1', 'birth_date' => '0', 'whatsapp_number' => '1', ...)
-
     return $sanitized_input;
 }
 
 /**
- * Renderiza un campo de input de checkbox genérico para la Settings API,
- * específicamente para un array de opciones.
- *
- * @param array $args Argumentos pasados desde add_settings_field.
- *                    Debe incluir 'option_name', 'field_key', 'id', 'label'.
- *                    'description' es opcional.
+ * Renderiza un campo de input de checkbox genérico para la Settings API.
  */
 function wpcw_render_settings_checkbox_field( $args ) {
-    $option_name = $args['option_name']; // ej. wpcw_required_fields_settings
-    $field_key = $args['field_key'];   // ej. dni_number
+    $option_name = $args['option_name'];
+    $field_key = $args['field_key'];
     $id = isset( $args['id'] ) ? $args['id'] : $option_name . '_' . $field_key;
     $label = isset( $args['label'] ) ? $args['label'] : '';
-
-
-    // Obtener el array completo de opciones guardadas
     $options = get_option( $option_name, array() );
-
-    // Verificar si este campo específico está marcado como '1'
     $is_checked = isset( $options[$field_key] ) && $options[$field_key] === '1';
-
-    // El título del campo (label) se genera aquí para asociarlo correctamente con el checkbox
     echo '<label for="' . esc_attr( $id ) . '">';
     echo '<input type="checkbox" id="' . esc_attr( $id ) . '" name="' . esc_attr( $option_name . '[' . $field_key . ']' ) . '" value="1" ' . checked( $is_checked, true, false ) . ' /> ';
     echo esc_html( $label );
     echo '</label>';
-
     if ( isset( $args['description'] ) && ! empty( $args['description'] ) ) {
         echo '<p class="description">' . wp_kses_post( $args['description'] ) . '</p>';
     }
 }
 
-// TODO: Callbacks para otros tipos de campos
+/**
+ * Callback para la descripción de la sección de Utilidades.
+ */
+function wpcw_utilities_section_callback() {
+    echo '<p>' . esc_html__( 'Herramientas adicionales para la gestión del plugin.', 'wp-cupon-whatsapp' ) . '</p>';
+}
+
+/**
+ * Renderiza el botón para la utilidad "Crear Páginas".
+ */
+function wpcw_render_create_pages_button_field() {
+    wp_nonce_field( 'wpcw_create_pages_action_nonce', 'wpcw_nonce_create_pages' );
+    submit_button(
+        __( 'Crear Páginas del Plugin', 'wp-cupon-whatsapp' ),
+        'secondary',
+        'wpcw_create_pages_action',
+        true,
+        null
+    );
+    echo '<p class="description">' . esc_html__('Haz clic aquí para crear automáticamente las páginas necesarias para los shortcodes del plugin (ej. Mis Cupones, Cupones Públicos, Solicitud de Adhesión). Las páginas no se duplicarán si ya existen y contienen el shortcode correcto o si ya fueron creadas por esta utilidad.', 'wp-cupon-whatsapp') . '</p>';
+}
+
+/**
+ * Handles admin actions triggered from settings page or other admin areas.
+ */
+function wpcw_handle_admin_actions() {
+    if ( isset( $_POST['wpcw_create_pages_action'] ) ) {
+        check_admin_referer( 'wpcw_create_pages_action_nonce', 'wpcw_nonce_create_pages' );
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'No tienes permisos para realizar esta acción.', 'wp-cupon-whatsapp' ) );
+        }
+        wpcw_do_create_plugin_pages();
+    }
+}
+add_action( 'admin_init', 'wpcw_handle_admin_actions' );
+
+/**
+ * Creates plugin pages if they don't exist or if the stored page ID is invalid.
+ */
+if ( ! function_exists( 'wpcw_do_create_plugin_pages' ) ) {
+    function wpcw_do_create_plugin_pages() {
+        $pages_to_create = array(
+            array(
+                'option_name' => 'wpcw_page_id_mis_cupones',
+                'title'       => __( 'Mis Cupones Disponibles', 'wp-cupon-whatsapp' ),
+                'shortcode'   => '[wpcw_mis_cupones]',
+                'slug'        => 'mis-cupones-wpcw'
+            ),
+            array(
+                'option_name' => 'wpcw_page_id_cupones_publicos',
+                'title'       => __( 'Cupones Públicos', 'wp-cupon-whatsapp' ),
+                'shortcode'   => '[wpcw_cupones_publicos]',
+                'slug'        => 'cupones-publicos-wpcw'
+            ),
+            array(
+                'option_name' => 'wpcw_page_id_solicitud_adhesion',
+                'title'       => __( 'Solicitud de Adhesión', 'wp-cupon-whatsapp' ),
+                'shortcode'   => '[wpcw_solicitud_adhesion_form]',
+                'slug'        => 'solicitud-adhesion-wpcw'
+            ),
+        );
+
+        $created_pages_count = 0;
+        $existing_pages_count = 0;
+        $error_pages_count = 0;
+
+        foreach ( $pages_to_create as $page_config ) {
+            $page_id = get_option( $page_config['option_name'] );
+            $page_exists_valid = false;
+
+            if ( $page_id ) {
+                $existing_post = get_post( $page_id );
+                if ( $existing_post && 'page' === $existing_post->post_type && 'trash' !== $existing_post->post_status ) {
+                    if ( has_shortcode( $existing_post->post_content, str_replace(array('[', ']'), '', $page_config['shortcode']) ) ) {
+                        $page_exists_valid = true;
+                    } else {
+                         add_settings_error(
+                            'wpcw_options_group',
+                            'page_content_mismatch_' . sanitize_key($page_config['slug']),
+                            sprintf( __('La página "%s" existe (ID: %d) pero su contenido no coincide con el shortcode esperado (%s). Considera revisarla manualmente o eliminarla para que se recree.', 'wp-cupon-whatsapp'), $page_config['title'], $page_id, $page_config['shortcode'] ),
+                            'warning'
+                        );
+                        $page_exists_valid = true; // Still count as existing to avoid auto-recreation for now
+                    }
+                }
+            }
+
+            if ( $page_exists_valid ) {
+                $existing_pages_count++;
+            } else {
+                $page_data = array(
+                    'post_title'     => $page_config['title'],
+                    'post_content'   => $page_config['shortcode'],
+                    'post_status'    => 'publish',
+                    'post_type'      => 'page',
+                    'post_name'      => $page_config['slug'],
+                    'comment_status' => 'closed',
+                    'ping_status'    => 'closed',
+                );
+                $new_page_id = wp_insert_post( $page_data, true );
+
+                if ( is_wp_error( $new_page_id ) ) {
+                    $error_pages_count++;
+                    add_settings_error(
+                        'wpcw_options_group',
+                        'page_creation_error_' . sanitize_key($page_config['slug']),
+                        sprintf( __('Error al crear la página "%s": %s', 'wp-cupon-whatsapp'), $page_config['title'], $new_page_id->get_error_message() ),
+                        'error'
+                    );
+                } else {
+                    $created_pages_count++;
+                    update_option( $page_config['option_name'], $new_page_id );
+                    add_settings_error(
+                        'wpcw_options_group',
+                        'page_created_' . sanitize_key($page_config['slug']),
+                        sprintf( __('Página "%s" creada exitosamente.', 'wp-cupon-whatsapp'), $page_config['title'] ),
+                        'success'
+                    );
+                }
+            }
+        }
+
+        if ($created_pages_count > 0 && $error_pages_count === 0) {
+             add_settings_error('wpcw_options_group', 'some_pages_created', sprintf(_n('%d página del plugin fue creada exitosamente.', '%d páginas del plugin fueron creadas exitosamente.', $created_pages_count, 'wp-cupon-whatsapp'), $created_pages_count), 'success');
+        } elseif ($created_pages_count === 0 && $error_pages_count === 0 && $existing_pages_count === count($pages_to_create)) {
+             add_settings_error('wpcw_options_group', 'all_pages_exist', __('Todas las páginas del plugin necesarias ya existían y parecen estar configuradas correctamente.', 'wp-cupon-whatsapp'), 'info');
+        } elseif ($error_pages_count > 0) {
+            add_settings_error('wpcw_options_group', 'pages_creation_errors', __('Algunas páginas no pudieron ser creadas. Revisa los mensajes de error individuales.', 'wp-cupon-whatsapp'), 'error');
+        } elseif ($created_pages_count > 0 && $error_pages_count === 0 && $existing_pages_count > 0 && ($created_pages_count + $existing_pages_count === count($pages_to_create)) ){
+            add_settings_error('wpcw_options_group', 'pages_creation_mixed_created', sprintf(_n('%d página del plugin fue creada exitosamente. Las demás ya existían.', '%d páginas del plugin fueron creadas exitosamente. Las demás ya existían.', $created_pages_count, 'wp-cupon-whatsapp'), $created_pages_count), 'success');
+        }
+    }
+}
 ?>
