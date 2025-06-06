@@ -95,6 +95,8 @@ require_once WPCW_PLUGIN_DIR . 'includes/recaptcha-integration.php';
 require_once WPCW_PLUGIN_DIR . 'includes/application-processing.php';
 // Include AJAX handlers
 require_once WPCW_PLUGIN_DIR . 'includes/ajax-handlers.php';
+// Include REST API endpoints
+require_once WPCW_PLUGIN_DIR . 'includes/rest-api.php';
 // Include public shortcodes
 require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
 
