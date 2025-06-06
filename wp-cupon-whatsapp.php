@@ -99,6 +99,8 @@ require_once WPCW_PLUGIN_DIR . 'includes/ajax-handlers.php';
 require_once WPCW_PLUGIN_DIR . 'includes/rest-api.php';
 // Include public shortcodes
 require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
+// Include My Account endpoint functions
+require_once WPCW_PLUGIN_DIR . 'public/my-account-endpoints.php';
 
 // Admin specific includes
 if ( is_admin() ) {
