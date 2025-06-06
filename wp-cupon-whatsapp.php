@@ -91,5 +91,7 @@ require_once WPCW_PLUGIN_DIR . 'includes/roles.php';
 require_once WPCW_PLUGIN_DIR . 'includes/customer-fields.php';
 // Include reCAPTCHA integration
 require_once WPCW_PLUGIN_DIR . 'includes/recaptcha-integration.php';
+// Include application processing
+require_once WPCW_PLUGIN_DIR . 'includes/application-processing.php';
 // Include public shortcodes
 require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
