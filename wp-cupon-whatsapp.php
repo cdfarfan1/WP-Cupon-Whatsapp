@@ -93,11 +93,59 @@ require_once WPCW_PLUGIN_DIR . 'includes/customer-fields.php';
 require_once WPCW_PLUGIN_DIR . 'includes/recaptcha-integration.php';
 // Include application processing
 require_once WPCW_PLUGIN_DIR . 'includes/application-processing.php';
+// Include AJAX handlers
+require_once WPCW_PLUGIN_DIR . 'includes/ajax-handlers.php';
+// Include REST API endpoints
+require_once WPCW_PLUGIN_DIR . 'includes/rest-api.php';
 // Include public shortcodes
 require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
+// Include My Account endpoint functions
+require_once WPCW_PLUGIN_DIR . 'public/my-account-endpoints.php';
 
 // Admin specific includes
 if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
     // Futuras inclusiones específicas de admin podrían ir aquí también.
 }
+
+/**
+ * Enqueue public-facing scripts and styles.
+ */
+function wpcw_public_enqueue_scripts_styles() {
+    // Encolar estilos públicos si los hubiera (ej. public/css/public.css)
+    // wp_enqueue_style(
+    //     'wpcw-public-style',
+    //     WPCW_PLUGIN_URL . 'public/css/public.css',
+    //     array(),
+    //     WPCW_VERSION
+    // );
+
+    // Encolar el script de canje
+    // Solo encolar si es necesario, ej. si una página muestra cupones.
+    // Por ahora, lo encolaremos globalmente en el frontend para asegurar que esté disponible.
+    // Una mejora sería encolarlo solo si el shortcode [wpcw_mis_cupones] o [wpcw_cupones_publicos] está presente.
+    // O si se detecta la clase 'wpcw-canjear-cupon-btn' en la página.
+    if ( !is_admin() ) { // Solo encolar en el frontend
+        wp_enqueue_script(
+            'wpcw-canje-handler',
+            WPCW_PLUGIN_URL . 'public/js/canje-handler.js',
+            array( 'jquery' ), // Dependencia de jQuery
+            WPCW_VERSION,     // Versión del plugin
+            true              // Cargar en el footer
+        );
+
+        // Localizar el script para pasar datos de PHP a JS
+        wp_localize_script(
+            'wpcw-canje-handler', // Handle del script al que se le pasan los datos
+            'wpcw_canje_obj',    // Nombre del objeto JavaScript que contendrá los datos
+            array(
+                'ajax_url' => admin_url( 'admin-ajax.php' ), // URL para peticiones AJAX
+                'nonce'    => wp_create_nonce( 'wpcw_request_canje_action_nonce' ), // Nonce para la acción específica
+                // Se pueden añadir más datos aquí si son necesarios, como mensajes traducibles.
+                'text_processing' => __( 'Procesando...', 'wp-cupon-whatsapp' ),
+                'text_error_generic' => __( 'Ocurrió un error. Por favor, inténtalo de nuevo.', 'wp-cupon-whatsapp' ),
+            )
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'wpcw_public_enqueue_scripts_styles' );
