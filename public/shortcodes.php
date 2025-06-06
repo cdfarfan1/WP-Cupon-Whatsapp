@@ -367,4 +367,104 @@ function wpcw_render_solicitud_adhesion_form() {
 }
 add_shortcode( 'wpcw_solicitud_adhesion_form', 'wpcw_render_solicitud_adhesion_form' );
 
+/**
+ * Renders the 'Mis Cupones Disponibles' page for logged-in users.
+ *
+ * @return string HTML content for the page.
+ */
+function wpcw_render_mis_cupones_page() {
+    if ( ! is_user_logged_in() ) {
+        // Puedes personalizar este mensaje o incluso retornar un formulario de login de WooCommerce.
+        // wc_get_template( 'myaccount/form-login.php' ); OJO: esto imprimiría directamente.
+        // Mejor un mensaje y un enlace.
+        return '<p class="wpcw-login-required">' .
+            sprintf(
+                __( 'Por favor, <a href="%s">inicia sesión</a> para ver tus cupones disponibles.', 'wp-cupon-whatsapp' ),
+                esc_url( wc_get_page_permalink( 'myaccount' ) ) // Obtener URL de "Mi Cuenta" de WC
+            ) .
+            '</p>';
+    }
+
+    // Contenido para usuarios logueados
+    ob_start(); // Iniciar buffer de salida para capturar todo el HTML del shortcode
+
+    echo '<div class="wpcw-mis-cupones-page">';
+    echo '<h2>' . esc_html__( 'Mis Cupones de Lealtad Disponibles', 'wp-cupon-whatsapp' ) . '</h2>';
+
+    $user_id = get_current_user_id(); // No se usa directamente en esta consulta básica, pero útil para futuro
+
+    $args = array(
+        'post_type'      => 'shop_coupon',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1, // Mostrar todos los cupones de lealtad por ahora, paginación después.
+        'meta_query'     => array(
+            'relation' => 'AND', // Asegurar que todas las condiciones de meta se cumplan
+            array(
+                'key'     => '_wpcw_is_loyalty_coupon',
+                'value'   => 'yes',
+                'compare' => '=',
+            ),
+            // TODO: Añadir más meta_queries para filtrar por:
+            // - Institución del usuario (_wpcw_user_institution_id) -> necesitaría un meta en el cupón que lo vincule a una institución, O si el cupón es de una institución específica.
+            // - Categorías favoritas del usuario (_wpcw_user_favorite_coupon_categories vs _wpcw_coupon_category_id)
+            // - Excluir cupones ya canjeados por este usuario (requerirá consulta a la tabla wpcw_canjes)
+        ),
+        // TODO: Considerar orden (ej. por fecha de expiración, si existe ese dato)
+    );
+
+    $loyalty_coupons_query = new WP_Query( $args );
+
+    if ( $loyalty_coupons_query->have_posts() ) {
+        echo '<div class="wpcw-coupons-grid">'; // Contenedor para las tarjetas de cupón
+
+        while ( $loyalty_coupons_query->have_posts() ) : $loyalty_coupons_query->the_post();
+            // Preparar datos para la plantilla coupon-card.php
+            $coupon_id = get_the_ID();
+            $coupon_title = get_the_title();
+            // En WooCommerce, el código del cupón es el post_title del CPT shop_coupon.
+            $coupon_code = get_the_title();
+
+            $coupon_description = get_the_excerpt();
+            if (empty($coupon_description)) {
+                // Usar el contenido del cupón (pestaña General > Descripción del cupón) si el excerpt está vacío.
+                $coupon_post_content = get_the_content();
+                $coupon_description = wp_trim_words( $coupon_post_content, 20, '...' );
+            }
+            if (empty($coupon_description) && isset($coupon_post_content) && !empty($coupon_post_content)) {
+                 // Si wp_trim_words devuelve vacío pero había contenido, usar el contenido tal cual (respetando HTML simple)
+                 $coupon_description = $coupon_post_content;
+            }
+
+
+            $coupon_image_id = get_post_meta( $coupon_id, '_wpcw_coupon_image_id', true );
+            $coupon_image_url = $coupon_image_id ? wp_get_attachment_image_url( $coupon_image_id, 'medium' ) : ''; // 'medium' o 'thumbnail'
+
+            // Estas variables estarán disponibles en el scope de la plantilla incluida.
+            // La plantilla coupon-card.php fue diseñada para usar estas variables directamente.
+            // Y también tiene sus propios defaults si estas no están seteadas.
+
+            // Ruta a la plantilla
+            $template_path = WPCW_PLUGIN_DIR . 'public/templates/coupon-card.php';
+            if ( file_exists( $template_path ) ) {
+                include( $template_path );
+            } else {
+                echo '<p>' . sprintf(esc_html__('Error: Plantilla de tarjeta de cupón no encontrada en %s', 'wp-cupon-whatsapp'), esc_html($template_path)) . '</p>';
+            }
+
+        endwhile;
+
+        echo '</div>'; // Fin de .wpcw-coupons-grid
+        wp_reset_postdata(); // Importante después de un loop personalizado con WP_Query
+
+    } else {
+        echo '<p>' . esc_html__( 'No tienes cupones de lealtad disponibles en este momento.', 'wp-cupon-whatsapp' ) . '</p>';
+    }
+    //  wp_reset_postdata(); // Moved inside the if have_posts block
+
+    echo '</div>'; // Fin de .wpcw-mis-cupones-page
+
+    return ob_get_clean(); // Devolver todo el contenido capturado
+}
+add_shortcode( 'wpcw_mis_cupones', 'wpcw_render_mis_cupones_page' );
+
 ?>
