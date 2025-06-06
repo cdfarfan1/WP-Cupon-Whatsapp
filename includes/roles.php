@@ -96,6 +96,8 @@ function wpcw_add_roles() {
             'delete_others_wpcw_institutions' => false,
             'edit_published_wpcw_institutions' => true,
             'create_wpcw_institutions' => true,
+            // Nueva capacidad
+            'wpcw_view_own_institution_stats' => true,
         )
     );
 }

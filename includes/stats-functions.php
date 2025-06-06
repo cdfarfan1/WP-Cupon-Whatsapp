@@ -378,4 +378,76 @@ function wpcw_stats_get_top_redeemed_coupons_for_business( $business_cpt_id, $li
     }
     return $top_coupons;
 }
+
+/**
+ * Get top redeemed coupons created by a specific institution manager.
+ *
+ * @param int   $institution_user_id The User ID of the wpcw_institution_manager.
+ * @param int   $limit Number of top coupons to return.
+ * @param array $filters Filters for canjes (e.g., date range - for future use).
+ * @return array Array of objects (cupon_id, coupon_title, count).
+ */
+function wpcw_stats_get_top_redeemed_coupons_for_institution_user( $institution_user_id, $limit = 5, $filters = array() ) {
+    global $wpdb;
+    $institution_user_id = absint( $institution_user_id );
+    $limit = absint( $limit );
+
+    if ( $institution_user_id <= 0 ) {
+        return array();
+    }
+
+    // Paso A: Obtener IDs de los cupones creados por esta institución
+    $coupon_ids_args = array(
+        'post_type'      => 'shop_coupon',
+        'post_status'    => 'publish', // Considerar 'any' si cupones no publicados pueden tener canjes (improbable pero posible)
+        'author'         => $institution_user_id,
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+    );
+    $coupon_ids_query = new WP_Query( $coupon_ids_args );
+    $coupon_ids = $coupon_ids_query->posts;
+
+    if ( empty( $coupon_ids ) ) {
+        return array(); // La institución no tiene cupones, por lo tanto, no hay canjes de sus cupones.
+    }
+
+    // Paso B: Contar canjes para esos cupones
+    $tabla_canjes = WPCW_CANJES_TABLE_NAME;
+    $ids_placeholders = implode( ', ', array_fill( 0, count( $coupon_ids ), '%d' ) );
+    $redeemed_statuses = "'confirmado_por_negocio', 'utilizado_en_pedido_wc'";
+
+    // Construir la parte principal de la consulta SQL
+    $sql = "SELECT cupon_id, COUNT(cupon_id) as redemption_count
+            FROM {$tabla_canjes}
+            WHERE cupon_id IN ( " . $ids_placeholders . " )
+            AND estado_canje IN ({$redeemed_statuses})";
+
+    $params = $coupon_ids; // Parámetros para los placeholders de cupon_id
+
+    // TODO: Añadir filtros de fecha para canjes aquí si $filters lo especifica.
+    // if ( ! empty( $filters['date_start'] ) ) {
+    // $sql .= " AND fecha_solicitud_canje >= %s"; $params[] = $filters['date_start'];
+    // }
+    // if ( ! empty( $filters['date_end'] ) ) {
+    // $sql .= " AND fecha_solicitud_canje <= %s"; $params[] = $filters['date_end'];
+    // }
+
+    $sql .= " GROUP BY cupon_id ORDER BY redemption_count DESC LIMIT %d";
+    $params[] = $limit; // Añadir el límite a los parámetros
+
+    $results = $wpdb->get_results( $wpdb->prepare( $sql, $params ) );
+    $top_coupons = array();
+
+    if ( $results ) {
+        foreach ( $results as $result ) {
+            $coupon_title = get_the_title( $result->cupon_id );
+            $top_coupons[] = (object) array(
+                'cupon_id'       => (int) $result->cupon_id,
+                'coupon_title'   => $coupon_title ? $coupon_title : __('Cupón Desconocido', 'wp-cupon-whatsapp'),
+                'count'          => (int) $result->redemption_count,
+            );
+        }
+    }
+    return $top_coupons;
+}
 ?>
