@@ -118,13 +118,92 @@ function wpcw_generate_and_download_csv( $export_type ) {
             exit; // Terminar ejecución después de enviar el archivo
             // break; // No se alcanzará debido al exit()
         case 'instituciones':
-            // TODO: Implementar lógica de exportación para Instituciones
-            wp_die(
-                sprintf( esc_html__( 'La exportación para "%s" está en desarrollo.', 'wp-cupon-whatsapp' ), esc_html__( 'Instituciones', 'wp-cupon-whatsapp' ) ),
-                esc_html__( 'Exportación en Progreso', 'wp-cupon-whatsapp' ),
-                array('response' => 200, 'link_text' => esc_html__('Volver a Ajustes', 'wp-cupon-whatsapp'), 'link_url' => admin_url('admin.php?page=wpcw-main-menu'))
+            $data_to_export = array();
+            $filename = 'wpcw-export-instituciones-' . date('Y-m-d-H-i-s') . '.csv';
+
+            // Definir Cabeceras del CSV
+            $headers = array(
+                __('ID Institución (Post ID)', 'wp-cupon-whatsapp'),
+                __('Nombre Institución (Título)', 'wp-cupon-whatsapp'),
+                __('Nombre Legal', 'wp-cupon-whatsapp'),
+                __('CUIT', 'wp-cupon-whatsapp'),
+                __('Persona de Contacto', 'wp-cupon-whatsapp'),
+                __('Email Contacto', 'wp-cupon-whatsapp'),
+                __('WhatsApp Contacto', 'wp-cupon-whatsapp'),
+                __('Dirección Principal', 'wp-cupon-whatsapp'),
+                __('ID Usuario Gestor', 'wp-cupon-whatsapp'),
+                __('Email Usuario Gestor', 'wp-cupon-whatsapp'),
+                // __('ID Logo', 'wp-cupon-whatsapp'), // Podríamos añadir URL del logo si es necesario
             );
-            break;
+            $data_to_export[] = $headers;
+
+            // Obtener Datos de Instituciones
+            $args = array(
+                'post_type'      => 'wpcw_institution',
+                'post_status'    => 'publish',
+                'posts_per_page' => -1, // Todas las instituciones
+                'orderby'        => 'title',
+                'order'          => 'ASC',
+            );
+            $instituciones_query = new WP_Query( $args ); // Usar WP_Query para consistencia y wp_reset_postdata
+
+            if ( $instituciones_query->have_posts() ) {
+                while ( $instituciones_query->have_posts() ) {
+                    $instituciones_query->the_post();
+                    $institucion_id = get_the_ID();
+                    $institucion_title = get_the_title();
+
+                    $manager_user_id = get_post_meta( $institucion_id, '_wpcw_manager_user_id', true );
+                    $manager_email = '';
+                    if ( $manager_user_id ) {
+                        $user_data = get_userdata( $manager_user_id );
+                        if ( $user_data ) {
+                            $manager_email = $user_data->user_email;
+                        }
+                    }
+
+                    // Asumimos que los nombres de los metas son análogos a wpcw_business
+                    $row = array(
+                        $institucion_id,
+                        $institucion_title, // Nombre de la Institución
+                        get_post_meta( $institucion_id, '_wpcw_legal_name', true ),
+                        get_post_meta( $institucion_id, '_wpcw_cuit', true ),
+                        get_post_meta( $institucion_id, '_wpcw_contact_person', true ),
+                        get_post_meta( $institucion_id, '_wpcw_email', true ),
+                        get_post_meta( $institucion_id, '_wpcw_whatsapp', true ),
+                        get_post_meta( $institucion_id, '_wpcw_address_main', true ),
+                        $manager_user_id ? $manager_user_id : '',
+                        $manager_email,
+                        // get_post_meta( $institucion_id, '_wpcw_logo_image_id', true ),
+                    );
+                    $data_to_export[] = $row;
+                }
+                wp_reset_postdata();
+            }
+
+            // Generar y Enviar CSV
+            if (headers_sent()) {
+                error_log('WPCW Export Error: Headers already sent. Cannot initiate CSV download for instituciones.');
+                wp_die( __('Error: Las cabeceras ya fueron enviadas, no se puede generar el CSV.', 'wp-cupon-whatsapp') );
+            }
+
+            header( 'Content-Type: text/csv; charset=utf-8' );
+            header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+            header( 'Pragma: no-cache' );
+            header( 'Expires: 0' );
+
+            $output_stream = fopen( 'php://output', 'w' );
+
+            // fprintf($output_stream, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM UTF-8 (opcional)
+
+            foreach ( $data_to_export as $row_data ) {
+                fputcsv( $output_stream, $row_data );
+            }
+            fclose($output_stream);
+
+            exit;
+
+            // break; // No se alcanzará
         case 'clientes':
             // TODO: Implementar lógica de exportación para Clientes
             wp_die(
