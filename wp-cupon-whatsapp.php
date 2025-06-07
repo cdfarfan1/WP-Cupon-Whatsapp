@@ -110,8 +110,12 @@ require_once WPCW_PLUGIN_DIR . 'public/my-account-endpoints.php';
 
 // Admin specific includes
 if ( is_admin() ) {
-    require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
     require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
+    require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php';
+    require_once WPCW_PLUGIN_DIR . 'admin/stats-page.php';
+    require_once WPCW_PLUGIN_DIR . 'admin/business-stats-page.php';
+    require_once WPCW_PLUGIN_DIR . 'admin/institution-stats-page.php';
+    require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
     // Futuras inclusiones específicas de admin podrían ir aquí también.
 }
 
