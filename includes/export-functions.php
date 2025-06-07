@@ -307,13 +307,166 @@ function wpcw_generate_and_download_csv( $export_type ) {
 
             // break; // No se alcanzará
         case 'cupones':
-            // TODO: Implementar lógica de exportación para Cupones
-            wp_die(
-                sprintf( esc_html__( 'La exportación para "%s" está en desarrollo.', 'wp-cupon-whatsapp' ), esc_html__( 'Cupones', 'wp-cupon-whatsapp' ) ),
-                esc_html__( 'Exportación en Progreso', 'wp-cupon-whatsapp' ),
-                array('response' => 200, 'link_text' => esc_html__('Volver a Ajustes', 'wp-cupon-whatsapp'), 'link_url' => admin_url('admin.php?page=wpcw-main-menu'))
+            $data_to_export = array();
+            $filename = 'wpcw-export-cupones-' . date('Y-m-d-H-i-s') . '.csv';
+
+            // Definir Cabeceras del CSV
+            $headers = array(
+                // Estándar WooCommerce
+                __('ID Cupón', 'wp-cupon-whatsapp'),
+                __('Código Cupón', 'wp-cupon-whatsapp'),
+                __('Descripción', 'wp-cupon-whatsapp'),
+                __('Tipo de Descuento', 'wp-cupon-whatsapp'),
+                __('Importe del Cupón', 'wp-cupon-whatsapp'),
+                __('Permitir Envío Gratuito', 'wp-cupon-whatsapp'),
+                __('Fecha de Caducidad', 'wp-cupon-whatsapp'),
+                __('Gasto Mínimo', 'wp-cupon-whatsapp'),
+                __('Gasto Máximo', 'wp-cupon-whatsapp'),
+                __('Uso Individual', 'wp-cupon-whatsapp'),
+                __('Excluir Artículos en Oferta', 'wp-cupon-whatsapp'),
+                __('IDs de Productos', 'wp-cupon-whatsapp'),
+                __('IDs de Productos Excluidos', 'wp-cupon-whatsapp'),
+                __('IDs de Categorías de Productos', 'wp-cupon-whatsapp'),
+                __('IDs de Categorías de Productos Excluidas', 'wp-cupon-whatsapp'),
+                __('Emails Restringidos', 'wp-cupon-whatsapp'),
+                __('Límite de Uso por Cupón', 'wp-cupon-whatsapp'),
+                __('Límite de Uso por Usuario', 'wp-cupon-whatsapp'),
+                // Campos WPCW
+                __('Es de Lealtad (WPCW)', 'wp-cupon-whatsapp'),
+                __('Es Público (WPCW)', 'wp-cupon-whatsapp'),
+                __('ID Comercio Asociado (WPCW)', 'wp-cupon-whatsapp'),
+                __('Nombre Comercio Asociado (WPCW)', 'wp-cupon-whatsapp'),
+                __('ID Categoría Cupón (WPCW)', 'wp-cupon-whatsapp'),
+                __('Nombre Categoría Cupón (WPCW)', 'wp-cupon-whatsapp'),
+                __('URL Imagen Cupón (WPCW)', 'wp-cupon-whatsapp'),
+                __('Comercios Aplicables (Institución - WPCW IDs)', 'wp-cupon-whatsapp'),
+                __('Categorías Aplicables (Institución - WPCW Nombres)', 'wp-cupon-whatsapp'),
             );
-            break;
+            $data_to_export[] = $headers;
+
+            // Obtener Datos de Cupones
+            $args_coupons = array(
+                'post_type'      => 'shop_coupon',
+                'post_status'    => 'any', // Incluir todos los estados (publicado, privado, borrador, etc.)
+                'posts_per_page' => -1,
+                'orderby'        => 'ID',
+                'order'          => 'ASC',
+            );
+            $coupons_query = new WP_Query( $args_coupons ); // Usar WP_Query
+
+            if ( $coupons_query->have_posts() ) {
+                while ( $coupons_query->have_posts() ) {
+                    $coupons_query->the_post();
+                    $coupon_id = get_the_ID();
+
+                    if (!class_exists('WC_Coupon')) { // Asegurarse de que la clase WC_Coupon esté disponible
+                        // Esto es improbable si WooCommerce está activo, pero es una guarda.
+                        error_log('WPCW Export Error: WC_Coupon class not found.');
+                        // Podríamos optar por no incluir datos de WC_Coupon si la clase no existe,
+                        // o detener el proceso. Por ahora, intentaremos continuar con lo que se pueda.
+                        $coupon_obj = null;
+                    } else {
+                        $coupon_obj = new WC_Coupon($coupon_id);
+                    }
+
+
+                    // Campos WPCW
+                    $wpcw_associated_business_id = get_post_meta( $coupon_id, '_wpcw_associated_business_id', true );
+                    $wpcw_business_name = '';
+                    if ( $wpcw_associated_business_id ) {
+                        $business_post = get_post( absint($wpcw_associated_business_id) );
+                        if ( $business_post && $business_post->post_type === 'wpcw_business') {
+                            $wpcw_business_name = $business_post->post_title;
+                        }
+                    }
+
+                    $wpcw_coupon_category_id = get_post_meta( $coupon_id, '_wpcw_coupon_category_id', true );
+                    $wpcw_category_name = '';
+                    if ( $wpcw_coupon_category_id ) {
+                        $term = get_term( absint($wpcw_coupon_category_id), 'wpcw_coupon_category' );
+                        if ( $term && ! is_wp_error( $term ) ) {
+                            $wpcw_category_name = $term->name;
+                        }
+                    }
+
+                    $wpcw_image_id = get_post_meta( $coupon_id, '_wpcw_coupon_image_id', true );
+                    $wpcw_image_url = $wpcw_image_id ? wp_get_attachment_url( absint($wpcw_image_id) ) : '';
+
+                    $wpcw_instit_businesses_ids = get_post_meta( $coupon_id, '_wpcw_instit_coupon_applicable_businesses', true );
+                    $wpcw_instit_businesses_str = is_array($wpcw_instit_businesses_ids) ? implode(', ', array_map('absint', $wpcw_instit_businesses_ids)) : '';
+
+                    $wpcw_instit_categories_ids = get_post_meta( $coupon_id, '_wpcw_instit_coupon_applicable_categories', true );
+                    $wpcw_instit_categories_str = '';
+                    if (is_array($wpcw_instit_categories_ids) && !empty($wpcw_instit_categories_ids)) {
+                        $term_names = array();
+                        foreach($wpcw_instit_categories_ids as $term_id_meta){
+                             $term_id = absint($term_id_meta);
+                            if ($term_id > 0) {
+                                $term = get_term($term_id, 'wpcw_coupon_category');
+                                if($term && !is_wp_error($term)){
+                                    $term_names[] = $term->name;
+                                }
+                            }
+                        }
+                        $wpcw_instit_categories_str = implode(', ', $term_names);
+                    }
+
+                    $row = array(
+                        // Estándar WooCommerce
+                        $coupon_id,
+                        $coupon_obj ? $coupon_obj->get_code() : get_the_title($coupon_id), // Fallback al título si WC_Coupon falla
+                        $coupon_obj ? $coupon_obj->get_description() : get_the_excerpt($coupon_id),
+                        $coupon_obj ? $coupon_obj->get_discount_type() : get_post_meta($coupon_id, 'discount_type', true),
+                        $coupon_obj ? $coupon_obj->get_amount() : get_post_meta($coupon_id, 'coupon_amount', true),
+                        $coupon_obj ? ($coupon_obj->get_free_shipping() ? __('Sí', 'wp-cupon-whatsapp') : __('No', 'wp-cupon-whatsapp')) : (get_post_meta($coupon_id, 'free_shipping', true) === 'yes' ? __('Sí', 'wp-cupon-whatsapp') : __('No', 'wp-cupon-whatsapp')),
+                        $coupon_obj && $coupon_obj->get_date_expires() ? $coupon_obj->get_date_expires()->date('Y-m-d') : get_post_meta($coupon_id, 'date_expires', true),
+                        $coupon_obj ? $coupon_obj->get_minimum_amount() : get_post_meta($coupon_id, 'minimum_amount', true),
+                        $coupon_obj ? $coupon_obj->get_maximum_amount() : get_post_meta($coupon_id, 'maximum_amount', true),
+                        $coupon_obj ? ($coupon_obj->get_individual_use() ? __('Sí', 'wp-cupon-whatsapp') : __('No', 'wp-cupon-whatsapp')) : (get_post_meta($coupon_id, 'individual_use', true) === 'yes' ? __('Sí', 'wp-cupon-whatsapp') : __('No', 'wp-cupon-whatsapp')),
+                        $coupon_obj ? ($coupon_obj->get_exclude_sale_items() ? __('Sí', 'wp-cupon-whatsapp') : __('No', 'wp-cupon-whatsapp')) : (get_post_meta($coupon_id, 'exclude_sale_items', true) === 'yes' ? __('Sí', 'wp-cupon-whatsapp') : __('No', 'wp-cupon-whatsapp')),
+                        $coupon_obj ? implode(', ', $coupon_obj->get_product_ids()) : implode(', ', (array) get_post_meta($coupon_id, 'product_ids', true)),
+                        $coupon_obj ? implode(', ', $coupon_obj->get_excluded_product_ids()) : implode(', ', (array) get_post_meta($coupon_id, 'exclude_product_ids', true)),
+                        $coupon_obj ? implode(', ', $coupon_obj->get_product_categories()) : implode(', ', (array) get_post_meta($coupon_id, 'product_categories', true)),
+                        $coupon_obj ? implode(', ', $coupon_obj->get_excluded_product_categories()) : implode(', ', (array) get_post_meta($coupon_id, 'exclude_product_categories', true)),
+                        $coupon_obj ? implode(', ', $coupon_obj->get_email_restrictions()) : implode(', ', (array) get_post_meta($coupon_id, 'customer_email', true)),
+                        $coupon_obj ? $coupon_obj->get_usage_limit() : get_post_meta($coupon_id, 'usage_limit', true),
+                        $coupon_obj ? $coupon_obj->get_usage_limit_per_user() : get_post_meta($coupon_id, 'usage_limit_per_user', true),
+                        // Campos WPCW
+                        get_post_meta( $coupon_id, '_wpcw_is_loyalty_coupon', true ) === 'yes' ? __('Sí', 'wp-cupon-whatsapp') : __('No', 'wp-cupon-whatsapp'),
+                        get_post_meta( $coupon_id, '_wpcw_is_public_coupon', true ) === 'yes' ? __('Sí', 'wp-cupon-whatsapp') : __('No', 'wp-cupon-whatsapp'),
+                        $wpcw_associated_business_id ? $wpcw_associated_business_id : '',
+                        $wpcw_business_name,
+                        $wpcw_coupon_category_id ? $wpcw_coupon_category_id : '',
+                        $wpcw_category_name,
+                        $wpcw_image_url,
+                        $wpcw_instit_businesses_str,
+                        $wpcw_instit_categories_str,
+                    );
+                    $data_to_export[] = $row;
+                }
+                wp_reset_postdata();
+            }
+
+            // Generar y Enviar CSV
+            if (headers_sent()) {
+                error_log('WPCW Export Error: Headers already sent before CSV export for cupones.');
+                wp_die( __('Error: Las cabeceras ya fueron enviadas, no se puede generar el CSV.', 'wp-cupon-whatsapp') );
+            }
+
+            header( 'Content-Type: text/csv; charset=utf-8' );
+            header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+            header( 'Pragma: no-cache' );
+            header( 'Expires: 0' );
+
+            $output_stream = fopen( 'php://output', 'w' );
+            foreach ( $data_to_export as $row_data ) {
+                fputcsv( $output_stream, $row_data );
+            }
+            fclose($output_stream); // fclose es bueno aquí
+
+            exit;
+
+            // break; // No se alcanzará
         case 'canjes':
             // TODO: Implementar lógica de exportación para Canjes
             wp_die(
