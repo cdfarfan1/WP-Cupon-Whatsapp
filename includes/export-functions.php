@@ -468,13 +468,109 @@ function wpcw_generate_and_download_csv( $export_type ) {
 
             // break; // No se alcanzará
         case 'canjes':
-            // TODO: Implementar lógica de exportación para Canjes
-            wp_die(
-                sprintf( esc_html__( 'La exportación para "%s" está en desarrollo.', 'wp-cupon-whatsapp' ), esc_html__( 'Canjes', 'wp-cupon-whatsapp' ) ),
-                esc_html__( 'Exportación en Progreso', 'wp-cupon-whatsapp' ),
-                array('response' => 200, 'link_text' => esc_html__('Volver a Ajustes', 'wp-cupon-whatsapp'), 'link_url' => admin_url('admin.php?page=wpcw-main-menu'))
+            $data_to_export = array();
+            $filename = 'wpcw-export-canjes-' . date('Y-m-d-H-i-s') . '.csv';
+
+            // Definir Cabeceras del CSV
+            $headers = array(
+                __('ID Canje (DB)', 'wp-cupon-whatsapp'),
+                __('Número de Canje', 'wp-cupon-whatsapp'),
+                __('ID Cliente', 'wp-cupon-whatsapp'),
+                __('Email Cliente', 'wp-cupon-whatsapp'),
+                __('ID Cupón Original', 'wp-cupon-whatsapp'),
+                __('Código Cupón Original', 'wp-cupon-whatsapp'),
+                __('ID Comercio', 'wp-cupon-whatsapp'),
+                __('Nombre Comercio', 'wp-cupon-whatsapp'),
+                __('Fecha Solicitud Canje', 'wp-cupon-whatsapp'),
+                __('Fecha Confirmación Canje', 'wp-cupon-whatsapp'),
+                __('Estado Canje', 'wp-cupon-whatsapp'),
+                __('Token Confirmación', 'wp-cupon-whatsapp'),
+                __('Código Cupón WC Generado', 'wp-cupon-whatsapp'),
+                __('ID Pedido WC', 'wp-cupon-whatsapp'),
+                __('Origen del Canje', 'wp-cupon-whatsapp'),
+                __('Notas Internas', 'wp-cupon-whatsapp'),
             );
-            break;
+            $data_to_export[] = $headers;
+
+            // Obtener Datos de Canjes
+            global $wpdb;
+            $tabla_canjes = WPCW_CANJES_TABLE_NAME;
+            $canjes = $wpdb->get_results( "SELECT * FROM {$tabla_canjes} ORDER BY fecha_solicitud_canje DESC" );
+
+            if ( $canjes ) {
+                foreach ( $canjes as $canje ) {
+                    $cliente_email = '';
+                    if ( $canje->cliente_id ) {
+                        $user_data = get_userdata( $canje->cliente_id );
+                        if ( $user_data ) {
+                            $cliente_email = $user_data->user_email;
+                        }
+                    }
+
+                    $coupon_code_original = '';
+                    if ( $canje->cupon_id ) {
+                        $coupon_post = get_post( $canje->cupon_id );
+                        if ( $coupon_post ) {
+                            $coupon_code_original = $coupon_post->post_title;
+                        }
+                    }
+
+                    $comercio_name = '';
+                    if ( $canje->comercio_id ) {
+                        $comercio_post = get_post( $canje->comercio_id );
+                        if ( $comercio_post && $comercio_post->post_type === 'wpcw_business' ) {
+                            $comercio_name = $comercio_post->post_title;
+                        } elseif ($comercio_post) {
+                            $comercio_name = __('ID de comercio no es un CPT wpcw_business', 'wp-cupon-whatsapp');
+                        }
+                    }
+
+                    $estado_legible = function_exists('wpcw_get_displayable_canje_status') ?
+                                        wpcw_get_displayable_canje_status($canje->estado_canje) :
+                                        $canje->estado_canje;
+
+                    $row = array(
+                        $canje->id,
+                        $canje->numero_canje,
+                        $canje->cliente_id,
+                        $cliente_email,
+                        $canje->cupon_id,
+                        $coupon_code_original,
+                        $canje->comercio_id ? $canje->comercio_id : '',
+                        $comercio_name,
+                        $canje->fecha_solicitud_canje,
+                        $canje->fecha_confirmacion_canje ? $canje->fecha_confirmacion_canje : '',
+                        $estado_legible,
+                        $canje->token_confirmacion,
+                        $canje->codigo_cupon_wc ? $canje->codigo_cupon_wc : '',
+                        $canje->id_pedido_wc ? $canje->id_pedido_wc : '',
+                        $canje->origen_canje ? $canje->origen_canje : '',
+                        $canje->notas_internas ? $canje->notas_internas : '',
+                    );
+                    $data_to_export[] = $row;
+                }
+            }
+
+            // Generar y Enviar CSV
+            if (headers_sent()) {
+                error_log('WPCW Export Error: Headers already sent before CSV export for canjes.');
+                wp_die( __('Error: Las cabeceras ya fueron enviadas, no se puede generar el CSV.', 'wp-cupon-whatsapp') );
+            }
+
+            header( 'Content-Type: text/csv; charset=utf-8' );
+            header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+            header( 'Pragma: no-cache' );
+            header( 'Expires: 0' );
+
+            $output_stream = fopen( 'php://output', 'w' );
+            foreach ( $data_to_export as $row_data ) {
+                fputcsv( $output_stream, $row_data );
+            }
+            fclose($output_stream); // fclose es bueno aquí
+
+            exit;
+
+            // break; // No se alcanzará
         default:
             wp_die(
                 esc_html__( 'Tipo de exportación no válido o no especificado.', 'wp-cupon-whatsapp' ),
