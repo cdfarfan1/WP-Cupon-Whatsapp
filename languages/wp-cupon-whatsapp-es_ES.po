@@ -1,0 +1,1341 @@
+# Spanish translation for WP Canje Cupon Whatsapp
+# Copyright (C) 2024 Pragmatic Solutions
+# This file is distributed under the same license as the WP Canje Cupon Whatsapp package.
+# WPCW Dev Team <info@pragmaticsolutions.com.ar>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Canje Cupon Whatsapp 1.0.0\n"
+"Report-Msgid-Bugs-To: info@pragmaticsolutions.com.ar\n"
+"POT-Creation-Date: 2024-07-27 10:00:00+00:00\n"
+"PO-Revision-Date: 2024-07-27 10:00:00+00:00\n"
+"Last-Translator: WPCW Dev Team <info@pragmaticsolutions.com.ar>\n"
+"Language-Team: Spanish <info@pragmaticsolutions.com.ar>\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: WPCW Manual Po Editor 1.0\n"
+"X-Domain: wp-cupon-whatsapp\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/post-types.php:LINE
+msgid "Comercios"
+msgstr "Comercios"
+
+#: includes/post-types.php:LINE
+msgid "Comercio"
+msgstr "Comercio"
+
+#: includes/post-types.php:LINE
+msgid "Añadir Nuevo Comercio"
+msgstr "Añadir Nuevo Comercio"
+
+#: includes/post-types.php:LINE
+msgid "Añadir Nuevo"
+msgstr "Añadir Nuevo"
+
+#: includes/post-types.php:LINE
+msgid "Nuevo Comercio"
+msgstr "Nuevo Comercio"
+
+#: includes/post-types.php:LINE
+msgid "Editar Comercio"
+msgstr "Editar Comercio"
+
+#: includes/post-types.php:LINE
+msgid "Ver Comercio"
+msgstr "Ver Comercio"
+
+#: includes/post-types.php:LINE
+msgid "Todos los Comercios"
+msgstr "Todos los Comercios"
+
+#: includes/post-types.php:LINE
+msgid "Buscar Comercios"
+msgstr "Buscar Comercios"
+
+#: includes/post-types.php:LINE
+msgid "No se encontraron Comercios."
+msgstr "No se encontraron Comercios."
+
+#: includes/post-types.php:LINE
+msgid "No se encontraron Comercios en la papelera."
+msgstr "No se encontraron Comercios en la papelera."
+
+#: includes/post-types.php:LINE
+msgid "Instituciones"
+msgstr "Instituciones"
+
+#: includes/post-types.php:LINE
+msgid "Institución"
+msgstr "Institución"
+
+#: includes/post-types.php:LINE
+msgid "Añadir Nueva Institución"
+msgstr "Añadir Nueva Institución"
+
+#: includes/post-types.php:LINE
+msgid "Nueva Institución"
+msgstr "Nueva Institución"
+
+#: includes/post-types.php:LINE
+msgid "Editar Institución"
+msgstr "Editar Institución"
+
+#: includes/post-types.php:LINE
+msgid "Ver Institución"
+msgstr "Ver Institución"
+
+#: includes/post-types.php:LINE
+msgid "Todas las Instituciones"
+msgstr "Todas las Instituciones"
+
+#: includes/post-types.php:LINE
+msgid "Buscar Instituciones"
+msgstr "Buscar Instituciones"
+
+#: includes/post-types.php:LINE
+msgid "No se encontraron Instituciones."
+msgstr "No se encontraron Instituciones."
+
+#: includes/post-types.php:LINE
+msgid "No se encontraron Instituciones en la papelera."
+msgstr "No se encontraron Instituciones en la papelera."
+
+#: includes/post-types.php:LINE
+msgid "Solicitudes de Adhesión"
+msgstr "Solicitudes de Adhesión"
+
+#: includes/post-types.php:LINE
+msgid "Solicitud de Adhesión"
+msgstr "Solicitud de Adhesión"
+
+#: includes/post-types.php:LINE
+msgid "Solicitudes"
+msgstr "Solicitudes"
+
+#: includes/post-types.php:LINE
+msgid "Solicitud"
+msgstr "Solicitud"
+
+#: includes/post-types.php:LINE
+msgid "Añadir Nueva Solicitud"
+msgstr "Añadir Nueva Solicitud"
+
+#: includes/post-types.php:LINE
+msgid "Nueva Solicitud"
+msgstr "Nueva Solicitud"
+
+#: includes/post-types.php:LINE
+msgid "Editar Solicitud"
+msgstr "Editar Solicitud"
+
+#: includes/post-types.php:LINE
+msgid "Ver Solicitud"
+msgstr "Ver Solicitud"
+
+#: includes/post-types.php:LINE
+msgid "Todas las Solicitudes"
+msgstr "Todas las Solicitudes"
+
+#: includes/post-types.php:LINE
+msgid "Buscar Solicitudes"
+msgstr "Buscar Solicitudes"
+
+#: includes/post-types.php:LINE
+msgid "No se encontraron Solicitudes."
+msgstr "No se encontraron Solicitudes."
+
+#: includes/post-types.php:LINE
+msgid "No se encontraron Solicitudes en la papelera."
+msgstr "No se encontraron Solicitudes en la papelera."
+
+#: includes/taxonomies.php:LINE
+msgid "Coupon Categories"
+msgstr "Categorías de Cupón"
+
+#: includes/taxonomies.php:LINE
+msgid "Coupon Category"
+msgstr "Categoría de Cupón"
+
+#: includes/taxonomies.php:LINE
+msgid "Search Coupon Categories"
+msgstr "Buscar Categorías de Cupón"
+
+#: includes/taxonomies.php:LINE
+msgid "All Coupon Categories"
+msgstr "Todas las Categorías de Cupón"
+
+#: includes/taxonomies.php:LINE
+msgid "Parent Coupon Category"
+msgstr "Categoría de Cupón Padre"
+
+#: includes/taxonomies.php:LINE
+msgid "Parent Coupon Category:"
+msgstr "Categoría de Cupón Padre:"
+
+#: includes/taxonomies.php:LINE
+msgid "Edit Coupon Category"
+msgstr "Editar Categoría de Cupón"
+
+#: includes/taxonomies.php:LINE
+msgid "Update Coupon Category"
+msgstr "Actualizar Categoría de Cupón"
+
+#: includes/taxonomies.php:LINE
+msgid "Add New Coupon Category"
+msgstr "Añadir Nueva Categoría de Cupón"
+
+#: includes/taxonomies.php:LINE
+msgid "New Coupon Category Name"
+msgstr "Nombre de Nueva Categoría de Cupón"
+
+#: includes/roles.php:LINE
+msgid "Business Owner"
+msgstr "Dueño de Comercio"
+
+#: includes/roles.php:LINE
+msgid "Institution Manager"
+msgstr "Gestor de Institución"
+
+#: includes/customer-fields.php:LINE
+msgid "DNI"
+msgstr "DNI"
+
+#: includes/customer-fields.php:LINE
+msgid "Fecha de Nacimiento"
+msgstr "Fecha de Nacimiento"
+
+#: includes/customer-fields.php:LINE
+msgid "Número de WhatsApp"
+msgstr "Número de WhatsApp"
+
+#: includes/customer-fields.php:LINE
+msgid "Institución (Opcional)"
+msgstr "Institución (Opcional)"
+
+#: includes/customer-fields.php:LINE
+msgid "Selecciona tu institución"
+msgstr "Selecciona tu institución"
+
+#: includes/customer-fields.php:LINE
+msgid "Categorías de Cupones Favoritas (Opcional)"
+msgstr "Categorías de Cupones Favoritas (Opcional)"
+
+#: includes/customer-fields.php:LINE
+msgid "Por favor, introduce tu DNI."
+msgstr "Por favor, introduce tu DNI."
+
+#: includes/customer-fields.php:LINE
+msgid "Por favor, introduce tu fecha de nacimiento."
+msgstr "Por favor, introduce tu fecha de nacimiento."
+
+#: includes/customer-fields.php:LINE
+msgid "Por favor, introduce una fecha de nacimiento válida (AAAA-MM-DD)."
+msgstr "Por favor, introduce una fecha de nacimiento válida (AAAA-MM-DD)."
+
+#: includes/customer-fields.php:LINE
+msgid "Por favor, introduce una fecha de nacimiento real."
+msgstr "Por favor, introduce una fecha de nacimiento real."
+
+#: includes/customer-fields.php:LINE
+msgid "Por favor, introduce tu número de WhatsApp."
+msgstr "Por favor, introduce tu número de WhatsApp."
+
+#: includes/customer-fields.php:LINE
+msgid "Por favor, introduce un número de WhatsApp válido."
+msgstr "Por favor, introduce un número de WhatsApp válido."
+
+#: includes/customer-fields.php:LINE
+msgid "El formato del DNI no es válido."
+msgstr "El formato del DNI no es válido."
+
+#: includes/customer-fields.php:LINE
+msgid "El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta."
+msgstr "El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta."
+
+#: includes/customer-fields.php:LINE
+msgid "Información Adicional"
+msgstr "Información Adicional"
+
+#: public/shortcodes.php:LINE
+msgid "Tipo de Solicitante"
+msgstr "Tipo de Solicitante"
+
+#: public/shortcodes.php:LINE
+msgid "Nombre de Fantasía"
+msgstr "Nombre de Fantasía"
+
+#: public/shortcodes.php:LINE
+msgid "Nombre Legal"
+msgstr "Nombre Legal"
+
+#: public/shortcodes.php:LINE
+msgid "CUIT"
+msgstr "CUIT"
+
+#: public/shortcodes.php:LINE
+msgid "Persona de Contacto"
+msgstr "Persona de Contacto"
+
+#: public/shortcodes.php:LINE
+msgid "Email de Contacto"
+msgstr "Email de Contacto"
+
+#: public/shortcodes.php:LINE
+msgid "Dirección Principal"
+msgstr "Dirección Principal"
+
+#: public/shortcodes.php:LINE
+msgid "Descripción del Negocio/Institución"
+msgstr "Descripción del Negocio/Institución"
+
+#: public/shortcodes.php:LINE
+msgid "Enviar Solicitud"
+msgstr "Enviar Solicitud"
+
+#: public/shortcodes.php:LINE
+msgid "Error de seguridad. Inténtalo de nuevo."
+msgstr "Error de seguridad. Inténtalo de nuevo."
+
+#: public/shortcodes.php:LINE
+msgid "La verificación reCAPTCHA ha fallado. Por favor, inténtalo de nuevo."
+msgstr "La verificación reCAPTCHA ha fallado. Por favor, inténtalo de nuevo."
+
+#: public/shortcodes.php:LINE
+msgid "Por favor, selecciona el tipo de solicitante."
+msgstr "Por favor, selecciona el tipo de solicitante."
+
+#: public/shortcodes.php:LINE
+msgid "Por favor, introduce el nombre de fantasía."
+msgstr "Por favor, introduce el nombre de fantasía."
+
+#: public/shortcodes.php:LINE
+msgid "Por favor, introduce el nombre legal."
+msgstr "Por favor, introduce el nombre legal."
+
+#: public/shortcodes.php:LINE
+msgid "Por favor, introduce el CUIT."
+msgstr "Por favor, introduce el CUIT."
+
+#: public/shortcodes.php:LINE
+msgid "Por favor, introduce un CUIT válido (solo números, 10 u 11 dígitos)."
+msgstr "Por favor, introduce un CUIT válido (solo números, 10 u 11 dígitos)."
+
+#: public/shortcodes.php:LINE
+msgid "Por favor, introduce el nombre de la persona de contacto."
+msgstr "Por favor, introduce el nombre de la persona de contacto."
+
+#: public/shortcodes.php:LINE
+msgid "Por favor, introduce un email de contacto."
+msgstr "Por favor, introduce un email de contacto."
+
+#: public/shortcodes.php:LINE
+msgid "Por favor, introduce un email de contacto válido."
+msgstr "Por favor, introduce un email de contacto válido."
+
+#: public/shortcodes.php:LINE
+msgid "Su solicitud ha sido enviada con éxito. Nos pondremos en contacto a la brevedad."
+msgstr "Su solicitud ha sido enviada con éxito. Nos pondremos en contacto a la brevedad."
+
+#: public/shortcodes.php:LINE
+msgid "Hubo un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde."
+msgstr "Hubo un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde."
+
+#: public/shortcodes.php:LINE
+msgid "Por favor, <a href=\"%s\">inicia sesión</a> para ver tus cupones disponibles."
+msgstr "Por favor, <a href=\"%s\">inicia sesión</a> para ver tus cupones disponibles."
+
+#: public/shortcodes.php:LINE
+msgid "Mis Cupones de Lealtad Disponibles"
+msgstr "Mis Cupones de Lealtad Disponibles"
+
+#: public/shortcodes.php:LINE
+msgid "No tienes cupones de lealtad disponibles en este momento."
+msgstr "No tienes cupones de lealtad disponibles en este momento."
+
+#: public/shortcodes.php:LINE
+msgid "Error: Plantilla de tarjeta de cupón no encontrada en %s"
+msgstr "Error: Plantilla de tarjeta de cupón no encontrada en %s"
+
+#: public/shortcodes.php:LINE
+msgid "Cupones Públicos Disponibles"
+msgstr "Cupones Públicos Disponibles"
+
+#: public/shortcodes.php:LINE
+msgid "Aquí se mostrarán los cupones disponibles para todos los visitantes."
+msgstr "Aquí se mostrarán los cupones disponibles para todos los visitantes."
+
+#: public/shortcodes.php:LINE
+msgid "&laquo; Anterior"
+msgstr "&laquo; Anterior"
+
+#: public/shortcodes.php:LINE
+msgid "Siguiente &raquo;"
+msgstr "Siguiente &raquo;"
+
+#: public/shortcodes.php:LINE
+msgid "No hay cupones públicos disponibles en este momento."
+msgstr "No hay cupones públicos disponibles en este momento."
+
+#: public/templates/coupon-card.php:LINE
+msgid "Título del Cupón no disponible"
+msgstr "Título del Cupón no disponible"
+
+#: public/templates/coupon-card.php:LINE
+msgid "Descripción no disponible."
+msgstr "Descripción no disponible."
+
+#: public/templates/coupon-card.php:LINE
+msgid "Imagen no disponible"
+msgstr "Imagen no disponible"
+
+#: public/templates/coupon-card.php:LINE
+msgid "Código:"
+msgstr "Código:"
+
+#: public/templates/coupon-card.php:LINE
+msgid "Canjear Cupón"
+msgstr "Canjear Cupón"
+
+#: includes/ajax-handlers.php:LINE
+msgid "Debes iniciar sesión para canjear un cupón."
+msgstr "Debes iniciar sesión para canjear un cupón."
+
+#: includes/ajax-handlers.php:LINE
+msgid "ID de cupón no proporcionado."
+msgstr "ID de cupón no proporcionado."
+
+#: includes/ajax-handlers.php:LINE
+msgid "El cupón seleccionado no es válido o no está disponible."
+msgstr "El cupón seleccionado no es válido o no está disponible."
+
+#: includes/ajax-handlers.php:LINE
+msgid "No tienes un número de WhatsApp configurado en tu perfil. Por favor, actualízalo para poder canjear cupones."
+msgstr "No tienes un número de WhatsApp configurado en tu perfil. Por favor, actualízalo para poder canjear cupones."
+
+#: includes/ajax-handlers.php:LINE
+msgid "Hubo un problema al registrar tu solicitud de canje. Inténtalo de nuevo."
+msgstr "Hubo un problema al registrar tu solicitud de canje. Inténtalo de nuevo."
+
+#: includes/ajax-handlers.php:LINE
+msgid "Hola, quiero canjear mi cupón \"%1$s\" (Solicitud Nro: %2$s). Muestra este código al negocio para confirmar: %3$s"
+msgstr "Hola, quiero canjear mi cupón \"%1$s\" (Solicitud Nro: %2$s). Muestra este código al negocio para confirmar: %3$s"
+
+#: includes/ajax-handlers.php:LINE
+msgid "¡Solicitud de canje iniciada! Serás redirigido a WhatsApp."
+msgstr "¡Solicitud de canje iniciada! Serás redirigido a WhatsApp."
+
+#: includes/ajax-handlers.php:LINE
+msgid "No se recibió ID de cupón válido o el ID es incorrecto."
+msgstr "No se recibió ID de cupón válido o el ID es incorrecto."
+
+#: includes/rest-api.php:LINE
+msgid "El token de confirmación único para el canje."
+msgstr "El token de confirmación único para el canje."
+
+#: includes/rest-api.php:LINE
+msgid "El ID del registro de canje en la base de datos."
+msgstr "El ID del registro de canje en la base de datos."
+
+#: includes/rest-api.php:LINE
+msgid "Callback no implementado aún."
+msgstr "Callback no implementado aún."
+
+#: includes/rest-api.php:LINE
+msgid "Error de Confirmación"
+msgstr "Error de Confirmación"
+
+#: includes/rest-api.php:LINE
+msgid "Confirmación de Canje Fallida"
+msgstr "Confirmación de Canje Fallida"
+
+#: includes/rest-api.php:LINE
+msgid "El enlace de confirmación no es válido o el canje no existe. Por favor, verifica el enlace o contacta al soporte."
+msgstr "El enlace de confirmación no es válido o el canje no existe. Por favor, verifica el enlace o contacta al soporte."
+
+#: includes/rest-api.php:LINE
+msgid "Canje Ya Procesado o Inválido"
+msgstr "Canje Ya Procesado o Inválido"
+
+#: includes/rest-api.php:LINE
+msgid "Este canje ya ha sido confirmado anteriormente."
+msgstr "Este canje ya ha sido confirmado anteriormente."
+
+#: includes/rest-api.php:LINE
+msgid "Este canje ya ha sido utilizado en un pedido."
+msgstr "Este canje ya ha sido utilizado en un pedido."
+
+#: includes/rest-api.php:LINE
+msgid "Este canje no puede ser procesado en este momento (estado: %s)."
+msgstr "Este canje no puede ser procesado en este momento (estado: %s)."
+
+#: includes/rest-api.php:LINE
+msgid "Error Interno del Servidor"
+msgstr "Error Interno del Servidor"
+
+#: includes/rest-api.php:LINE
+msgid "No se pudo encontrar el cupón original asociado a este canje."
+msgstr "No se pudo encontrar el cupón original asociado a este canje."
+
+#: includes/rest-api.php:LINE
+msgid "Cupón de canje para \"%s\". Solicitud Nro: %s."
+msgstr "Cupón de canje para \"%s\". Solicitud Nro: %s."
+
+#: includes/rest-api.php:LINE
+msgid "Error al Generar Cupón"
+msgstr "Error al Generar Cupón"
+
+#: includes/rest-api.php:LINE
+msgid "Hubo un problema al generar el código de cupón final."
+msgstr "Hubo un problema al generar el código de cupón final."
+
+#: includes/rest-api.php:LINE
+msgid "Sí"
+msgstr "Sí"
+
+#: includes/rest-api.php:LINE
+msgid "No"
+msgstr "No"
+
+#: includes/rest-api.php:LINE
+msgid "Error al Actualizar Canje"
+msgstr "Error al Actualizar Canje"
+
+#: includes/rest-api.php:LINE
+msgid "Hubo un problema al finalizar el proceso de canje."
+msgstr "Hubo un problema al finalizar el proceso de canje."
+
+#: includes/rest-api.php:LINE
+msgid "¡Canje Confirmado Exitosamente!"
+msgstr "¡Canje Confirmado Exitosamente!"
+
+#: includes/rest-api.php:LINE
+msgid "El canje para \"%s\" (Solicitud Nro: %s) ha sido confirmado."
+msgstr "El canje para \"%s\" (Solicitud Nro: %s) ha sido confirmado."
+
+#: includes/rest-api.php:LINE
+msgid "Código de Cupón WooCommerce Generado:"
+msgstr "Código de Cupón WooCommerce Generado:"
+
+#: includes/rest-api.php:LINE
+msgid "Instrucciones:"
+msgstr "Instrucciones:"
+
+#: includes/rest-api.php:LINE
+msgid "Proporciona este código de cupón al cliente."
+msgstr "Proporciona este código de cupón al cliente."
+
+#: includes/rest-api.php:LINE
+msgid "¡Hola! Tu canje para el cupón \"%1$s\" ha sido confirmado. Aquí está tu código de cupón para usar en tu próxima compra: %2$s ¡Gracias!"
+msgstr "¡Hola! Tu canje para el cupón \"%1$s\" ha sido confirmado. Aquí está tu código de cupón para usar en tu próxima compra: %2$s ¡Gracias!"
+
+#: includes/rest-api.php:LINE
+msgid "Puedes enviárselo directamente por WhatsApp haciendo clic aquí: <a href=\"%s\" target=\"_blank\">Enviar Código por WhatsApp al Cliente</a> (Número: %s)"
+msgstr "Puedes enviárselo directamente por WhatsApp haciendo clic aquí: <a href=\"%s\" target=\"_blank\">Enviar Código por WhatsApp al Cliente</a> (Número: %s)"
+
+#: includes/rest-api.php:LINE
+msgid "El cliente no tiene un número de WhatsApp registrado en su perfil. Deberás contactarlo por otros medios si es necesario."
+msgstr "El cliente no tiene un número de WhatsApp registrado en su perfil. Deberás contactarlo por otros medios si es necesario."
+
+#: includes/rest-api.php:LINE
+msgid "El cliente usará este código en el carrito o checkout de WooCommerce."
+msgstr "El cliente usará este código en el carrito o checkout de WooCommerce."
+
+#: includes/redemption-logic.php:LINE
+msgid "Cupón de canje WPCW \"%1$s\" (Nro. Solicitud Canje: %2$s) utilizado en este pedido."
+msgstr "Cupón de canje WPCW \"%1$s\" (Nro. Solicitud Canje: %2$s) utilizado en este pedido."
+
+#: includes/stats-functions.php:LINE
+msgid "Cupón Desconocido"
+msgstr "Cupón Desconocido"
+
+#: includes/stats-functions.php:LINE
+msgid "Comercio Desconocido"
+msgstr "Comercio Desconocido"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Mis Canjes"
+msgstr "Mis Canjes"
+
+#: public/my-account-endpoints.php:LINE
+msgid "No se pudo identificar al usuario."
+msgstr "No se pudo identificar al usuario."
+
+#: public/my-account-endpoints.php:LINE
+msgid "Historial de Mis Canjes"
+msgstr "Historial de Mis Canjes"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Aún no has realizado ningún canje."
+msgstr "Aún no has realizado ningún canje."
+
+#: public/my-account-endpoints.php:LINE
+msgid "Nro. Canje"
+msgstr "Nro. Canje"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Fecha Solicitud"
+msgstr "Fecha Solicitud"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Estado"
+msgstr "Estado"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Cupón"
+msgstr "Cupón"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Comercio"
+msgstr "Comercio"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Código WC"
+msgstr "Código WC"
+
+#: public/my-account-endpoints.php:LINE
+msgid "N/A"
+msgstr "N/A"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Comercio no especificado o inválido"
+msgstr "Comercio no especificado o inválido"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Esperando confirmación del negocio"
+msgstr "Esperando confirmación del negocio"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Pendiente Confirmación Negocio"
+msgstr "Pendiente Confirmación Negocio"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Confirmado (Código WC generado)"
+msgstr "Confirmado (Código WC generado)"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Utilizado en Pedido"
+msgstr "Utilizado en Pedido"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Cancelado por Usuario"
+msgstr "Cancelado por Usuario"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Cancelado por Administrador"
+msgstr "Cancelado por Administrador"
+
+#: public/my-account-endpoints.php:LINE
+msgid "Vencido"
+msgstr "Vencido"
+
+#: admin/meta-boxes.php:LINE
+msgid "Detalles Adicionales WPCW"
+msgstr "Detalles Adicionales WPCW"
+
+#: admin/meta-boxes.php:LINE
+msgid "Campos personalizados para el cupón WPCW aparecerán aquí."
+msgstr "Campos personalizados para el cupón WPCW aparecerán aquí."
+
+#: admin/meta-boxes.php:LINE
+msgid "Cupón de Lealtad"
+msgstr "Cupón de Lealtad"
+
+#: admin/meta-boxes.php:LINE
+msgid "Marcar si este cupón es parte del programa de lealtad."
+msgstr "Marcar si este cupón es parte del programa de lealtad."
+
+#: admin/meta-boxes.php:LINE
+msgid "Cupón Público"
+msgstr "Cupón Público"
+
+#: admin/meta-boxes.php:LINE
+msgid "Marcar si este cupón es visible para todos los usuarios (en la página de cupones públicos)."
+msgstr "Marcar si este cupón es visible para todos los usuarios (en la página de cupones públicos)."
+
+#: admin/meta-boxes.php:LINE
+msgid "Categoría del Cupón"
+msgstr "Categoría del Cupón"
+
+#: admin/meta-boxes.php:LINE
+msgid "Seleccionar categoría..."
+msgstr "Seleccionar categoría..."
+
+#: admin/meta-boxes.php:LINE
+msgid "No hay categorías de cupón definidas. Por favor, créalas primero."
+msgstr "No hay categorías de cupón definidas. Por favor, créalas primero."
+
+#: admin/meta-boxes.php:LINE
+msgid "Comercio Asociado (Opcional)"
+msgstr "Comercio Asociado (Opcional)"
+
+#: admin/meta-boxes.php:LINE
+msgid "Ninguno (cupón genérico/institucional)"
+msgstr "Ninguno (cupón genérico/institucional)"
+
+#: admin/meta-boxes.php:LINE
+msgid "Asociar este cupón a un comercio específico. Requerido si NO es un cupón de institución."
+msgstr "Asociar este cupón a un comercio específico. Requerido si NO es un cupón de institución."
+
+#: admin/meta-boxes.php:LINE
+msgid "No hay comercios registrados. Los cupones de comercio no pueden ser creados/asignados."
+msgstr "No hay comercios registrados. Los cupones de comercio no pueden ser creados/asignados."
+
+#: admin/meta-boxes.php:LINE
+msgid "Imagen del Cupón"
+msgstr "Imagen del Cupón"
+
+#: admin/meta-boxes.php:LINE
+msgid "Seleccionar/Subir Imagen"
+msgstr "Seleccionar/Subir Imagen"
+
+#: admin/meta-boxes.php:LINE
+msgid "Quitar Imagen"
+msgstr "Quitar Imagen"
+
+#: admin/meta-boxes.php:LINE
+msgid "Selecciona una imagen para el cupón."
+msgstr "Selecciona una imagen para el cupón."
+
+#: admin/meta-boxes.php:LINE
+msgid "Seleccionar o Subir Imagen para Cupón"
+msgstr "Seleccionar o Subir Imagen para Cupón"
+
+#: admin/meta-boxes.php:LINE
+msgid "Usar esta imagen"
+msgstr "Usar esta imagen"
+
+#: admin/meta-boxes.php:LINE
+msgid "Previsualización de Imagen del Cupón"
+msgstr "Previsualización de Imagen del Cupón"
+
+#: admin/admin-menu.php:LINE
+msgid "WP Canje Cupon"
+msgstr "WP Canje Cupon"
+
+#: admin/admin-menu.php:LINE
+msgid "Estadísticas Generales"
+msgstr "Estadísticas Generales"
+
+#: admin/admin-menu.php:LINE
+msgid "Estadísticas"
+msgstr "Estadísticas"
+
+#: admin/admin-menu.php:LINE
+msgid "Estadísticas de Mi Comercio"
+msgstr "Estadísticas de Mi Comercio"
+
+#: admin/admin-menu.php:LINE
+msgid "Estadísticas de Mi Institución"
+msgstr "Estadísticas de Mi Institución"
+
+#: admin/admin-menu.php:LINE
+msgid "Error"
+msgstr "Error"
+
+#: admin/admin-menu.php:LINE
+msgid "La función para renderizar la página de estadísticas generales no está disponible."
+msgstr "La función para renderizar la página de estadísticas generales no está disponible."
+
+#: admin/admin-menu.php:LINE
+msgid "La función para renderizar la página de estadísticas del comercio no está disponible."
+msgstr "La función para renderizar la página de estadísticas del comercio no está disponible."
+
+#: admin/admin-menu.php:LINE
+msgid "La función para renderizar la página de estadísticas de la institución no está disponible."
+msgstr "La función para renderizar la página de estadísticas de la institución no está disponible."
+
+#: admin/stats-page.php:LINE
+msgid "Error: Las funciones de estadísticas necesarias no están disponibles. Asegúrate de que el archivo includes/stats-functions.php esté cargado correctamente."
+msgstr "Error: Las funciones de estadísticas necesarias no están disponibles. Asegúrate de que el archivo includes/stats-functions.php esté cargado correctamente."
+
+#: admin/stats-page.php:LINE
+msgid "Estadísticas Generales - WP Canje Cupon"
+msgstr "Estadísticas Generales - WP Canje Cupon"
+
+#: admin/stats-page.php:LINE
+msgid "Resumen de Canjes"
+msgstr "Resumen de Canjes"
+
+#: admin/stats-page.php:LINE
+msgid "Total de Solicitudes de Canje:"
+msgstr "Total de Solicitudes de Canje:"
+
+#: admin/stats-page.php:LINE
+msgid "Pendientes de Confirmación:"
+msgstr "Pendientes de Confirmación:"
+
+#: admin/stats-page.php:LINE
+msgid "Confirmados por Negocio:"
+msgstr "Confirmados por Negocio:"
+
+#: admin/stats-page.php:LINE
+msgid "Utilizados en Pedidos WC:"
+msgstr "Utilizados en Pedidos WC:"
+
+#: admin/stats-page.php:LINE
+msgid "Gráfica: Canjes por Estado (Próximamente)"
+msgstr "Gráfica: Canjes por Estado (Próximamente)"
+
+#: admin/stats-page.php:LINE
+msgid "Resumen de Entidades"
+msgstr "Resumen de Entidades"
+
+#: admin/stats-page.php:LINE
+msgid "Comercios Registrados:"
+msgstr "Comercios Registrados:"
+
+#: admin/stats-page.php:LINE
+msgid "Instituciones Registradas:"
+msgstr "Instituciones Registradas:"
+
+#: admin/stats-page.php:LINE
+msgid "Cupones de Lealtad Activos:"
+msgstr "Cupones de Lealtad Activos:"
+
+#: admin/stats-page.php:LINE
+msgid "Cupones Públicos Activos:"
+msgstr "Cupones Públicos Activos:"
+
+#: admin/stats-page.php:LINE
+msgid "Top 5 Cupones Más Canjeados"
+msgstr "Top 5 Cupones Más Canjeados"
+
+#: admin/stats-page.php:LINE
+msgid "Nombre del Cupón"
+msgstr "Nombre del Cupón"
+
+#: admin/stats-page.php:LINE
+msgid "Nro. Canjes"
+msgstr "Nro. Canjes"
+
+#: admin/stats-page.php:LINE
+msgid "No hay datos de canjes de cupones todavía."
+msgstr "No hay datos de canjes de cupones todavía."
+
+#: admin/stats-page.php:LINE
+msgid "Gráfica: Top Cupones (Próximamente)"
+msgstr "Gráfica: Top Cupones (Próximamente)"
+
+#: admin/stats-page.php:LINE
+msgid "Top 5 Comercios por Canjes Confirmados"
+msgstr "Top 5 Comercios por Canjes Confirmados"
+
+#: admin/stats-page.php:LINE
+msgid "Nombre del Comercio"
+msgstr "Nombre del Comercio"
+
+#: admin/stats-page.php:LINE
+msgid "No hay datos de canjes asociados a comercios todavía."
+msgstr "No hay datos de canjes asociados a comercios todavía."
+
+#: admin/business-stats-page.php:LINE
+msgid "No estás asociado a ningún comercio o tu comercio no está publicado. No se pueden mostrar estadísticas."
+msgstr "No estás asociado a ningún comercio o tu comercio no está publicado. No se pueden mostrar estadísticas."
+
+#: admin/business-stats-page.php:LINE
+msgid "Error: Las funciones de estadísticas necesarias no están disponibles."
+msgstr "Error: Las funciones de estadísticas necesarias no están disponibles."
+
+#: admin/business-stats-page.php:LINE
+msgid "Estadísticas para: %s"
+msgstr "Estadísticas para: %s"
+
+#: admin/business-stats-page.php:LINE
+msgid "Resumen de Canjes en Mi Comercio"
+msgstr "Resumen de Canjes en Mi Comercio"
+
+#: admin/business-stats-page.php:LINE
+msgid "Total de Solicitudes de Canje Recibidas:"
+msgstr "Total de Solicitudes de Canje Recibidas:"
+
+#: admin/business-stats-page.php:LINE
+msgid "Pendientes de Tu Confirmación:"
+msgstr "Pendientes de Tu Confirmación:"
+
+#: admin/business-stats-page.php:LINE
+msgid "Confirmados por Ti:"
+msgstr "Confirmados por Ti:"
+
+#: admin/business-stats-page.php:LINE
+msgid "Utilizados en Pedidos (tus canjes confirmados):"
+msgstr "Utilizados en Pedidos (tus canjes confirmados):"
+
+#: admin/business-stats-page.php:LINE
+msgid "Mis Cupones"
+msgstr "Mis Cupones"
+
+#: admin/business-stats-page.php:LINE
+msgid "Total de Cupones Asociados/Creados por Ti:"
+msgstr "Total de Cupones Asociados/Creados por Ti:"
+
+#: admin/business-stats-page.php:LINE
+msgid "Top 5 Mis Cupones Más Canjeados (en este comercio)"
+msgstr "Top 5 Mis Cupones Más Canjeados (en este comercio)"
+
+#: admin/business-stats-page.php:LINE
+msgid "No hay datos de canjes para tus cupones en este comercio todavía."
+msgstr "No hay datos de canjes para tus cupones en este comercio todavía."
+
+#: admin/institution-stats-page.php:LINE
+msgid "Institución Sin Nombre Asignado"
+msgstr "Institución Sin Nombre Asignado"
+
+#: admin/institution-stats-page.php:LINE
+msgid "Estadísticas para Institución: %s"
+msgstr "Estadísticas para Institución: %s"
+
+#: admin/institution-stats-page.php:LINE
+msgid "Resumen de Cupones Creados por Mi Institución"
+msgstr "Resumen de Cupones Creados por Mi Institución"
+
+#: admin/institution-stats-page.php:LINE
+msgid "Total de Cupones Creados por Mí:"
+msgstr "Total de Cupones Creados por Mí:"
+
+#: admin/institution-stats-page.php:LINE
+msgid "Resumen de Canjes de Mis Cupones (Global)"
+msgstr "Resumen de Canjes de Mis Cupones (Global)"
+
+#: admin/institution-stats-page.php:LINE
+msgid "Total de Solicitudes de Canje (de mis cupones):"
+msgstr "Total de Solicitudes de Canje (de mis cupones):"
+
+#: admin/institution-stats-page.php:LINE
+msgid "Pendientes de Confirmación por Negocio:"
+msgstr "Pendientes de Confirmación por Negocio:"
+
+#: admin/institution-stats-page.php:LINE
+msgid "Gráfica: Canjes de Mis Cupones (Próximamente)"
+msgstr "Gráfica: Canjes de Mis Cupones (Próximamente)"
+
+#: admin/institution-stats-page.php:LINE
+msgid "Top 5 Mis Cupones Más Canjeados (Globalmente)"
+msgstr "Top 5 Mis Cupones Más Canjeados (Globalmente)"
+
+#: admin/settings-page.php:LINE
+msgid "No tienes suficientes permisos para acceder a esta página."
+msgstr "No tienes suficientes permisos para acceder a esta página."
+
+#: admin/settings-page.php:LINE
+msgid "Guardar Cambios"
+msgstr "Guardar Cambios"
+
+#: admin/settings-page.php:LINE
+msgid "Ajustes de Google reCAPTCHA v2"
+msgstr "Ajustes de Google reCAPTCHA v2"
+
+#: admin/settings-page.php:LINE
+msgid "Site Key (Clave del Sitio)"
+msgstr "Site Key (Clave del Sitio)"
+
+#: admin/settings-page.php:LINE
+msgid "Introduce tu Google reCAPTCHA v2 Site Key."
+msgstr "Introduce tu Google reCAPTCHA v2 Site Key."
+
+#: admin/settings-page.php:LINE
+msgid "Secret Key (Clave Secreta)"
+msgstr "Secret Key (Clave Secreta)"
+
+#: admin/settings-page.php:LINE
+msgid "Introduce tu Google reCAPTCHA v2 Secret Key."
+msgstr "Introduce tu Google reCAPTCHA v2 Secret Key."
+
+#: admin/settings-page.php:LINE
+msgid "Campos de Cliente Obligatorios en Registro/Perfil"
+msgstr "Campos de Cliente Obligatorios en Registro/Perfil"
+
+#: admin/settings-page.php:LINE
+msgid "Hacer obligatorio el campo \"%s\""
+msgstr "Hacer obligatorio el campo \"%s\""
+
+#: admin/settings-page.php:LINE
+msgid "Utilidades del Plugin"
+msgstr "Utilidades del Plugin"
+
+#: admin/settings-page.php:LINE
+msgid "Páginas del Plugin"
+msgstr "Páginas del Plugin"
+
+#: admin/settings-page.php:LINE
+msgid "Configura las claves de API para Google reCAPTCHA v2 para proteger tus formularios."
+msgstr "Configura las claves de API para Google reCAPTCHA v2 para proteger tus formularios."
+
+#: admin/settings-page.php:LINE
+msgid "Selecciona qué campos personalizados de cliente deben ser obligatorios durante el registro y en la página de perfil \"Mi Cuenta\"."
+msgstr "Selecciona qué campos personalizados de cliente deben ser obligatorios durante el registro y en la página de perfil \"Mi Cuenta\"."
+
+#: admin/settings-page.php:LINE
+msgid "Herramientas adicionales para la gestión del plugin."
+msgstr "Herramientas adicionales para la gestión del plugin."
+
+#: admin/settings-page.php:LINE
+msgid "Crear Páginas del Plugin"
+msgstr "Crear Páginas del Plugin"
+
+#: admin/settings-page.php:LINE
+msgid "Haz clic aquí para crear automáticamente las páginas necesarias para los shortcodes del plugin (ej. Mis Cupones, Cupones Públicos, Solicitud de Adhesión). Las páginas no se duplicarán si ya existen y contienen el shortcode correcto o si ya fueron creadas por esta utilidad."
+msgstr "Haz clic aquí para crear automáticamente las páginas necesarias para los shortcodes del plugin (ej. Mis Cupones, Cupones Públicos, Solicitud de Adhesión). Las páginas no se duplicarán si ya existen y contienen el shortcode correcto o si ya fueron creadas por esta utilidad."
+
+#: admin/settings-page.php:LINE
+msgid "No tienes permisos para realizar esta acción."
+msgstr "No tienes permisos para realizar esta acción."
+
+#: admin/settings-page.php:LINE
+msgid "La página \"%s\" existe (ID: %d) pero su contenido no coincide con el shortcode esperado (%s). Considera revisarla manualmente o eliminarla para que se recree."
+msgstr "La página \"%s\" existe (ID: %d) pero su contenido no coincide con el shortcode esperado (%s). Considera revisarla manualmente o eliminarla para que se recree."
+
+#: admin/settings-page.php:LINE
+msgid "Error al crear la página \"%s\": %s"
+msgstr "Error al crear la página \"%s\": %s"
+
+#: admin/settings-page.php:LINE
+msgid "Página \"%s\" creada exitosamente."
+msgstr "Página \"%s\" creada exitosamente."
+
+#: admin/settings-page.php:LINE
+msgid "Algunas páginas no pudieron ser creadas. Revisa los mensajes de error individuales."
+msgstr "Algunas páginas no pudieron ser creadas. Revisa los mensajes de error individuales."
+
+#: admin/settings-page.php:LINE
+msgid "Revisión de páginas completada. Algunas páginas ya existían."
+msgstr "Revisión de páginas completada. Algunas páginas ya existían."
+
+#: admin/settings-page.php:LINE
+msgid "No tienes permisos para realizar esta acción de exportación."
+msgstr "No tienes permisos para realizar esta acción de exportación."
+
+#: admin/settings-page.php:LINE
+msgid "Error: La función de exportación para \"%s\" no está disponible."
+msgstr "Error: La función de exportación para \"%s\" no está disponible."
+
+#: includes/export-functions.php:LINE
+msgid "Exportación en Progreso"
+msgstr "Exportación en Progreso"
+
+#: includes/export-functions.php:LINE
+msgid "Volver a Ajustes"
+msgstr "Volver a Ajustes"
+
+#: includes/export-functions.php:LINE
+msgid "Error: Las cabeceras ya fueron enviadas, no se puede generar el CSV. Revisa los logs del servidor."
+msgstr "Error: Las cabeceras ya fueron enviadas, no se puede generar el CSV. Revisa los logs del servidor."
+
+#: includes/export-functions.php:LINE
+msgid "ID Institución (Post ID)"
+msgstr "ID Institución (Post ID)"
+
+#: includes/export-functions.php:LINE
+msgid "Nombre Institución (Título)"
+msgstr "Nombre Institución (Título)"
+
+#: includes/export-functions.php:LINE
+msgid "ID Usuario Gestor"
+msgstr "ID Usuario Gestor"
+
+#: includes/export-functions.php:LINE
+msgid "Email Usuario Gestor"
+msgstr "Email Usuario Gestor"
+
+#: includes/export-functions.php:LINE
+msgid "Error: Las cabeceras ya fueron enviadas, no se puede generar el CSV. Revisa si hay salida inesperada antes de esta acción."
+msgstr "Error: Las cabeceras ya fueron enviadas, no se puede generar el CSV. Revisa si hay salida inesperada antes de esta acción."
+
+#: includes/export-functions.php:LINE
+msgid "ID Usuario"
+msgstr "ID Usuario"
+
+#: includes/export-functions.php:LINE
+msgid "Login"
+msgstr "Login"
+
+#: includes/export-functions.php:LINE
+msgid "Email"
+msgstr "Email"
+
+#: includes/export-functions.php:LINE
+msgid "Nombre Mostrado"
+msgstr "Nombre Mostrado"
+
+#: includes/export-functions.php:LINE
+msgid "Fecha Registro"
+msgstr "Fecha Registro"
+
+#: includes/export-functions.php:LINE
+msgid "DNI (WPCW)"
+msgstr "DNI (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "Fecha Nacimiento (WPCW)"
+msgstr "Fecha Nacimiento (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "WhatsApp (WPCW)"
+msgstr "WhatsApp (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "ID Institución Usuario (WPCW)"
+msgstr "ID Institución Usuario (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "Nombre Institución Usuario (WPCW)"
+msgstr "Nombre Institución Usuario (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "Categorías Favoritas (WPCW)"
+msgstr "Categorías Favoritas (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "ID Institución Inválido"
+msgstr "ID Institución Inválido"
+
+#: includes/export-functions.php:LINE
+msgid "ID Cupón"
+msgstr "ID Cupón"
+
+#: includes/export-functions.php:LINE
+msgid "Código Cupón"
+msgstr "Código Cupón"
+
+#: includes/export-functions.php:LINE
+msgid "Tipo de Descuento"
+msgstr "Tipo de Descuento"
+
+#: includes/export-functions.php:LINE
+msgid "Importe del Cupón"
+msgstr "Importe del Cupón"
+
+#: includes/export-functions.php:LINE
+msgid "Permitir Envío Gratuito"
+msgstr "Permitir Envío Gratuito"
+
+#: includes/export-functions.php:LINE
+msgid "Fecha de Caducidad"
+msgstr "Fecha de Caducidad"
+
+#: includes/export-functions.php:LINE
+msgid "Gasto Mínimo"
+msgstr "Gasto Mínimo"
+
+#: includes/export-functions.php:LINE
+msgid "Gasto Máximo"
+msgstr "Gasto Máximo"
+
+#: includes/export-functions.php:LINE
+msgid "Uso Individual"
+msgstr "Uso Individual"
+
+#: includes/export-functions.php:LINE
+msgid "Excluir Artículos en Oferta"
+msgstr "Excluir Artículos en Oferta"
+
+#: includes/export-functions.php:LINE
+msgid "IDs de Productos"
+msgstr "IDs de Productos"
+
+#: includes/export-functions.php:LINE
+msgid "IDs de Productos Excluidos"
+msgstr "IDs de Productos Excluidos"
+
+#: includes/export-functions.php:LINE
+msgid "IDs de Categorías de Productos"
+msgstr "IDs de Categorías de Productos"
+
+#: includes/export-functions.php:LINE
+msgid "IDs de Categorías de Productos Excluidas"
+msgstr "IDs de Categorías de Productos Excluidas"
+
+#: includes/export-functions.php:LINE
+msgid "Emails Restringidos"
+msgstr "Emails Restringidos"
+
+#: includes/export-functions.php:LINE
+msgid "Límite de Uso por Cupón"
+msgstr "Límite de Uso por Cupón"
+
+#: includes/export-functions.php:LINE
+msgid "Límite de Uso por Usuario"
+msgstr "Límite de Uso por Usuario"
+
+#: includes/export-functions.php:LINE
+msgid "Es de Lealtad (WPCW)"
+msgstr "Es de Lealtad (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "Es Público (WPCW)"
+msgstr "Es Público (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "ID Comercio Asociado (WPCW)"
+msgstr "ID Comercio Asociado (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "Nombre Comercio Asociado (WPCW)"
+msgstr "Nombre Comercio Asociado (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "ID Categoría Cupón (WPCW)"
+msgstr "ID Categoría Cupón (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "Nombre Categoría Cupón (WPCW)"
+msgstr "Nombre Categoría Cupón (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "URL Imagen Cupón (WPCW)"
+msgstr "URL Imagen Cupón (WPCW)"
+
+#: includes/export-functions.php:LINE
+msgid "Comercios Aplicables (Institución - WPCW IDs)"
+msgstr "Comercios Aplicables (Institución - WPCW IDs)"
+
+#: includes/export-functions.php:LINE
+msgid "Categorías Aplicables (Institución - WPCW Nombres)"
+msgstr "Categorías Aplicables (Institución - WPCW Nombres)"
+
+#: includes/export-functions.php:LINE
+msgid "ID Canje (DB)"
+msgstr "ID Canje (DB)"
+
+#: includes/export-functions.php:LINE
+msgid "ID Cliente"
+msgstr "ID Cliente"
+
+#: includes/export-functions.php:LINE
+msgid "Email Cliente"
+msgstr "Email Cliente"
+
+#: includes/export-functions.php:LINE
+msgid "ID Cupón Original"
+msgstr "ID Cupón Original"
+
+#: includes/export-functions.php:LINE
+msgid "Código Cupón Original"
+msgstr "Código Cupón Original"
+
+#: includes/export-functions.php:LINE
+msgid "ID Comercio"
+msgstr "ID Comercio"
+
+#: includes/export-functions.php:LINE
+msgid "Nombre Comercio"
+msgstr "Nombre Comercio"
+
+#: includes/export-functions.php:LINE
+msgid "Fecha Confirmación Canje"
+msgstr "Fecha Confirmación Canje"
+
+#: includes/export-functions.php:LINE
+msgid "Estado Canje"
+msgstr "Estado Canje"
+
+#: includes/export-functions.php:LINE
+msgid "Token Confirmación"
+msgstr "Token Confirmación"
+
+#: includes/export-functions.php:LINE
+msgid "Código Cupón WC Generado"
+msgstr "Código Cupón WC Generado"
+
+#: includes/export-functions.php:LINE
+msgid "ID Pedido WC"
+msgstr "ID Pedido WC"
+
+#: includes/export-functions.php:LINE
+msgid "Origen del Canje"
+msgstr "Origen del Canje"
+
+#: includes/export-functions.php:LINE
+msgid "Notas Internas"
+msgstr "Notas Internas"
+
+#: includes/export-functions.php:LINE
+msgid "ID de comercio no es un CPT wpcw_business"
+msgstr "ID de comercio no es un CPT wpcw_business"
+
+#: includes/export-functions.php:LINE
+msgid "Tipo de exportación no válido o no especificado."
+msgstr "Tipo de exportación no válido o no especificado."
+
+#: includes/export-functions.php:LINE
+msgid "Error de Exportación"
+msgstr "Error de Exportación"
+
+#: admin/settings-page.php:LINE
+msgid "La funcionalidad de crear páginas aún está en desarrollo. ¡Gracias por tu paciencia!"
+msgstr "La funcionalidad de crear páginas aún está en desarrollo. ¡Gracias por tu paciencia!"
+
+msgid "Descarga un archivo CSV con todos los datos de los comercios registrados."
+msgstr "Descarga un archivo CSV con todos los datos de los comercios registrados."
+
+msgid "Descarga un archivo CSV con todos los datos de las instituciones registradas."
+msgstr "Descarga un archivo CSV con todos los datos de las instituciones registradas."
+
+msgid "Descarga un archivo CSV con los datos de los clientes (rol \"customer\") y sus campos WPCW asociados."
+msgstr "Descarga un archivo CSV con los datos de los clientes (rol \"customer\") y sus campos WPCW asociados."
+
+msgid "Descarga un archivo CSV con los cupones de WooCommerce y sus campos WPCW asociados."
+msgstr "Descarga un archivo CSV con los cupones de WooCommerce y sus campos WPCW asociados."
+
+msgid "Descarga un archivo CSV con todos los registros de la tabla de canjes."
+msgstr "Descarga un archivo CSV con todos los registros de la tabla de canjes."
+
+msgid "Exportar Comercios"
+msgstr "Exportar Comercios"
+
+msgid "Exportar Instituciones"
+msgstr "Exportar Instituciones"
+
+msgid "Exportar Clientes (WPCW)"
+msgstr "Exportar Clientes (WPCW)"
+
+msgid "Exportar Cupones (WPCW)"
+msgstr "Exportar Cupones (WPCW)"
+
+msgid "Exportar Historial de Canjes"
+msgstr "Exportar Historial de Canjes"
+
+msgid "Procesando..."
+msgstr "Procesando..."
+
+msgid "Ocurrió un error. Por favor, inténtalo de nuevo."
+msgstr "Ocurrió un error. Por favor, inténtalo de nuevo."
+
+msgid "No estás asociado a ninguna institución o tu institución no está publicada. No se pueden mostrar estadísticas."
+msgstr "No estás asociado a ninguna institución o tu institución no está publicada. No se pueden mostrar estadísticas."
+
+msgid "Gráfica: Top Cupones (Institución)"
+msgstr "Gráfica: Top Cupones (Institución)"
+
+msgid "No hay datos de canjes para tus cupones todavía."
+msgstr "No hay datos de canjes para tus cupones todavía."
+
+msgid "No tienes suficientes permisos para acceder a esta página."
+msgstr "No tienes suficientes permisos para acceder a esta página."
+
+msgid "Bienvenido a WP Canje Cupon Whatsapp"
+msgstr "Bienvenido a WP Canje Cupon Whatsapp"
+
+msgid "Esta es la página principal del plugin. Selecciona una opción del submenú."
+msgstr "Esta es la página principal del plugin. Selecciona una opción del submenú."
+
+msgid "Puedes ver las <a href=\"%s\">Estadísticas Generales</a>."
+msgstr "Puedes ver las <a href=\"%s\">Estadísticas Generales</a>."
+
+msgid "%d página del plugin fue creada exitosamente."
+msgid_plural "%d páginas del plugin fueron creadas exitosamente."
+msgstr[0] "%d página del plugin fue creada exitosamente."
+msgstr[1] "%d páginas del plugin fueron creadas exitosamente."
+
+msgid "Todas las páginas del plugin necesarias ya existían y parecen estar configuradas correctamente."
+msgstr "Todas las páginas del plugin necesarias ya existían y parecen estar configuradas correctamente."
+
+msgid "Todas las páginas del plugin necesarias ya existían."
+msgstr "Todas las páginas del plugin necesarias ya existían."
+
+msgid "%d página del plugin fue creada exitosamente. Las demás ya existían."
+msgid_plural "%d páginas del plugin fueron creadas exitosamente. Las demás ya existían."
+msgstr[0] "%d página del plugin fue creada exitosamente. Las demás ya existían."
+msgstr[1] "%d páginas del plugin fueron creadas exitosamente. Las demás ya existían."
