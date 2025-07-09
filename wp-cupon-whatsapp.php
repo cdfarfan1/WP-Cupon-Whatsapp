@@ -108,6 +108,12 @@ require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
 // Include My Account endpoint functions
 require_once WPCW_PLUGIN_DIR . 'public/my-account-endpoints.php';
 
+// Elementor Addon
+if ( did_action( 'elementor/loaded' ) ) { // Check if Elementor is loaded
+    require_once WPCW_PLUGIN_DIR . 'elementor/elementor-addon.php';
+}
+
+
 // Admin specific includes
 if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
