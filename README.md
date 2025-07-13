@@ -1,6 +1,6 @@
 # WP Cupón WhatsApp
 
-**Contributors:** (Tu nombre/nombre de empresa aquí)
+**Contributors:** (Cristian Farfan/Pragmatic Solutions)
 **Tags:** cupones, whatsapp, woocommerce, elementor, lealtad, canje
 **Requires at least:** 5.0
 **Tested up to:** (Versión de WordPress con la que probaste)
