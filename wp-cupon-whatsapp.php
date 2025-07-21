@@ -56,6 +56,14 @@ function wpcw_init() {
 add_action('init', 'wpcw_init');
 
 /**
+ * Load plugin textdomain for translations
+ */
+function wpcw_load_textdomain() {
+    load_plugin_textdomain('wp-cupon-whatsapp', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}
+add_action('init', 'wpcw_load_textdomain');
+
+/**
  * Function to check dependencies
  */
 function wpcw_check_dependencies() {
