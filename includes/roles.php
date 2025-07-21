@@ -15,17 +15,17 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function wpcw_add_roles() {
     // Business Owner Role
-    // Remove the role first to ensure capabilities are updated if they change.
-    remove_role( 'wpcw_business_owner' );
+    remove_role('wpcw_business_owner');
     add_role(
         'wpcw_business_owner',
-        __( 'Business Owner', 'wp-cupon-whatsapp' ), // Consider changing display name if needed e.g. "Dueño de Comercio WPCW"
+        __('Dueño de Comercio', 'wp-cupon-whatsapp'),
         array(
             'read' => true,
             'upload_files' => true,
-            // wpcw_business CPT capabilities
-            'edit_posts' => true, // Allows editing their own posts
-            'edit_published_posts' => true, // Allows editing their own published posts
+            'edit_posts' => true,
+            'edit_published_posts' => true,
+            'publish_posts' => true,
+            'delete_posts' => true,
             'delete_posts' => true, // Allows deleting their own posts
             'delete_published_posts' => true, // Allows deleting their own published posts
             // shop_coupon capabilities
@@ -46,15 +46,59 @@ function wpcw_add_roles() {
             'publish_wpcw_businesses' => true,
             'read_private_wpcw_businesses' => false,
             'delete_wpcw_businesses' => true, // delete_posts equivalent for CPT
-            'delete_private_wpcw_businesses' => false,
-            'delete_published_wpcw_businesses' => true,
-            'delete_others_wpcw_businesses' => false,
-            'edit_published_wpcw_businesses' => true,
-            'create_wpcw_businesses' => true,
-            // Nueva capacidad
-            'wpcw_view_own_business_stats' => true,
+            // Custom capabilities
+            'manage_wpcw_redemptions' => true,
+            'view_wpcw_reports' => true,
+            'manage_wpcw_settings' => false
         )
     );
+
+    // Business Staff Role
+    remove_role('wpcw_business_staff');
+    add_role(
+        'wpcw_business_staff',
+        __('Personal de Comercio', 'wp-cupon-whatsapp'),
+        array(
+            'read' => true,
+            // Specific CPT capabilities
+            'read_wpcw_business' => true,
+            'edit_wpcw_business' => false,
+            'delete_wpcw_business' => false,
+            // Coupon capabilities
+            'read_shop_coupons' => true,
+            'edit_shop_coupons' => false,
+            'publish_shop_coupons' => false,
+            // Custom capabilities
+            'manage_wpcw_redemptions' => true,
+            'view_wpcw_reports' => true,
+            'manage_wpcw_settings' => false
+        )
+    );
+
+    // Administrator capabilities
+    $admin = get_role('administrator');
+    if ($admin) {
+        $capabilities = array(
+            'manage_wpcw_settings' => true,
+            'manage_wpcw_redemptions' => true,
+            'view_wpcw_reports' => true,
+            'edit_wpcw_businesses' => true,
+            'edit_others_wpcw_businesses' => true,
+            'publish_wpcw_businesses' => true,
+            'read_private_wpcw_businesses' => true,
+            'delete_wpcw_businesses' => true,
+            'delete_private_wpcw_businesses' => true,
+            'delete_published_wpcw_businesses' => true,
+            'delete_others_wpcw_businesses' => true,
+            'edit_published_wpcw_businesses' => true,
+            'create_wpcw_businesses' => true,
+            'wpcw_view_own_business_stats' => true
+        );
+
+        foreach ($capabilities as $cap => $grant) {
+            $admin->add_cap($cap, $grant);
+        }
+    }
 
     // Institution Manager Role
     // Remove the role first to ensure capabilities are updated if they change.
@@ -106,6 +150,17 @@ function wpcw_add_roles() {
  * Remove custom user roles.
  */
 function wpcw_remove_roles() {
-    remove_role( 'wpcw_business_owner' );
-    remove_role( 'wpcw_institution_manager' );
+    global $wp_roles;
+    
+    if (!isset($wp_roles)) {
+        $wp_roles = new WP_Roles();
+    }
+    
+    if ($wp_roles->is_role('wpcw_business_owner')) {
+        remove_role('wpcw_business_owner');
+    }
+    
+    if ($wp_roles->is_role('wpcw_institution_manager')) {
+        remove_role('wpcw_institution_manager');
+    }
 }

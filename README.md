@@ -3,7 +3,7 @@
 **Contributors:** (Cristian Farfan/Pragmatic Solutions)
 **Tags:** cupones, whatsapp, woocommerce, elementor, lealtad, canje
 **Requires at least:** 5.0
-**Tested up to:** (Versión de WordPress con la que probaste)
+**Tested up to:** 6.4
 **Stable tag:** 1.1.0
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
@@ -18,6 +18,15 @@ Características principales:
 
 *   Gestión de cupones públicos y de lealtad.
 *   Formulario de solicitud de adhesión para comercios e instituciones.
+*   Integración con MongoDB para sincronización y respaldo de datos.
+
+## Documentación
+
+La documentación detallada del plugin está disponible en los siguientes archivos:
+
+* [Integración con MongoDB](docs/MONGODB_INTEGRATION.md) - Manual completo de configuración y uso de MongoDB
+* [Documentación Técnica](docs/TECHNICAL.md) - Detalles técnicos y arquitectura
+* [Guía de Integración](docs/INTEGRATION.md) - Guía para desarrolladores
 *   Integración con WooCommerce para el tipo de post `shop_coupon`.
 *   Páginas de "Mis Cupones" y "Cupones Públicos" mediante shortcodes.
 *   Integración con Google reCAPTCHA v2 para formularios.

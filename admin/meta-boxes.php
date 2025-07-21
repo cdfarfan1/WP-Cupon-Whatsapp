@@ -220,14 +220,33 @@ function wpcw_admin_enqueue_metabox_scripts( $hook ) {
         $plugin_url = defined('WPCW_PLUGIN_URL') ? WPCW_PLUGIN_URL : plugin_dir_url(dirname(__FILE__)); // Fallback for URL
         $plugin_version = defined('WPCW_VERSION') ? WPCW_VERSION : '1.0.0'; // Fallback for version
 
+        // Registrar y encolar estilos
+        wp_register_style(
+            'wpcw-meta-boxes',
+            $plugin_url . 'admin/css/meta-boxes.css',
+            array(),
+            $plugin_version
+        );
+        wp_enqueue_style('wpcw-meta-boxes');
+
+        // Registrar y encolar scripts
         wp_register_script(
             'wpcw-admin-metaboxes-js',
             $plugin_url . 'admin/js/wpcw-admin-metaboxes.js',
-            array( 'jquery', 'wp-media' ), // Dependencias
+            array('jquery', 'wp-media'),
             $plugin_version,
-            true // Cargar en el footer
+            true
         );
-        wp_enqueue_script( 'wpcw-admin-metaboxes-js' );
+        wp_enqueue_script('wpcw-admin-metaboxes-js');
+
+        wp_register_script(
+            'wpcw-meta-boxes',
+            $plugin_url . 'admin/js/meta-boxes.js',
+            array('jquery'),
+            $plugin_version,
+            true
+        );
+        wp_enqueue_script('wpcw-meta-boxes');
 
         // Localizar el script con cadenas traducibles
         wp_localize_script(

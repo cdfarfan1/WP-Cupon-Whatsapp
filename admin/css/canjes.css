@@ -1,0 +1,119 @@
+/* Estilos para la página de canjes */
+
+/* Contenedor de filtros */
+.wpcw-filters {
+    margin: 15px 0;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.wpcw-filters form {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.wpcw-filters select,
+.wpcw-filters input[type="search"] {
+    max-width: 200px;
+}
+
+/* Estados de los canjes */
+.estado-pendiente {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+.estado-confirmado {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+.estado-rechazado {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+.estado-cancelado {
+    color: #1b1e21;
+    background-color: #d6d8d9;
+    border: 1px solid #c6c8ca;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+.estado-expirado {
+    color: #383d41;
+    background-color: #e2e3e5;
+    border: 1px solid #d6d8db;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+.estado-utilizado_en_pedido_wc {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+/* Acciones en la tabla */
+.row-actions {
+    color: #666;
+}
+
+.row-actions a {
+    text-decoration: none;
+}
+
+.row-actions a.wpcw-action {
+    cursor: pointer;
+}
+
+.row-actions a.wpcw-action[data-action="confirm"] {
+    color: #28a745;
+}
+
+.row-actions a.wpcw-action[data-action="reject"] {
+    color: #dc3545;
+}
+
+.row-actions a.wpcw-action[data-action="cancel"] {
+    color: #6c757d;
+}
+
+.row-actions a.wpcw-action:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 782px) {
+    .wpcw-filters form {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .wpcw-filters select,
+    .wpcw-filters input[type="search"] {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .wpcw-filters .button {
+        width: 100%;
+        text-align: center;
+    }
+}

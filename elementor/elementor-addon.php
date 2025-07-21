@@ -148,10 +148,28 @@ final class WPCW_Elementor_Addon {
 		// Add Plugin actions
 		add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
 		add_action( 'elementor/elements/categories_registered', [ $this, 'register_widget_categories' ] );
+		add_action( 'elementor/frontend/after_enqueue_styles', [ $this, 'widget_styles' ] );
         // Elementor 3.5.0+ uses elementor/widgets/register hook.
         // For older versions, use elementor/widgets/widgets_registered.
         // The 'register' hook is more appropriate for modern Elementor.
 	}
+
+    /**
+     * Widget Styles
+     *
+     * Load styles for the widgets
+     *
+     * @since 1.1.0
+     * @access public
+     */
+    public function widget_styles() {
+        wp_enqueue_style(
+            'wpcw-elementor-widgets',
+            WPCW_PLUGIN_URL . 'elementor/css/widgets.css',
+            [],
+            self::VERSION
+        );
+    }
 
 	/**
 	 * Register Widgets

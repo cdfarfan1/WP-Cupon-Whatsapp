@@ -53,6 +53,16 @@ function wpcw_register_plugin_admin_menu() {
     //     add_menu_page( ... 'wpcw-comercio-stats' ... 'wpcw_render_comercio_stats_page');
     // }
 
+    // Submenú para Gestión de Canjes (Superadmin)
+    add_submenu_page(
+        'wpcw-main-menu',                         // Slug del menú padre
+        __( 'Gestión de Canjes', 'wp-cupon-whatsapp' ), // Título de la página
+        __( 'Canjes', 'wp-cupon-whatsapp' ),     // Título del submenú
+        'manage_woocommerce',                     // Capacidad requerida (Admin/SuperAdmin)
+        'wpcw-canjes',                           // Slug de este submenú
+        'wpcw_canjes_page'                       // Callback para el contenido
+    );
+
     // Submenú para Estadísticas del Comercio (wpcw_business_owner)
     add_submenu_page(
         'wpcw-main-menu',                         // Slug del menú padre

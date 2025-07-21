@@ -38,12 +38,61 @@ function wpcw_request_canje_handler() {
     }
     $coupon_id = absint( $_POST['coupon_id'] );
 
-    // 3. Validación Inicial Simplificada del Cupón
-    $coupon = get_post( $coupon_id );
-    if ( ! $coupon || 'shop_coupon' !== $coupon->post_type || 'publish' !== $coupon->post_status ) {
-        wp_send_json_error( array( 'message' => __( 'El cupón seleccionado no es válido o no está disponible.', 'wp-cupon-whatsapp' ) ) );
+    // 3. Validación Exhaustiva del Cupón usando WooCommerce
+    $wc_coupon = new WC_Coupon($coupon_id);
+    $coupon = get_post($coupon_id);
+    
+    if (!$coupon || 'shop_coupon' !== $coupon->post_type || 'publish' !== $coupon->post_status) {
+        wp_send_json_error(array('message' => __('El cupón seleccionado no es válido o no está disponible.', 'wp-cupon-whatsapp')));
     }
-    // TODO: Validación más exhaustiva: no expirado, límite de usos, etc.
+
+    // Validar fecha de expiración
+    $expiry_date = $wc_coupon->get_date_expires();
+    if ($expiry_date && current_time('timestamp', true) > $expiry_date->getTimestamp()) {
+        wp_send_json_error(array('message' => __('Este cupón ha expirado.', 'wp-cupon-whatsapp')));
+    }
+
+    // Validar límite de uso
+    $usage_limit = $wc_coupon->get_usage_limit();
+    $usage_count = $wc_coupon->get_usage_count();
+    if ($usage_limit > 0 && $usage_count >= $usage_limit) {
+        wp_send_json_error(array('message' => __('Este cupón ha alcanzado su límite de uso.', 'wp-cupon-whatsapp')));
+    }
+
+    // Validar límite por usuario
+    $usage_limit_per_user = $wc_coupon->get_usage_limit_per_user();
+    if ($usage_limit_per_user > 0) {
+        $user_id = get_current_user_id();
+        $user_usage = $wc_coupon->get_data_store()->get_usage_by_user_id($wc_coupon, $user_id);
+        if ($user_usage >= $usage_limit_per_user) {
+            wp_send_json_error(array('message' => __('Has alcanzado el límite de uso para este cupón.', 'wp-cupon-whatsapp')));
+        }
+    }
+
+    // Validar monto mínimo si existe
+    $minimum_amount = $wc_coupon->get_minimum_amount();
+    if ($minimum_amount > 0) {
+        // Guardar el monto mínimo para mostrarlo en el mensaje de WhatsApp
+        update_post_meta($coupon_id, '_wpcw_minimum_amount', $minimum_amount);
+    }
+
+    // Validar si el cupón está habilitado para el programa de fidelización
+    $enabled_for_wpcw = get_post_meta($coupon_id, '_wpcw_enabled', true);
+    if (!$enabled_for_wpcw) {
+        wp_send_json_error(array('message' => __('Este cupón no está habilitado para el programa de fidelización.', 'wp-cupon-whatsapp')));
+    }
+
+    // Obtener y validar el comercio asociado
+    $comercio_id = get_post_meta($coupon_id, '_wpcw_associated_business_id', true);
+    if (!$comercio_id) {
+        wp_send_json_error(array('message' => __('Este cupón no tiene un comercio asociado.', 'wp-cupon-whatsapp')));
+    }
+
+    // Verificar estado del comercio
+    $comercio_status = get_post_status($comercio_id);
+    if ('publish' !== $comercio_status) {
+        wp_send_json_error(array('message' => __('El comercio asociado a este cupón no está activo.', 'wp-cupon-whatsapp')));
+    }
 
     // 4. Obtener el número de WhatsApp del cliente
     $user_id = get_current_user_id();

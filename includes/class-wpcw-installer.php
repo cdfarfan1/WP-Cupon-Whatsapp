@@ -16,11 +16,29 @@ if ( ! defined( 'WPINC' ) ) {
 class WPCW_Installer {
 
     /**
+     * Initialize plugin settings
+     */
+    public static function init_settings() {
+        // MongoDB settings
+        add_option('wpcw_mongodb_enabled', '0');
+        add_option('wpcw_mongodb_uri', '');
+        add_option('wpcw_mongodb_database', '');
+        add_option('wpcw_mongodb_auto_sync', '0');
+        add_option('wpcw_last_mongo_sync', '');
+    }
+
+    /**
      * Create canjes table.
      */
     public static function create_canjes_table() {
         global $wpdb;
         $table_name = WPCW_CANJES_TABLE_NAME;
+        
+        // Verificar si la tabla ya existe
+        if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name) {
+            return true;
+        }
+        
         $charset_collate = $wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE $table_name (
@@ -46,6 +64,38 @@ class WPCW_Installer {
         ) $charset_collate;";
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        dbDelta( $sql );
+        
+        // Capturar errores de base de datos
+        $wpdb->show_errors(false);
+        $wpdb->suppress_errors(true);
+        
+        // Ejecutar la creación de la tabla
+        dbDelta($sql);
+        
+        // Obtener cualquier error que haya ocurrido
+        $last_error = $wpdb->last_error;
+        
+        // Restaurar la configuración de errores
+        $wpdb->show_errors(true);
+        $wpdb->suppress_errors(false);
+
+        // Verificar si la tabla se creó correctamente
+        if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name) {
+            // Verificar la estructura de la tabla
+            $columns = $wpdb->get_results("SHOW COLUMNS FROM $table_name");
+            if (count($columns) >= 13) { // Número esperado de columnas
+                return true;
+            }
+        }
+        
+        // Si hay error, registrarlo
+        if ($last_error && class_exists('WPCW_Logger')) {
+            WPCW_Logger::log('error', 'Error creando tabla de canjes', array(
+                'error' => $last_error,
+                'query' => $sql
+            ));
+        }
+        
+        return false;
     }
 }
