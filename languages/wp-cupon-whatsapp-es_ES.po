@@ -1339,3 +1339,413 @@ msgid "%d página del plugin fue creada exitosamente. Las demás ya existían."
 msgid_plural "%d páginas del plugin fueron creadas exitosamente. Las demás ya existían."
 msgstr[0] "%d página del plugin fue creada exitosamente. Las demás ya existían."
 msgstr[1] "%d páginas del plugin fueron creadas exitosamente. Las demás ya existían."
+
+# Elementor Addon Strings
+
+#: elementor/elementor-addon.php
+msgid "WP Cupón WhatsApp"
+msgstr "WP Cupón WhatsApp"
+
+#: elementor/elementor-addon.php
+msgid "\"%1$s\" requires \"%2$s\" to be installed and activated."
+msgstr "\"%1$s\" requiere que \"%2$s\" esté instalado y activado."
+
+#: elementor/elementor-addon.php
+msgid "WP Cupón WhatsApp Elementor Addon"
+msgstr "Addon de Elementor para WP Cupón WhatsApp"
+
+#: elementor/elementor-addon.php
+msgid "Elementor"
+msgstr "Elementor"
+
+#: elementor/elementor-addon.php
+msgid "\"%1$s\" requires \"%2$s\" version %3$s or greater."
+msgstr "\"%1$s\" requiere la versión %3$s o superior de \"%2$s\"."
+
+#: elementor/elementor-addon.php
+msgid "PHP"
+msgstr "PHP"
+
+# Widget: Lista de Cupones WPCW
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Lista de Cupones WPCW"
+msgstr "Lista de Cupones WPCW"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Fuente de Cupones"
+msgstr "Fuente de Cupones"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Tipo de Cupones a Mostrar"
+msgstr "Tipo de Cupones a Mostrar"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Cupones Públicos"
+msgstr "Cupones Públicos"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Mis Cupones de Lealtad"
+msgstr "Mis Cupones de Lealtad"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Selecciona si mostrar cupones públicos o los cupones de lealtad del usuario actual."
+msgstr "Selecciona si mostrar cupones públicos o los cupones de lealtad del usuario actual."
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Mensaje (Usuario no logueado)"
+msgstr "Mensaje (Usuario no logueado)"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Por favor, inicia sesión para ver tus cupones disponibles."
+msgstr "Por favor, inicia sesión para ver tus cupones disponibles."
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Enlace a Página de Login/Mi Cuenta"
+msgstr "Enlace a Página de Login/Mi Cuenta"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Consulta"
+msgstr "Consulta"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Número de Cupones"
+msgstr "Número de Cupones"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "-1 para mostrar todos los cupones."
+msgstr "-1 para mostrar todos los cupones."
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Ordenar por"
+msgstr "Ordenar por"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Fecha de Publicación"
+msgstr "Fecha de Publicación"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Título (Código Cupón)"
+msgstr "Título (Código Cupón)"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Aleatorio"
+msgstr "Aleatorio"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Última Modificación"
+msgstr "Última Modificación"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Orden"
+msgstr "Orden"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Ascendente"
+msgstr "Ascendente"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Descendente"
+msgstr "Descendente"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Diseño de Tarjeta"
+msgstr "Diseño de Tarjeta"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Mostrar Imagen del Cupón"
+msgstr "Mostrar Imagen del Cupón"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Mostrar Código del Cupón"
+msgstr "Mostrar Código del Cupón"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Mostrar Descripción"
+msgstr "Mostrar Descripción"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Longitud de Descripción (palabras)"
+msgstr "Longitud de Descripción (palabras)"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Texto del Botón de Canje"
+msgstr "Texto del Botón de Canje"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Mensaje (No hay cupones)"
+msgstr "Mensaje (No hay cupones)"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Grid de Cupones"
+msgstr "Grid de Cupones"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Columnas"
+msgstr "Columnas"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Espaciado entre Columnas"
+msgstr "Espaciado entre Columnas"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Espaciado entre Filas"
+msgstr "Espaciado entre Filas"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Tarjeta de Cupón"
+msgstr "Tarjeta de Cupón"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Fondo"
+msgstr "Fondo"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Radio del Borde"
+msgstr "Radio del Borde"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Padding"
+msgstr "Padding"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Imagen del Cupón"
+msgstr "Imagen del Cupón"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Altura"
+msgstr "Altura"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Título del Cupón"
+msgstr "Título del Cupón"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Color"
+msgstr "Color"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Margen"
+msgstr "Margen"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Código del Cupón"
+msgstr "Código del Cupón"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Color del Texto"
+msgstr "Color del Texto"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Color del Código (Negrita)"
+msgstr "Color del Código (Negrita)"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Tipografía del Código (Negrita)"
+msgstr "Tipografía del Código (Negrita)"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Color de Fondo (Solo Código)"
+msgstr "Color de Fondo (Solo Código)"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Padding (Solo Código)"
+msgstr "Padding (Solo Código)"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Radio del Borde (Solo Código)"
+msgstr "Radio del Borde (Solo Código)"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Margen (Bloque de Código)"
+msgstr "Margen (Bloque de Código)"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Descripción del Cupón"
+msgstr "Descripción del Cupón"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Botón de Canje"
+msgstr "Botón de Canje"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Normal"
+msgstr "Normal"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Color de Fondo"
+msgstr "Color de Fondo"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Hover"
+msgstr "Hover"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Color del Borde"
+msgstr "Color del Borde"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Inicia sesión aquí."
+msgstr "Inicia sesión aquí."
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Título del Cupón de Ejemplo"
+msgstr "Título del Cupón de Ejemplo"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "EJEMPLO"
+msgstr "EJEMPLO"
+
+#: elementor/widgets/widget-cupones-lista.php
+msgid "Esta es una breve descripción del cupón de ejemplo para mostrar cómo se verá. Puedes personalizar esto."
+msgstr "Esta es una breve descripción del cupón de ejemplo para mostrar cómo se verá. Puedes personalizar esto."
+
+# Widget: Formulario Solicitud Adhesión WPCW
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Formulario Solicitud Adhesión WPCW"
+msgstr "Formulario Solicitud Adhesión WPCW"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Textos del Formulario"
+msgstr "Textos del Formulario"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Leyenda: Tipo de Solicitante"
+msgstr "Leyenda: Tipo de Solicitante"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Etiqueta: Comercio"
+msgstr "Etiqueta: Comercio"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Etiqueta: Institución"
+msgstr "Etiqueta: Institución"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Etiqueta: %s"
+msgstr "Etiqueta: %s"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Texto del Botón de Envío"
+msgstr "Texto del Botón de Envío"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Mensaje de Éxito"
+msgstr "Mensaje de Éxito"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Google reCAPTCHA"
+msgstr "Google reCAPTCHA"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Google reCAPTCHA v2 está activado en los ajustes del plugin y se mostrará en el formulario."
+msgstr "Google reCAPTCHA v2 está activado en los ajustes del plugin y se mostrará en el formulario."
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Formulario General"
+msgstr "Formulario General"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Ancho Máximo del Formulario"
+msgstr "Ancho Máximo del Formulario"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Etiquetas de Campos"
+msgstr "Etiquetas de Campos"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Espaciado Inferior"
+msgstr "Espaciado Inferior"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Campos de Entrada (Texto, Email, Tel, Textarea)"
+msgstr "Campos de Entrada (Texto, Email, Tel, Textarea)"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Espaciado Inferior del Párrafo Contenedor"
+msgstr "Espaciado Inferior del Párrafo Contenedor"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Botón de Envío"
+msgstr "Botón de Envío"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Ancho del Botón"
+msgstr "Ancho del Botón"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Automático"
+msgstr "Automático"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Ancho Completo"
+msgstr "Ancho Completo"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Personalizado"
+msgstr "Personalizado"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Ancho Personalizado"
+msgstr "Ancho Personalizado"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Alineación"
+msgstr "Alineación"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Izquierda"
+msgstr "Izquierda"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Centro"
+msgstr "Centro"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Derecha"
+msgstr "Derecha"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Mensajes (Error/Éxito)"
+msgstr "Mensajes (Error/Éxito)"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Color Texto Éxito"
+msgstr "Color Texto Éxito"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Color Fondo Éxito"
+msgstr "Color Fondo Éxito"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Color Texto Error"
+msgstr "Color Texto Error"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Color Fondo Error"
+msgstr "Color Fondo Error"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Padding del Mensaje"
+msgstr "Padding del Mensaje"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Nueva Solicitud de Adhesión: %s"
+msgstr "Nueva Solicitud de Adhesión: %s"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Se ha recibido una nueva solicitud de adhesión para el programa WP Canje Cupon Whatsapp."
+msgstr "Se ha recibido una nueva solicitud de adhesión para el programa WP Canje Cupon Whatsapp."
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Nombre de Fantasía: %s"
+msgstr "Nombre de Fantasía: %s"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "Puedes revisar y procesar esta solicitud aquí: %s"
+msgstr "Puedes revisar y procesar esta solicitud aquí: %s"
+
+#: elementor/widgets/widget-formulario-adhesion.php
+msgid "reCAPTCHA aquí"
+msgstr "reCAPTCHA aquí"
