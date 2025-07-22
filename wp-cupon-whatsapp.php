@@ -79,7 +79,7 @@ function wpcw_load_textdomain() {
         dirname( plugin_basename( WPCW_PLUGIN_FILE ) ) . '/languages/'
     );
 }
-add_action( 'plugins_loaded', 'wpcw_load_textdomain' );
+add_action( 'init', 'wpcw_load_textdomain' );
 
 // Include post types
 require_once WPCW_PLUGIN_DIR . 'includes/post-types.php';
