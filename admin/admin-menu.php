@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function wpcw_register_plugin_admin_menu() {
     // Menú Principal del Plugin
     add_menu_page(
-        __( 'WP Canje Cupon', 'wp-cupon-whatsapp' ), // Título de la página
-        __( 'WP Canje Cupon', 'wp-cupon-whatsapp' ), // Título del menú
+        'WP Canje Cupon', // Título de la página (en inglés)
+        'WP Canje Cupon', // Título del menú (en inglés)
         'manage_options',                         // Capacidad requerida (Superadmin)
         'wpcw-main-menu',                         // Slug del menú (para identificarlo)
         'wpcw_render_plugin_settings_page',       // NUEVO CALLBACK
@@ -30,8 +30,8 @@ function wpcw_register_plugin_admin_menu() {
     // y un slug diferente a estadísticas. Por ahora, la página principal es un placeholder.
     add_submenu_page(
         'wpcw-main-menu',                         // Slug del menú padre
-        __( 'Estadísticas Generales', 'wp-cupon-whatsapp' ), // Título de la página
-        __( 'Estadísticas', 'wp-cupon-whatsapp' ),    // Título del submenú
+        'Estadísticas Generales', // Título de la página (en inglés)
+        'Estadísticas',    // Título del submenú (en inglés)
         'manage_options',                         // Capacidad requerida (Superadmin)
         'wpcw-stats',                             // Slug de este submenú
         'wpcw_render_superadmin_stats_page_content_wrapper' // Callback para el contenido (definida en admin/stats-page.php)
