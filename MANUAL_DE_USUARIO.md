@@ -28,15 +28,17 @@ Una vez activado, el plugin añade un nuevo menú a tu panel de administración 
 
 ### ¿Dónde encontrar el menú?
 
-Busca en la barra lateral izquierda de tu panel de administración un menú principal llamado **"WP Canje Cupon"**.
+Busca en la barra lateral izquierda de tu panel de administración un menú principal llamado **"WP Cupón WhatsApp"**. Toda la gestión del plugin está ahora centralizada aquí.
 
-![Descripción textual de una captura de pantalla del menú de WordPress, resaltando "WP Canje Cupon"](https://via.placeholder.com/300x400.png?text=Menú+de+WordPress\n\nDashboard\nPosts\nMedia\n...\n**WP+Canje+Cupon**\nWooCommerce\nElementor\n...)
+![Descripción textual de una captura de pantalla del menú de WordPress, resaltando "WP Cupón WhatsApp" con sus submenús](https://via.placeholder.com/300x500.png?text=Menú+de+WordPress\n\nDashboard\nPosts\n...\n**WP+Cupón+WhatsApp**\n  - Escritorio\n  - Solicitudes\n  - Comercios\n  - Instituciones\n  - Estadísticas\n  - Ajustes\nWooCommerce\n...)
 
-Al hacer clic directamente en **"WP Canje Cupon"**, accederás a la página de **Ajustes Generales**.
-
-Los submenús que pueden aparecer dentro (dependiendo de tu rol de usuario) son:
-*   **Estadísticas:** Para administradores.
-*   **Mis Estadísticas:** Para usuarios con rol de "Comercio" o "Institución".
+Los submenús que encontrarás son:
+*   **Escritorio:** Página de bienvenida con accesos rápidos a las funciones principales.
+*   **Solicitudes:** Muestra todas las solicitudes de adhesión de comercios e instituciones pendientes de revisión.
+*   **Comercios:** Muestra el listado de comercios aprobados.
+*   **Instituciones:** Muestra el listado de instituciones aprobadas.
+*   **Estadísticas:** Muestra las estadísticas generales de canjes y uso del plugin.
+*   **Ajustes:** Página para la configuración general del plugin (reCAPTCHA, campos obligatorios, utilidades).
 
 ### ¿Qué hacer si no ves el menú "WP Canje Cupon"?
 
@@ -50,9 +52,9 @@ Si el menú no aparece, sigue estos pasos en orden:
 
 ## 4. Configuración General
 
-Para configurar el plugin, haz clic en el menú principal **"WP Canje Cupon"**.
+Para configurar el plugin, ve a **WP Cupón WhatsApp > Ajustes**.
 
-En esta pantalla de **Ajustes**, encontrarás varias secciones:
+En esta pantalla encontrarás varias secciones:
 
 *   **Ajustes de Google reCAPTCHA v2:** Si quieres proteger tus formularios de spam, obtén tus claves de Google reCAPTCHA y pégalas aquí. Esto afectará al formulario de adhesión.
 *   **Campos de Cliente Obligatorios:** Marca estas casillas para hacer que campos como DNI o WhatsApp sean obligatorios en el perfil de usuario de WooCommerce.
@@ -80,10 +82,9 @@ Los cupones se gestionan desde el menú estándar de WooCommerce.
 
 Cuando un comercio o institución llena el formulario de adhesión, se crea una nueva solicitud que debes aprobar.
 
-1.  Ve a **Cupones WPCW > Comercios** o **Cupones WPCW > Instituciones**.
-2.  Encontrarás submenús para ver el listado de "Solicitudes de Adhesión".
-3.  Haz clic en una solicitud para ver los detalles.
-4.  En la página de edición de la solicitud, encontrarás un cuadro llamado **"Acciones de Solicitud"**. Aquí puedes cambiar el estado a "Aprobada" para aceptar al comercio/institución.
+1.  Ve a **WP Cupón WhatsApp > Solicitudes**. Esto te llevará al listado de todas las solicitudes pendientes y gestionadas.
+2.  Haz clic en una solicitud para ver los detalles.
+3.  En la página de edición de la solicitud, encontrarás un cuadro llamado **"Acciones de Solicitud"**. Aquí puedes cambiar el estado a "Aprobada" para aceptar al comercio/institución. Al aprobar, el usuario asociado recibirá el rol correcto y se creará una entrada en "Comercios" o "Instituciones".
 
 ---
 

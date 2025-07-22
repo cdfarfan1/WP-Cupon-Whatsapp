@@ -13,71 +13,96 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registers the admin menu pages for the WPCW plugin.
  */
 function wpcw_register_plugin_admin_menu() {
-    // Menú Principal del Plugin
+    // Menú Principal Unificado
     add_menu_page(
-        'WP Canje Cupon', // Título de la página (en inglés)
-        'WP Canje Cupon', // Título del menú (en inglés)
-        'manage_options',                         // Capacidad requerida (Superadmin)
-        'wpcw-main-menu',                         // Slug del menú (para identificarlo)
-        'wpcw_render_plugin_settings_page',       // NUEVO CALLBACK
-        'dashicons-tickets-alt',                  // Icono (Dashicon)
-        30                                        // Posición en el menú
+        'WP Cupón WhatsApp',
+        'WP Cupón WhatsApp',
+        'manage_options',
+        'wpcw-main-menu',
+        'wpcw_render_dashboard_page', // Nueva página de bienvenida/dashboard
+        'dashicons-tickets-alt',
+        30
     );
 
-    // Submenú para Estadísticas Generales (Superadmin)
-    // Este submenú usará el mismo slug que el menú principal para que la página principal sea la de estadísticas.
-    // O, si queremos una página de bienvenida separada, le damos un slug diferente a la principal
-    // y un slug diferente a estadísticas. Por ahora, la página principal es un placeholder.
+    // Submenú: Escritorio (usa el mismo slug que el principal para ser la página por defecto)
     add_submenu_page(
-        'wpcw-main-menu',                         // Slug del menú padre
-        'Estadísticas Generales', // Título de la página (en inglés)
-        'Estadísticas',    // Título del submenú (en inglés)
-        'manage_options',                         // Capacidad requerida (Superadmin)
-        'wpcw-stats',                             // Slug de este submenú
-        'wpcw_render_superadmin_stats_page_content_wrapper' // Callback para el contenido (definida en admin/stats-page.php)
-        // Posición (opcional, por defecto al final)
+        'wpcw-main-menu',
+        'Escritorio',
+        'Escritorio',
+        'manage_options',
+        'wpcw-main-menu', // Slug del padre para que sea la página principal
+        'wpcw_render_dashboard_page'
     );
 
-    // Futuros submenús (Ajustes, etc.) se añadirán aquí.
-    // add_submenu_page(
-    //     'wpcw-main-menu',
-    //     __( 'Ajustes WPCW', 'wp-cupon-whatsapp' ),
-    //     __( 'Ajustes', 'wp-cupon-whatsapp' ),
-    //     'manage_options', // Capacidad para la página de ajustes
-    //     'wpcw-settings',
-    //     'wpcw_render_settings_page_content'
-    // );
-
-    // TODO: Añadir submenús para Comercios e Instituciones para que vean sus propias estadísticas
-    // if ( current_user_can('wpcw_business_owner_cap') ) { // Asumiendo una cap específica
-    //     add_menu_page( ... 'wpcw-comercio-stats' ... 'wpcw_render_comercio_stats_page');
-    // }
-
-    // Submenú para Estadísticas del Comercio (wpcw_business_owner)
+    // Submenú: Ajustes
     add_submenu_page(
-        'wpcw-main-menu',                         // Slug del menú padre
-        __( 'Estadísticas de Mi Comercio', 'wp-cupon-whatsapp' ), // Título de la página
-        __( 'Mis Estadísticas', 'wp-cupon-whatsapp' ),    // Título del submenú (lo que ve el rol)
-        'wpcw_view_own_business_stats',           // Capacidad requerida (definida en roles.php)
-        'wpcw-business-stats',                    // Slug de este submenú
-        'wpcw_render_business_stats_page_content_wrapper' // Callback (definida en admin/business-stats-page.php)
+        'wpcw-main-menu',
+        'Ajustes',
+        'Ajustes',
+        'manage_options',
+        'wpcw-settings', // Nuevo slug para la página de ajustes
+        'wpcw_render_plugin_settings_page'
     );
 
-    // Submenú para Estadísticas de la Institución (wpcw_institution_manager)
+    // Submenú: Estadísticas Generales (para Superadmin)
     add_submenu_page(
-        'wpcw-main-menu',                         // Slug del menú padre
-        __( 'Estadísticas de Mi Institución', 'wp-cupon-whatsapp' ), // Título de la página
-        __( 'Mis Estadísticas', 'wp-cupon-whatsapp' ),    // Título del submenú (mismo que para comercio, se muestra según rol/cap)
-        'wpcw_view_own_institution_stats',        // Capacidad requerida (definida en roles.php)
-        'wpcw-institution-stats',                 // Slug de este submenú
-        'wpcw_render_institution_stats_page_content_wrapper' // Callback (a definir su wrapper y la función real)
+        'wpcw-main-menu',
+        'Estadísticas Generales',
+        'Estadísticas',
+        'manage_options',
+        'wpcw-stats',
+        'wpcw_render_superadmin_stats_page_content_wrapper'
     );
+
+    // Menús para roles específicos (Comercio, Institución)
+    // Estos se mostrarán como menús de nivel superior solo para esos roles.
+    if ( current_user_can('wpcw_view_own_business_stats') && !current_user_can('manage_options') ) {
+        add_menu_page(
+            'Mis Estadísticas',
+            'Mis Estadísticas',
+            'wpcw_view_own_business_stats',
+            'wpcw-business-stats',
+            'wpcw_render_business_stats_page_content_wrapper',
+            'dashicons-chart-line',
+            31
+        );
+    }
+
+    if ( current_user_can('wpcw_view_own_institution_stats') && !current_user_can('manage_options') ) {
+        add_menu_page(
+            'Mis Estadísticas',
+            'Mis Estadísticas',
+            'wpcw_view_own_institution_stats',
+            'wpcw-institution-stats',
+            'wpcw_render_institution_stats_page_content_wrapper',
+            'dashicons-chart-bar',
+            31
+        );
+    }
 }
 add_action( 'admin_menu', 'wpcw_register_plugin_admin_menu' );
 
-// La función wpcw_render_main_admin_page_placeholder() ya no es necesaria,
-// ya que la página principal del menú será la página de Ajustes.
-// Su definición será eliminada.
+/**
+ * Renderiza la nueva página del Escritorio.
+ */
+function wpcw_render_dashboard_page() {
+    ?>
+    <div class="wrap">
+        <h1><?php echo esc_html__( 'Bienvenido a WP Cupón WhatsApp', 'wp-cupon-whatsapp' ); ?></h1>
+        <p><?php echo esc_html__( 'Gestiona tus cupones, solicitudes y configuraciones desde un solo lugar.', 'wp-cupon-whatsapp' ); ?></p>
+
+        <h2><?php echo esc_html__( 'Accesos Rápidos', 'wp-cupon-whatsapp' ); ?></h2>
+        <ul style="list-style-type: disc; padding-left: 20px;">
+            <li><a href="<?php echo admin_url('edit.php?post_type=wpcw_application'); ?>"><?php echo esc_html__( 'Ver Todas las Solicitudes de Adhesión', 'wp-cupon-whatsapp' ); ?></a></li>
+            <li><a href="<?php echo admin_url('edit.php?post_type=wpcw_business'); ?>"><?php echo esc_html__( 'Gestionar Comercios', 'wp-cupon-whatsapp' ); ?></a></li>
+            <li><a href="<?php echo admin_url('edit.php?post_type=wpcw_institution'); ?>"><?php echo esc_html__( 'Gestionar Instituciones', 'wp-cupon-whatsapp' ); ?></a></li>
+            <li><a href="<?php echo admin_url('admin.php?page=wpcw-stats'); ?>"><?php echo esc_html__( 'Ver Estadísticas', 'wp-cupon-whatsapp' ); ?></a></li>
+            <li><a href="<?php echo admin_url('admin.php?page=wpcw-settings'); ?>"><?php echo esc_html__( 'Ir a Ajustes', 'wp-cupon-whatsapp' ); ?></a></li>
+            <li><a href="<?php echo admin_url('post-new.php?post_type=shop_coupon'); ?>" target="_blank"><?php echo esc_html__( 'Crear un Nuevo Cupón (en WooCommerce)', 'wp-cupon-whatsapp' ); ?></a></li>
+        </ul>
+    </div>
+    <?php
+}
 
 /**
  * Wrapper function for rendering the superadmin stats page.
