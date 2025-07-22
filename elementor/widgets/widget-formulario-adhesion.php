@@ -76,23 +76,23 @@ class WPCW_Elementor_Formulario_Adhesion_Widget extends \Elementor\Widget_Base {
 		);
 
         $fields = [
-            'wpcw_fantasy_name' => esc_html__( 'Nombre de Fantasía', 'wp-cupon-whatsapp' ),
-            'wpcw_legal_name' => esc_html__( 'Nombre Legal', 'wp-cupon-whatsapp' ),
-            'wpcw_cuit' => esc_html__( 'CUIT', 'wp-cupon-whatsapp' ),
-            'wpcw_contact_person' => esc_html__( 'Persona de Contacto', 'wp-cupon-whatsapp' ),
-            'wpcw_email' => esc_html__( 'Email de Contacto', 'wp-cupon-whatsapp' ),
-            'wpcw_whatsapp' => esc_html__( 'Número de WhatsApp', 'wp-cupon-whatsapp' ),
-            'wpcw_address_main' => esc_html__( 'Dirección Principal', 'wp-cupon-whatsapp' ),
-            'wpcw_description' => esc_html__( 'Descripción del Negocio/Institución', 'wp-cupon-whatsapp' ),
+            'wpcw_fantasy_name' => 'Nombre de Fantasía',
+            'wpcw_legal_name' => 'Nombre Legal',
+            'wpcw_cuit' => 'CUIT',
+            'wpcw_contact_person' => 'Persona de Contacto',
+            'wpcw_email' => 'Email de Contacto',
+            'wpcw_whatsapp' => 'Número de WhatsApp',
+            'wpcw_address_main' => 'Dirección Principal',
+            'wpcw_description' => 'Descripción del Negocio/Institución',
         ];
 
-        foreach ($fields as $key => $default_label) {
+        foreach ($fields as $key => $default_label_text) {
             $this->add_control(
                 'label_' . $key,
                 [
-                    'label' => sprintf(esc_html__( 'Etiqueta: %s', 'wp-cupon-whatsapp' ), $default_label),
+                    'label' => sprintf(esc_html__( 'Etiqueta: %s', 'wp-cupon-whatsapp' ), esc_html__( $default_label_text, 'wp-cupon-whatsapp' )),
                     'type' => \Elementor\Controls_Manager::TEXT,
-                    'default' => $default_label,
+                    'default' => esc_html__( $default_label_text, 'wp-cupon-whatsapp' ),
                     'dynamic' => [ 'active' => true ],
                 ]
             );
