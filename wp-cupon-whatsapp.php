@@ -72,27 +72,27 @@ function wpcw_check_dependencies() {
     // Verificar PHP version
     if (version_compare(PHP_VERSION, WPCW_MIN_PHP_VERSION, '<')) {
         $dependency_errors[] = sprintf(
-            __('PHP %s o superior', 'wp-cupon-whatsapp'),
+            'PHP %s o superior',
             WPCW_MIN_PHP_VERSION
         );
     }
 
     // Verificar WooCommerce
     if (!class_exists('WooCommerce')) {
-        $dependency_errors[] = __('WooCommerce instalado y activado', 'wp-cupon-whatsapp');
+        $dependency_errors[] = 'WooCommerce instalado y activado';
     } elseif (version_compare(WC_VERSION, WPCW_MIN_WOOCOMMERCE_VERSION, '<')) {
         $dependency_errors[] = sprintf(
-            __('WooCommerce %s o superior', 'wp-cupon-whatsapp'),
+            'WooCommerce %s o superior',
             WPCW_MIN_WOOCOMMERCE_VERSION
         );
     }
 
     // Verificar Elementor
     if (!did_action('elementor/loaded')) {
-        $dependency_errors[] = __('Elementor instalado y activado', 'wp-cupon-whatsapp');
+        $dependency_errors[] = 'Elementor instalado y activado';
     } elseif (defined('ELEMENTOR_VERSION') && version_compare(ELEMENTOR_VERSION, WPCW_MIN_ELEMENTOR_VERSION, '<')) {
         $dependency_errors[] = sprintf(
-            __('Elementor %s o superior', 'wp-cupon-whatsapp'),
+            'Elementor %s o superior',
             WPCW_MIN_ELEMENTOR_VERSION
         );
     }
@@ -102,7 +102,7 @@ function wpcw_check_dependencies() {
             ?>
             <div class="error">
                 <p>
-                    <strong><?php _e('WP Canje Cupón WhatsApp requiere:', 'wp-cupon-whatsapp'); ?></strong>
+                    <strong><?php echo esc_html('WP Canje Cupón WhatsApp requiere:'); ?></strong>
                     <ul style="list-style-type: disc; margin-left: 20px;">
                         <?php foreach ($dependency_errors as $error) : ?>
                             <li><?php echo esc_html($error); ?></li>
@@ -142,9 +142,7 @@ foreach ($core_files as $file) {
 register_activation_hook(__FILE__, function() {
     if (!wpcw_check_dependencies()) {
         deactivate_plugins(plugin_basename(__FILE__));
-        wp_die(
-            esc_html__('Por favor, verifica los requisitos del plugin antes de activarlo.', 'wp-cupon-whatsapp')
-        );
+        wp_die('Por favor, verifica los requisitos del plugin antes de activarlo.');
     }
     
     if (class_exists('WPCW_Installer')) {
@@ -179,7 +177,7 @@ if (version_compare(get_bloginfo('version'), WPCW_MIN_WP_VERSION, '<')) {
     add_action('admin_notices', function() {
         ?>
         <div class="error">
-            <p><?php printf(__('WP Canje Cupón WhatsApp requiere WordPress %s o superior.', 'wp-cupon-whatsapp'), WPCW_MIN_WP_VERSION); ?></p>
+            <p><?php echo sprintf('WP Canje Cupón WhatsApp requiere WordPress %s o superior.', WPCW_MIN_WP_VERSION); ?></p>
         </div>
         <?php
     });
@@ -216,7 +214,7 @@ function wpcw_activate_plugin() {
     if (version_compare(PHP_VERSION, WPCW_MIN_PHP_VERSION, '<')) {
         deactivate_plugins(plugin_basename(__FILE__));
         wp_die(sprintf(
-            __('WP Canje Cupón WhatsApp requiere PHP %s o superior.', 'wp-cupon-whatsapp'),
+            'WP Canje Cupón WhatsApp requiere PHP %s o superior.',
             WPCW_MIN_PHP_VERSION
         ));
     }
@@ -225,7 +223,7 @@ function wpcw_activate_plugin() {
     if (version_compare(get_bloginfo('version'), WPCW_MIN_WP_VERSION, '<')) {
         deactivate_plugins(plugin_basename(__FILE__));
         wp_die(sprintf(
-            __('WP Canje Cupón WhatsApp requiere WordPress %s o superior.', 'wp-cupon-whatsapp'),
+            'WP Canje Cupón WhatsApp requiere WordPress %s o superior.',
             WPCW_MIN_WP_VERSION
         ));
     }
@@ -233,14 +231,14 @@ function wpcw_activate_plugin() {
     // Verificar WooCommerce
     if (!class_exists('WooCommerce')) {
         deactivate_plugins(plugin_basename(__FILE__));
-        wp_die(__('WP Canje Cupón WhatsApp requiere que WooCommerce esté instalado y activado.', 'wp-cupon-whatsapp'));
+        wp_die('WP Canje Cupón WhatsApp requiere que WooCommerce esté instalado y activado.');
     }
     
     // Verificar versión de WooCommerce
     if (defined('WC_VERSION') && version_compare(WC_VERSION, WPCW_MIN_WOOCOMMERCE_VERSION, '<')) {
         deactivate_plugins(plugin_basename(__FILE__));
         wp_die(sprintf(
-            __('WP Canje Cupón WhatsApp requiere WooCommerce %s o superior.', 'wp-cupon-whatsapp'),
+            'WP Canje Cupón WhatsApp requiere WooCommerce %s o superior.',
             WPCW_MIN_WOOCOMMERCE_VERSION
         ));
     }
@@ -248,14 +246,14 @@ function wpcw_activate_plugin() {
     if (version_compare(get_bloginfo('version'), WPCW_MIN_WP_VERSION, '<')) {
         deactivate_plugins(plugin_basename(__FILE__));
         wp_die(sprintf(
-            __('WP Canje Cupón WhatsApp requiere WordPress %s o superior.', 'wp-cupon-whatsapp'),
+            'WP Canje Cupón WhatsApp requiere WordPress %s o superior.',
             WPCW_MIN_WP_VERSION
         ));
     }
 
     if (!class_exists('WooCommerce')) {
         deactivate_plugins(plugin_basename(__FILE__));
-        wp_die(__('WP Canje Cupón WhatsApp requiere que WooCommerce esté instalado y activado.', 'wp-cupon-whatsapp'));
+        wp_die('WP Canje Cupón WhatsApp requiere que WooCommerce esté instalado y activado.');
     }
 
     // Include required files
@@ -274,7 +272,7 @@ function wpcw_activate_plugin() {
         add_action('admin_notices', function() {
             ?>
             <div class="error">
-                <p><?php _e('Error: No se pudo crear la tabla de canjes. Por favor, revise los permisos de la base de datos.', 'wp-cupon-whatsapp'); ?></p>
+                <p><?php echo esc_html('Error: No se pudo crear la tabla de canjes. Por favor, revise los permisos de la base de datos.'); ?></p>
             </div>
             <?php
         });
@@ -324,7 +322,7 @@ function wpcw_check_woocommerce() {
         add_action('admin_notices', function() {
             ?>
             <div class="error">
-                <p><?php _e('WP Cupón WhatsApp requiere que WooCommerce esté instalado y activado.', 'wp-cupon-whatsapp'); ?></p>
+                <p><?php echo esc_html('WP Cupón WhatsApp requiere que WooCommerce esté instalado y activado.'); ?></p>
             </div>
             <?php
         });
@@ -335,7 +333,7 @@ function wpcw_check_woocommerce() {
         add_action('admin_notices', function() {
             ?>
             <div class="error">
-                <p><?php printf(__('WP Cupón WhatsApp requiere WooCommerce %s o superior.', 'wp-cupon-whatsapp'), WPCW_MIN_WOOCOMMERCE_VERSION); ?></p>
+                <p><?php echo sprintf('WP Cupón WhatsApp requiere WooCommerce %s o superior.', WPCW_MIN_WOOCOMMERCE_VERSION); ?></p>
             </div>
             <?php
         });
@@ -378,7 +376,7 @@ foreach ($core_files as $file) {
         add_action('admin_notices', function() use ($file) {
             ?>
             <div class="error">
-                <p><?php printf(__('WP Canje Cupón WhatsApp: Archivo core no encontrado: %s', 'wp-cupon-whatsapp'), $file); ?></p>
+                <p><?php echo sprintf('WP Canje Cupón WhatsApp: Archivo core no encontrado: %s', $file); ?></p>
             </div>
             <?php
         });
@@ -431,7 +429,7 @@ if (did_action('elementor/loaded')) {
         add_action('admin_notices', function() {
             ?>
             <div class="error">
-                <p><?php printf(__('WP Canje Cupón WhatsApp requiere Elementor %s o superior para sus widgets.', 'wp-cupon-whatsapp'), WPCW_MIN_ELEMENTOR_VERSION); ?></p>
+                <p><?php echo sprintf('WP Canje Cupón WhatsApp requiere Elementor %s o superior para sus widgets.', WPCW_MIN_ELEMENTOR_VERSION); ?></p>
             </div>
             <?php
         });
@@ -518,8 +516,8 @@ function wpcw_public_enqueue_scripts_styles() {
                     'ajax_url' => admin_url('admin-ajax.php'), // URL para peticiones AJAX
                     'nonce'    => wp_create_nonce('wpcw_request_canje_action_nonce'), // Nonce para la acción específica
                     // Se pueden añadir más datos aquí si son necesarios, como mensajes traducibles.
-                    'text_processing' => __('Procesando...', 'wp-cupon-whatsapp'),
-                    'text_error_generic' => __('Ocurrió un error. Por favor, inténtalo de nuevo.', 'wp-cupon-whatsapp'),
+                    'text_processing' => 'Procesando...',
+                    'text_error_generic' => 'Ocurrió un error. Por favor, inténtalo de nuevo.',
                 )
             );
         }
