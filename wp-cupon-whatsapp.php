@@ -447,6 +447,9 @@ if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/canjes-page.php';
     require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
     require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
+    
+    // Register admin menu
+    add_action('admin_menu', 'wpcw_register_plugin_admin_menu');
 }
 
 /**
