@@ -90,37 +90,38 @@ require_once WPCW_PLUGIN_DIR . 'includes/roles.php';
 // Include customer fields
 require_once WPCW_PLUGIN_DIR . 'includes/customer-fields.php';
 // Include reCAPTCHA integration
-require_once WPCW_PLUGIN_DIR . 'includes/recaptcha-integration.php';
+// require_once WPCW_PLUGIN_DIR . 'includes/recaptcha-integration.php';
 // Include application processing
-require_once WPCW_PLUGIN_DIR . 'includes/application-processing.php';
+// require_once WPCW_PLUGIN_DIR . 'includes/application-processing.php';
 // Include AJAX handlers
-require_once WPCW_PLUGIN_DIR . 'includes/ajax-handlers.php';
+// require_once WPCW_PLUGIN_DIR . 'includes/ajax-handlers.php';
 // Include REST API endpoints
-require_once WPCW_PLUGIN_DIR . 'includes/rest-api.php';
+// require_once WPCW_PLUGIN_DIR . 'includes/rest-api.php';
 // Include redemption logic
-require_once WPCW_PLUGIN_DIR . 'includes/redemption-logic.php';
+// require_once WPCW_PLUGIN_DIR . 'includes/redemption-logic.php';
 // Include statistics functions
-require_once WPCW_PLUGIN_DIR . 'includes/stats-functions.php';
+// require_once WPCW_PLUGIN_DIR . 'includes/stats-functions.php';
 // Include export functions
-require_once WPCW_PLUGIN_DIR . 'includes/export-functions.php';
+// require_once WPCW_PLUGIN_DIR . 'includes/export-functions.php';
 // Include public shortcodes
 require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
 // Include My Account endpoint functions
 require_once WPCW_PLUGIN_DIR . 'public/my-account-endpoints.php';
 
 // Elementor Addon
+/*
 if ( did_action( 'elementor/loaded' ) ) { // Check if Elementor is loaded
     require_once WPCW_PLUGIN_DIR . 'elementor/elementor-addon.php';
 }
-
+*/
 
 // Admin specific includes
 if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
     require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php';
-    require_once WPCW_PLUGIN_DIR . 'admin/stats-page.php';
-    require_once WPCW_PLUGIN_DIR . 'admin/business-stats-page.php';
-    require_once WPCW_PLUGIN_DIR . 'admin/institution-stats-page.php';
+    // require_once WPCW_PLUGIN_DIR . 'admin/stats-page.php';
+    // require_once WPCW_PLUGIN_DIR . 'admin/business-stats-page.php';
+    // require_once WPCW_PLUGIN_DIR . 'admin/institution-stats-page.php';
     require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
     // Futuras inclusiones específicas de admin podrían ir aquí también.
 }
