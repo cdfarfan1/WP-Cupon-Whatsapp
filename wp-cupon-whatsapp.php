@@ -439,6 +439,7 @@ if (did_action('elementor/loaded')) {
 
 // Admin specific includes
 if ( is_admin() ) {
+    error_log('WPCW: Entrando en sección admin, cargando archivos...');
     require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
     require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php';
     require_once WPCW_PLUGIN_DIR . 'admin/stats-page.php';
@@ -447,9 +448,16 @@ if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/canjes-page.php';
     require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
     require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
+    error_log('WPCW: Archivos admin cargados correctamente');
+    
+    // DIAGNÓSTICO TEMPORAL - incluir archivo de diagnóstico
+    require_once WPCW_PLUGIN_DIR . 'diagnostico-temp.php';
+    error_log('WPCW: Archivo de diagnóstico cargado');
     
     // Register admin menu
+    error_log('WPCW: Registrando hook admin_menu...');
     add_action('admin_menu', 'wpcw_register_plugin_admin_menu');
+    error_log('WPCW: Hook admin_menu registrado');
 }
 
 /**
