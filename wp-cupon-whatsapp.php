@@ -17,6 +17,9 @@ if (!defined('WPINC')) {
     die;
 }
 
+// DIAGNÓSTICO: Log que el plugin se está cargando
+error_log('WPCW: Plugin iniciando carga...');
+
 // Define constants first
 define('WPCW_VERSION', '1.2.0');
 define('WPCW_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -454,8 +457,34 @@ if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'diagnostico-temp.php';
     error_log('WPCW: Archivo de diagnóstico cargado');
     
-    // Register admin menu
-    error_log('WPCW: Registrando hook admin_menu...');
+    // Register admin menu DIRECTAMENTE AQUÍ - método alternativo
+    error_log('WPCW: Registrando hook admin_menu DIRECTO...');
+    add_action('admin_menu', function() {
+        error_log('WPCW: Hook admin_menu DIRECTO ejecutándose');
+        
+        if (!current_user_can('manage_options')) {
+            error_log('WPCW: Usuario sin permisos en hook directo');
+            return;
+        }
+        
+        // Menú directo simple
+        $result = add_menu_page(
+            'WPCW Gestión',
+            'WPCW GESTIÓN',
+            'manage_options',
+            'wpcw-directo',
+            function() {
+                echo '<div class="wrap"><h1>MENÚ DIRECTO FUNCIONANDO!</h1><p>Este menú se registra directamente desde wp-cupon-whatsapp.php</p></div>';
+            },
+            'dashicons-admin-tools',
+            25
+        );
+        
+        error_log('WPCW: Resultado menú directo: ' . ($result ? 'ÉXITO' : 'FALLÓ'));
+    });
+    
+    // Register admin menu ORIGINAL
+    error_log('WPCW: Registrando hook admin_menu original...');
     add_action('admin_menu', 'wpcw_register_plugin_admin_menu');
     error_log('WPCW: Hook admin_menu registrado');
 }
