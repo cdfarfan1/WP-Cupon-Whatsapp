@@ -13,6 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registers the admin menu pages for the WPCW plugin.
  */
 function wpcw_register_plugin_admin_menu() {
+    // Diagnostic Logger
+    if ( defined('WP_DEBUG_LOG') && WP_DEBUG_LOG === true ) {
+        error_log('WPCW DEBUG: La función wpcw_register_plugin_admin_menu() se ha ejecutado.');
+    }
+
     // Menú Principal Unificado
     add_menu_page(
         'WP Cupón WhatsApp',
