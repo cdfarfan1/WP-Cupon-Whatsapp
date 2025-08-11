@@ -16,6 +16,11 @@ if (!defined('WPINC')) {
  * @return string Número formateado para WhatsApp
  */
 function wpcw_format_whatsapp_number($phone_number) {
+    // Verificar si el número es null o vacío
+    if (empty($phone_number) || !is_string($phone_number)) {
+        return '';
+    }
+    
     // Eliminar todos los caracteres no numéricos
     $clean_number = preg_replace('/\D/', '', $phone_number);
     
@@ -90,6 +95,11 @@ function wpcw_get_canje_whatsapp_link($canje_data) {
  * @return boolean
  */
 function wpcw_validate_whatsapp_number($phone_number) {
+    // Verificar si el número es null o vacío
+    if (empty($phone_number) || !is_string($phone_number)) {
+        return false;
+    }
+    
     $clean_number = wpcw_format_whatsapp_number($phone_number);
     
     // Verificar longitud mínima (código país + número)

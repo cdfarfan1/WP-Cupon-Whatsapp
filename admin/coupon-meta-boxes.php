@@ -396,7 +396,7 @@ function wpcw_save_meta_box($post_id) {
 
     // Procesar cada campo
     foreach ($fields as $meta_key => $field) {
-        $field_name = str_replace('_', '', $meta_key);
+        $field_name = str_replace('_', '', (string) $meta_key);
         $old_value = get_post_meta($post_id, $meta_key, true);
         $new_value = wpcw_process_field_value($field_name, $field['type']);
 

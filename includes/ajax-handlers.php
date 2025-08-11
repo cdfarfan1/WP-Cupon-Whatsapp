@@ -101,7 +101,7 @@ function wpcw_request_canje_handler() {
         wp_send_json_error( array( 'message' => __( 'No tienes un número de WhatsApp configurado en tu perfil. Por favor, actualízalo para poder canjear cupones.', 'wp-cupon-whatsapp' ) ) );
     }
     // Limpiar el número de WhatsApp (quitar +, espacios, etc. para URL wa.me)
-    $cliente_whatsapp_cleaned = preg_replace( '/[^0-9]/', '', $cliente_whatsapp );
+    $cliente_whatsapp_cleaned = preg_replace( '/[^0-9]/', '', (string) $cliente_whatsapp );
 
 
     // 5. Generar token_confirmacion

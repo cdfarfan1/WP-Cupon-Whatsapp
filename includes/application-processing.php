@@ -143,7 +143,7 @@ function wpcw_handle_approved_application( $application_id ) {
     // Generar un nombre de usuario único basado en el email
     $base_user_login = sanitize_title(explode('@', $email)[0]); // Tomar la parte antes del @ del email
     if (empty($base_user_login)) { // Fallback si el email es extraño o vacío (aunque ya validado)
-        $base_user_login = sanitize_title($contact_person ? str_replace(' ', '', $contact_person) : str_replace(' ', '', $fantasy_name));
+        $base_user_login = sanitize_title($contact_person ? str_replace(' ', '', (string) $contact_person) : str_replace(' ', '', (string) $fantasy_name));
     }
     if (empty($base_user_login)) { // Fallback extremo
         $base_user_login = 'user' . $application_id;

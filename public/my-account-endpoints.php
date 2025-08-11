@@ -204,7 +204,7 @@ if ( ! function_exists( 'wpcw_get_displayable_canje_status' ) ) {
             'cancelado_por_admin'       => __( 'Cancelado por Administrador', 'wp-cupon-whatsapp' ),
             'vencido'                   => __( 'Vencido', 'wp-cupon-whatsapp' ),
         );
-        return isset( $statuses[$status_key] ) ? $statuses[$status_key] : ucwords( str_replace( '_', ' ', $status_key ) );
+        return isset( $statuses[$status_key] ) ? $statuses[$status_key] : ucwords( str_replace( '_', ' ', (string) $status_key ) );
     }
 }
 

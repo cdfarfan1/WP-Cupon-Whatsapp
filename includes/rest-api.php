@@ -169,7 +169,7 @@ function wpcw_handle_redemption_confirmation_request( WP_REST_Request $request )
     }
 
     $cliente_whatsapp = get_user_meta( $cliente_id, '_wpcw_whatsapp_number', true );
-    $cliente_whatsapp_cleaned = preg_replace( '/[^0-9]/', '', $cliente_whatsapp );
+    $cliente_whatsapp_cleaned = preg_replace( '/[^0-9]/', '', (string) $cliente_whatsapp );
 
     $html_title = __('¡Canje Confirmado Exitosamente!', 'wp-cupon-whatsapp');
     $page_content = '<h1>' . esc_html($html_title) . '</h1>';

@@ -26,7 +26,7 @@ class WPCW_Redemption_Handler {
         }
 
         // 3. Limpieza del número de WhatsApp para wa.me
-        $whatsapp_cleaned = preg_replace('/[^0-9]/', '', $whatsapp);
+        $whatsapp_cleaned = preg_replace('/[^0-9]/', '', (string) $whatsapp);
 
         // 4. Generación de token y número de canje
         $token = wp_generate_password(32, false);
