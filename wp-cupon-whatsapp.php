@@ -17,8 +17,7 @@ if (!defined('WPINC')) {
     die;
 }
 
-// DIAGNÓSTICO: Log que el plugin se está cargando
-error_log('WPCW: Plugin iniciando carga...');
+// If this file is called directly, abort.
 
 // Define constants first
 define('WPCW_VERSION', '1.2.0');
@@ -445,7 +444,6 @@ if (did_action('elementor/loaded')) {
 
 // Admin specific includes
 if ( is_admin() ) {
-    error_log('WPCW: Entrando en sección admin, cargando archivos...');
     require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
     require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php';
     require_once WPCW_PLUGIN_DIR . 'admin/stats-page.php';
@@ -455,14 +453,7 @@ if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
     require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
     require_once WPCW_PLUGIN_DIR . 'admin/setup-wizard.php';
-    error_log('WPCW: Archivos admin cargados correctamente');
-    
-    // DIAGNÓSTICO TEMPORAL - incluir archivo de diagnóstico
-    require_once WPCW_PLUGIN_DIR . 'debug-menu.php';
-    error_log('WPCW: Archivo de diagnóstico cargado');
-    
-    // El hook admin_menu se registra automáticamente en admin-menu.php
-    error_log('WPCW: admin-menu.php cargado - hook admin_menu se registrará automáticamente');
+    require_once WPCW_PLUGIN_DIR . 'admin/debug-menu.php'; // Incluye el menú de diagnóstico.
 }
 
 /**
