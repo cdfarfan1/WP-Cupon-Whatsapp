@@ -98,4 +98,90 @@ class WPCW_Installer {
         
         return false;
     }
+
+    /**
+     * Create plugin pages if they don't exist
+     */
+    public static function create_pages() {
+        $pages_to_create = array(
+            array(
+                'option_name' => 'wpcw_page_id_mis_cupones',
+                'title'       => __( 'Mis Cupones Disponibles', 'wp-cupon-whatsapp' ),
+                'shortcode'   => '[wpcw_mis_cupones]',
+                'slug'        => 'mis-cupones-wpcw'
+            ),
+            array(
+                'option_name' => 'wpcw_page_id_cupones_publicos',
+                'title'       => __( 'Cupones Públicos', 'wp-cupon-whatsapp' ),
+                'shortcode'   => '[wpcw_cupones_publicos]',
+                'slug'        => 'cupones-publicos-wpcw'
+            ),
+            array(
+                'option_name' => 'wpcw_page_id_formulario_adhesion',
+                'title'       => __( 'Formulario de Adhesión', 'wp-cupon-whatsapp' ),
+                'shortcode'   => '[wpcw_formulario_adhesion]',
+                'slug'        => 'formulario-adhesion-wpcw'
+            ),
+            array(
+                'option_name' => 'wpcw_page_id_canje_cupon',
+                'title'       => __( 'Canje de Cupón', 'wp-cupon-whatsapp' ),
+                'shortcode'   => '[wpcw_canje_cupon]',
+                'slug'        => 'canje-cupon-wpcw'
+            )
+        );
+
+        $created_pages_count = 0;
+        $existing_pages_count = 0;
+        $error_pages_count = 0;
+
+        foreach ( $pages_to_create as $page_config ) {
+            $existing_page_id = get_option( $page_config['option_name'] );
+            
+            // Verificar si la página ya existe y es válida
+            if ( $existing_page_id && get_post_status( $existing_page_id ) !== false ) {
+                $existing_pages_count++;
+                continue;
+            }
+
+            // Crear la nueva página
+            $new_page_data = array(
+                'post_title'   => $page_config['title'],
+                'post_content' => $page_config['shortcode'],
+                'post_status'  => 'publish',
+                'post_type'    => 'page',
+                'post_name'    => $page_config['slug']
+            );
+
+            $new_page_id = wp_insert_post( $new_page_data );
+
+            if ( is_wp_error( $new_page_id ) ) {
+                $error_pages_count++;
+            } else {
+                // Guardar el ID de la página en las opciones
+                update_option( $page_config['option_name'], $new_page_id );
+                $created_pages_count++;
+            }
+        }
+
+        return array(
+            'created' => $created_pages_count,
+            'existing' => $existing_pages_count,
+            'errors' => $error_pages_count,
+            'total' => count( $pages_to_create )
+        );
+    }
+
+    /**
+     * Create pages automatically during plugin activation
+     */
+    public static function auto_create_pages() {
+        // Solo crear páginas automáticamente si no existen
+        $should_create = get_option('wpcw_auto_create_pages', true);
+        
+        if ($should_create) {
+            self::create_pages();
+            // Marcar que ya se ejecutó la creación automática
+            update_option('wpcw_auto_create_pages', false);
+        }
+    }
 }

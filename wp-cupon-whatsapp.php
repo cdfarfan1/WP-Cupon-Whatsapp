@@ -155,6 +155,9 @@ register_activation_hook(__FILE__, function() {
         // Crear tabla de canjes
         WPCW_Installer::create_canjes_table();
         
+        // Crear páginas automáticamente durante la activación
+        WPCW_Installer::auto_create_pages();
+        
         // Registrar roles iniciales
         if (function_exists('wpcw_add_roles')) {
             wpcw_add_roles();
@@ -451,42 +454,15 @@ if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/canjes-page.php';
     require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
     require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
+    require_once WPCW_PLUGIN_DIR . 'admin/setup-wizard.php';
     error_log('WPCW: Archivos admin cargados correctamente');
     
     // DIAGNÓSTICO TEMPORAL - incluir archivo de diagnóstico
-    require_once WPCW_PLUGIN_DIR . 'diagnostico-temp.php';
+    require_once WPCW_PLUGIN_DIR . 'debug-menu.php';
     error_log('WPCW: Archivo de diagnóstico cargado');
     
-    // Register admin menu DIRECTAMENTE AQUÍ - método alternativo
-    error_log('WPCW: Registrando hook admin_menu DIRECTO...');
-    add_action('admin_menu', function() {
-        error_log('WPCW: Hook admin_menu DIRECTO ejecutándose');
-        
-        if (!current_user_can('manage_options')) {
-            error_log('WPCW: Usuario sin permisos en hook directo');
-            return;
-        }
-        
-        // Menú directo simple
-        $result = add_menu_page(
-            'WPCW Gestión',
-            'WPCW GESTIÓN',
-            'manage_options',
-            'wpcw-directo',
-            function() {
-                echo '<div class="wrap"><h1>MENÚ DIRECTO FUNCIONANDO!</h1><p>Este menú se registra directamente desde wp-cupon-whatsapp.php</p></div>';
-            },
-            'dashicons-admin-tools',
-            25
-        );
-        
-        error_log('WPCW: Resultado menú directo: ' . ($result ? 'ÉXITO' : 'FALLÓ'));
-    });
-    
-    // Register admin menu ORIGINAL
-    error_log('WPCW: Registrando hook admin_menu original...');
-    add_action('admin_menu', 'wpcw_register_plugin_admin_menu');
-    error_log('WPCW: Hook admin_menu registrado');
+    // El hook admin_menu se registra automáticamente en admin-menu.php
+    error_log('WPCW: admin-menu.php cargado - hook admin_menu se registrará automáticamente');
 }
 
 /**

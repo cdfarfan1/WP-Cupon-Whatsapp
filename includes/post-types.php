@@ -34,7 +34,8 @@ function wpcw_register_post_types() {
     $business_args = array(
         'labels'             => $business_labels,
         'public'             => true,
-        'show_in_menu'       => 'wpcw-main-menu',
+        'show_in_menu'       => false, // No mostrar en menú automáticamente
+        'show_ui'            => true,  // Pero sí mostrar interfaz
         'menu_position'      => 20,
         'has_archive'        => true,
         'rewrite'            => array( 'slug' => 'wpcw-business' ),
@@ -62,7 +63,8 @@ function wpcw_register_post_types() {
     $institution_args = array(
         'labels'             => $institution_labels,
         'public'             => true,
-        'show_in_menu'       => 'wpcw-main-menu',
+        'show_in_menu'       => false, // No mostrar en menú automáticamente
+        'show_ui'            => true,  // Pero sí mostrar interfaz
         'menu_position'      => 21,
         'has_archive'        => true,
         'rewrite'            => array( 'slug' => 'wpcw-institution' ),
@@ -91,7 +93,7 @@ function wpcw_register_post_types() {
         'labels'             => $application_labels,
         'public'             => false,
         'show_ui'            => true,
-        'show_in_menu'       => 'wpcw-main-menu',
+        'show_in_menu'       => false, // No mostrar en menú automáticamente
         'menu_position'      => 19,
         'rewrite'            => array( 'slug' => 'wpcw-applications' ),
         'supports'           => array( 'title', 'editor', 'custom-fields' ),

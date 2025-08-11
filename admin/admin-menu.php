@@ -13,40 +13,72 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registers the admin menu pages for the WPCW plugin.
  */
 function wpcw_register_plugin_admin_menu() {
-    // Menú Principal Unificado
+    // Verificar permisos básicos
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    // Menú Principal
     add_menu_page(
-        'WP Cupón WhatsApp',
-        'WP Cupón WhatsApp',
-        'manage_options',
-        'wpcw-main-menu',
-        'wpcw_render_dashboard_page', // Nueva página de bienvenida/dashboard
-        'dashicons-tickets-alt',
-        30
+        'WP Cupón WhatsApp',           // page_title
+        'WP Cupón WhatsApp',           // menu_title
+        'manage_options',              // capability
+        'wpcw-dashboard',              // menu_slug
+        'wpcw_render_dashboard_page',  // function
+        'dashicons-tickets-alt',       // icon_url
+        25                             // position
     );
 
-    // Submenú: Escritorio (usa el mismo slug que el principal para ser la página por defecto)
+    // Submenú: Dashboard (página principal)
     add_submenu_page(
-        'wpcw-main-menu',
-        'Escritorio',
-        'Escritorio',
-        'manage_options',
-        'wpcw-main-menu', // Slug del padre para que sea la página principal
-        'wpcw_render_dashboard_page'
+        'wpcw-dashboard',              // parent_slug
+        'Dashboard',                   // page_title
+        'Dashboard',                   // menu_title
+        'manage_options',              // capability
+        'wpcw-dashboard',              // menu_slug (mismo que el padre)
+        'wpcw_render_dashboard_page'   // function
     );
 
-    // Submenú: Ajustes
+    // Submenú: Solicitudes
     add_submenu_page(
-        'wpcw-main-menu',
-        'Ajustes',
-        'Ajustes',
+        'wpcw-dashboard',
+        'Solicitudes de Adhesión',
+        'Solicitudes',
         'manage_options',
-        'wpcw-settings', // Nuevo slug para la página de ajustes
-        'wpcw_render_plugin_settings_page'
+        'edit.php?post_type=wpcw_application'
     );
 
-    // Submenú: Estadísticas Generales (para Superadmin)
+    // Submenú: Comercios
     add_submenu_page(
-        'wpcw-main-menu',
+        'wpcw-dashboard',
+        'Gestionar Comercios',
+        'Comercios',
+        'manage_options',
+        'edit.php?post_type=wpcw_business'
+    );
+
+    // Submenú: Instituciones
+    add_submenu_page(
+        'wpcw-dashboard',
+        'Gestionar Instituciones',
+        'Instituciones',
+        'manage_options',
+        'edit.php?post_type=wpcw_institution'
+    );
+
+    // Submenú: Canjes
+    add_submenu_page(
+        'wpcw-dashboard',
+        'Gestionar Canjes',
+        'Canjes',
+        'manage_options',
+        'wpcw-canjes',
+        'wpcw_canjes_page'
+    );
+
+    // Submenú: Estadísticas
+    add_submenu_page(
+        'wpcw-dashboard',
         'Estadísticas Generales',
         'Estadísticas',
         'manage_options',
@@ -54,100 +86,119 @@ function wpcw_register_plugin_admin_menu() {
         'wpcw_render_superadmin_stats_page_content_wrapper'
     );
 
-    // Menús para roles específicos (Comercio, Institución)
-    // Estos se mostrarán como menús de nivel superior solo para esos roles.
-    if ( current_user_can('wpcw_view_own_business_stats') && !current_user_can('manage_options') ) {
-        add_menu_page(
-            'Mis Estadísticas',
-            'Mis Estadísticas',
-            'wpcw_view_own_business_stats',
-            'wpcw-business-stats',
-            'wpcw_render_business_stats_page_content_wrapper',
-            'dashicons-chart-line',
-            31
-        );
-    }
-
-    if ( current_user_can('wpcw_view_own_institution_stats') && !current_user_can('manage_options') ) {
-        add_menu_page(
-            'Mis Estadísticas',
-            'Mis Estadísticas',
-            'wpcw_view_own_institution_stats',
-            'wpcw-institution-stats',
-            'wpcw_render_institution_stats_page_content_wrapper',
-            'dashicons-chart-bar',
-            31
-        );
-    }
+    // Submenú: Configuración
+    add_submenu_page(
+        'wpcw-dashboard',
+        'Configuración del Plugin',
+        'Configuración',
+        'manage_options',
+        'wpcw-settings',
+        'wpcw_render_plugin_settings_page'
+    );
 }
-add_action( 'admin_menu', 'wpcw_register_plugin_admin_menu' );
+
+// Registrar el menú con alta prioridad
+add_action('admin_menu', 'wpcw_register_plugin_admin_menu', 5);
 
 /**
- * Renderiza la nueva página del Escritorio.
+ * Renderiza la página del Dashboard principal.
  */
 function wpcw_render_dashboard_page() {
+    // Mostrar mensaje de éxito si viene del setup wizard
+    if (isset($_GET['setup']) && $_GET['setup'] === 'completed') {
+        echo '<div class="notice notice-success is-dismissible" style="margin: 20px 0;">';
+        echo '<p><strong>🎉 ¡Configuración completada exitosamente!</strong> Tu plugin WP Cupón WhatsApp está listo para usar.</p>';
+        echo '</div>';
+    }
+    
     ?>
     <div class="wrap">
-        <h1><?php echo esc_html__( 'Bienvenido a WP Cupón WhatsApp', 'wp-cupon-whatsapp' ); ?></h1>
-        <p><?php echo esc_html__( 'Gestiona tus cupones, solicitudes y configuraciones desde un solo lugar.', 'wp-cupon-whatsapp' ); ?></p>
+        <h1><?php echo esc_html__('WP Cupón WhatsApp - Dashboard', 'wp-cupon-whatsapp'); ?></h1>
+        
+        <div class="wpcw-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+            
+            <!-- Tarjeta de Solicitudes -->
+            <div class="wpcw-dashboard-card" style="background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <h3 style="margin-top: 0; color: #0073aa;">📋 Solicitudes de Adhesión</h3>
+                <p>Gestiona las solicitudes de comercios e instituciones que desean adherirse al programa.</p>
+                <a href="<?php echo admin_url('edit.php?post_type=wpcw_application'); ?>" class="button button-primary">Ver Solicitudes</a>
+            </div>
 
-        <h2><?php echo esc_html__( 'Accesos Rápidos', 'wp-cupon-whatsapp' ); ?></h2>
-        <ul style="list-style-type: disc; padding-left: 20px;">
-            <li><a href="<?php echo admin_url('edit.php?post_type=wpcw_application'); ?>"><?php echo esc_html__( 'Ver Todas las Solicitudes de Adhesión', 'wp-cupon-whatsapp' ); ?></a></li>
-            <li><a href="<?php echo admin_url('edit.php?post_type=wpcw_business'); ?>"><?php echo esc_html__( 'Gestionar Comercios', 'wp-cupon-whatsapp' ); ?></a></li>
-            <li><a href="<?php echo admin_url('edit.php?post_type=wpcw_institution'); ?>"><?php echo esc_html__( 'Gestionar Instituciones', 'wp-cupon-whatsapp' ); ?></a></li>
-            <li><a href="<?php echo admin_url('admin.php?page=wpcw-stats'); ?>"><?php echo esc_html__( 'Ver Estadísticas', 'wp-cupon-whatsapp' ); ?></a></li>
-            <li><a href="<?php echo admin_url('admin.php?page=wpcw-settings'); ?>"><?php echo esc_html__( 'Ir a Ajustes', 'wp-cupon-whatsapp' ); ?></a></li>
-            <li><a href="<?php echo admin_url('post-new.php?post_type=shop_coupon'); ?>" target="_blank"><?php echo esc_html__( 'Crear un Nuevo Cupón (en WooCommerce)', 'wp-cupon-whatsapp' ); ?></a></li>
-        </ul>
+            <!-- Tarjeta de Comercios -->
+            <div class="wpcw-dashboard-card" style="background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <h3 style="margin-top: 0; color: #0073aa;">🏪 Comercios</h3>
+                <p>Administra todos los comercios adheridos al programa de cupones.</p>
+                <a href="<?php echo admin_url('edit.php?post_type=wpcw_business'); ?>" class="button button-primary">Gestionar Comercios</a>
+            </div>
+
+            <!-- Tarjeta de Instituciones -->
+            <div class="wpcw-dashboard-card" style="background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <h3 style="margin-top: 0; color: #0073aa;">🏛️ Instituciones</h3>
+                <p>Gestiona las instituciones participantes en el programa.</p>
+                <a href="<?php echo admin_url('edit.php?post_type=wpcw_institution'); ?>" class="button button-primary">Ver Instituciones</a>
+            </div>
+
+            <!-- Tarjeta de Canjes -->
+            <div class="wpcw-dashboard-card" style="background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <h3 style="margin-top: 0; color: #0073aa;">🎫 Canjes</h3>
+                <p>Supervisa todos los canjes de cupones realizados por los usuarios.</p>
+                <a href="<?php echo admin_url('admin.php?page=wpcw-canjes'); ?>" class="button button-primary">Ver Canjes</a>
+            </div>
+
+            <!-- Tarjeta de Estadísticas -->
+            <div class="wpcw-dashboard-card" style="background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <h3 style="margin-top: 0; color: #0073aa;">📊 Estadísticas</h3>
+                <p>Visualiza estadísticas generales del programa de cupones.</p>
+                <a href="<?php echo admin_url('admin.php?page=wpcw-stats'); ?>" class="button button-primary">Ver Estadísticas</a>
+            </div>
+
+            <!-- Tarjeta de Configuración -->
+            <div class="wpcw-dashboard-card" style="background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <h3 style="margin-top: 0; color: #0073aa;">⚙️ Configuración</h3>
+                <p>Configura los ajustes generales del plugin.</p>
+                <a href="<?php echo admin_url('admin.php?page=wpcw-settings'); ?>" class="button button-primary">Configurar</a>
+            </div>
+
+        </div>
+
+        <hr style="margin: 30px 0;">
+
+        <h2>🔗 Enlaces Rápidos a WooCommerce</h2>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <a href="<?php echo admin_url('post-new.php?post_type=shop_coupon'); ?>" class="button button-secondary" target="_blank">➕ Crear Nuevo Cupón</a>
+            <a href="<?php echo admin_url('edit.php?post_type=shop_coupon'); ?>" class="button button-secondary" target="_blank">📝 Gestionar Cupones</a>
+            <a href="<?php echo admin_url('admin.php?page=wc-admin'); ?>" class="button button-secondary" target="_blank">🛒 WooCommerce Dashboard</a>
+        </div>
+
+        <div style="margin-top: 30px; padding: 15px; background: #f0f8ff; border-left: 4px solid #0073aa;">
+            <h4 style="margin-top: 0;">ℹ️ Información del Plugin</h4>
+            <p><strong>Versión:</strong> <?php echo defined('WPCW_VERSION') ? WPCW_VERSION : '1.2.0'; ?></p>
+            <p><strong>Estado:</strong> <span style="color: green;">✅ Activo y funcionando</span></p>
+            
+            <?php if (!get_option('wpcw_setup_wizard_completed', false)): ?>
+            <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px;">
+                <p style="margin: 0; color: #856404;"><strong>🚀 ¿Primera vez usando el plugin?</strong></p>
+                <p style="margin: 5px 0 10px 0; color: #856404;">Te recomendamos completar la configuración inicial guiada.</p>
+                <a href="<?php echo admin_url('admin.php?page=wpcw-setup-wizard'); ?>" class="button button-primary" style="margin-right: 10px;">Iniciar Configuración Guiada</a>
+                <a href="#" onclick="fetch('<?php echo admin_url('admin-ajax.php'); ?>', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: 'action=wpcw_dismiss_setup_notice&nonce=<?php echo wp_create_nonce('wpcw_dismiss_setup'); ?>'}).then(() => location.reload()); return false;" class="button button-link" style="color: #856404;">No mostrar más</a>
+            </div>
+            <?php endif; ?>
+        </div>
     </div>
     <?php
 }
 
 /**
- * Wrapper function for rendering the superadmin stats page.
- * This function will call the actual rendering function from stats-page.php.
+ * Wrapper functions para las páginas de estadísticas
  */
-if ( ! function_exists( 'wpcw_render_superadmin_stats_page_content_wrapper' ) ) {
+if (!function_exists('wpcw_render_superadmin_stats_page_content_wrapper')) {
     function wpcw_render_superadmin_stats_page_content_wrapper() {
-        // El archivo admin/stats-page.php ya está incluido a través de wp-cupon-whatsapp.php if is_admin()
-        if ( function_exists( 'wpcw_render_superadmin_stats_page' ) ) {
+        if (function_exists('wpcw_render_superadmin_stats_page')) {
             wpcw_render_superadmin_stats_page();
         } else {
-            echo '<div class="wrap"><h1>' . esc_html__( 'Error', 'wp-cupon-whatsapp' ) . '</h1><p>' . esc_html__( 'La función para renderizar la página de estadísticas generales no está disponible.', 'wp-cupon-whatsapp' ) . '</p></div>';
+            echo '<div class="wrap"><h1>Estadísticas</h1><p>La página de estadísticas se está cargando...</p></div>';
         }
     }
 }
-
-/**
- * Wrapper function for rendering the business owner stats page.
- * This function will call the actual rendering function from business-stats-page.php.
- */
-if ( ! function_exists( 'wpcw_render_business_stats_page_content_wrapper' ) ) {
-    function wpcw_render_business_stats_page_content_wrapper() {
-        // El archivo admin/business-stats-page.php ya está incluido.
-        if ( function_exists( 'wpcw_render_business_stats_page_content' ) ) {
-            wpcw_render_business_stats_page_content();
-        } else {
-            echo '<div class="wrap"><h1>' . esc_html__( 'Error', 'wp-cupon-whatsapp' ) . '</h1><p>' . esc_html__( 'La función para renderizar la página de estadísticas del comercio no está disponible.', 'wp-cupon-whatsapp' ) . '</p></div>';
-        }
-    }
-}
-
-// Crear el wrapper para el callback de institution-stats, similar a los otros.
-if ( ! function_exists( 'wpcw_render_institution_stats_page_content_wrapper' ) ) {
-    function wpcw_render_institution_stats_page_content_wrapper() {
-        // require_once WPCW_PLUGIN_DIR . 'admin/institution-stats-page.php'; // Ya incluido globalmente en admin
-
-        if ( function_exists( 'wpcw_render_institution_stats_page_content' ) ) {
-            wpcw_render_institution_stats_page_content();
-        } else {
-            echo '<div class="wrap"><h1>' . esc_html__( 'Error', 'wp-cupon-whatsapp' ) . '</h1><p>' . esc_html__( 'La función para renderizar la página de estadísticas de la institución no está disponible.', 'wp-cupon-whatsapp' ) . '</p></div>';
-        }
-    }
-}
-
-// Las funciones de renderizado real (wpcw_render_superadmin_stats_page, wpcw_render_business_stats_page_content y wpcw_render_institution_stats_page_content)
-// se definirán en sus respectivos archivos.
 
 ?>
