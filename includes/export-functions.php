@@ -273,7 +273,7 @@ function wpcw_generate_and_download_csv( $export_type ) {
                         $cliente->user_login,
                         $cliente->user_email,
                         $cliente->display_name,
-                        date_i18n( get_option('date_format'), strtotime( $cliente->user_registered ) ),
+                        date_i18n( get_option('date_format', 'Y-m-d'), strtotime( $cliente->user_registered ) ),
                         get_user_meta( $user_id, '_wpcw_dni_number', true ),
                         get_user_meta( $user_id, '_wpcw_birth_date', true ),
                         get_user_meta( $user_id, '_wpcw_whatsapp_number', true ),

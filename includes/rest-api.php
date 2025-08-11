@@ -65,7 +65,7 @@ function wpcw_handle_redemption_confirmation_request( WP_REST_Request $request )
     if ( ! $canje_row ) {
         $html_error = wpcw_confirm_redemption_html_error_page(__('Confirmación de Canje Fallida', 'wp-cupon-whatsapp'), __('El enlace de confirmación no es válido o el canje no existe. Por favor, verifica el enlace o contacta al soporte.', 'wp-cupon-whatsapp'));
         $response = new WP_REST_Response( $html_error, 404 );
-        $response->header( 'Content-Type', 'text/html; charset=' . get_option( 'blog_charset' ) );
+        $response->header( 'Content-Type', 'text/html; charset=' . get_option( 'blog_charset', 'UTF-8' ) );
         return $response;
     }
 
@@ -94,7 +94,7 @@ function wpcw_handle_redemption_confirmation_request( WP_REST_Request $request )
         error_log("WPCW Error: Cupón original (ID: " . $original_coupon_id . ") no encontrado o no es un shop_coupon durante confirmación del canje ID: " . $canje_id);
         $html_error = wpcw_confirm_redemption_html_error_page(__('Error Interno del Servidor', 'wp-cupon-whatsapp'), __('No se pudo encontrar el cupón original asociado a este canje.', 'wp-cupon-whatsapp'));
         $response = new WP_REST_Response( $html_error, 500 );
-        $response->header( 'Content-Type', 'text/html; charset=' . get_option('blog_charset') );
+        $response->header( 'Content-Type', 'text/html; charset=' . get_option('blog_charset', 'UTF-8') );
         return $response;
     }
 
@@ -114,7 +114,7 @@ function wpcw_handle_redemption_confirmation_request( WP_REST_Request $request )
         error_log("WPCW Error: Falló la creación del cupón WC dinámico para canje ID: " . $canje_id . ". Error: " . $new_wc_coupon_id->get_error_message());
         $html_error = wpcw_confirm_redemption_html_error_page(__('Error al Generar Cupón', 'wp-cupon-whatsapp'), __('Hubo un problema al generar el código de cupón final.', 'wp-cupon-whatsapp'));
         $response = new WP_REST_Response( $html_error, 500 );
-        $response->header( 'Content-Type', 'text/html; charset=' . get_option('blog_charset') );
+        $response->header( 'Content-Type', 'text/html; charset=' . get_option('blog_charset', 'UTF-8') );
         return $response;
     }
 
@@ -164,7 +164,7 @@ function wpcw_handle_redemption_confirmation_request( WP_REST_Request $request )
         error_log("WPCW DB Error: No se pudo actualizar el registro de canje ID: " . $canje_id . " tras crear cupón WC. Error: " . $wpdb->last_error);
         $html_error = wpcw_confirm_redemption_html_error_page(__('Error al Actualizar Canje', 'wp-cupon-whatsapp'), __('Hubo un problema al finalizar el proceso de canje.', 'wp-cupon-whatsapp'));
         $response = new WP_REST_Response( $html_error, 500 );
-        $response->header( 'Content-Type', 'text/html; charset=' . get_option('blog_charset') );
+        $response->header( 'Content-Type', 'text/html; charset=' . get_option('blog_charset', 'UTF-8') );
         return $response;
     }
 
@@ -196,14 +196,14 @@ function wpcw_handle_redemption_confirmation_request( WP_REST_Request $request )
 
     $full_html_output = wpcw_confirm_redemption_html_wrapper($html_title, $page_content);
     $response = new WP_REST_Response( $full_html_output, 200 );
-    $response->header( 'Content-Type', 'text/html; charset=' . get_option('blog_charset') );
+    $response->header( 'Content-Type', 'text/html; charset=' . get_option('blog_charset', 'UTF-8') );
     return $response;
 }
 
 // Helper function to generate basic HTML page structure for responses
 if (!function_exists('wpcw_confirm_redemption_html_wrapper')) {
     function wpcw_confirm_redemption_html_wrapper($title, $content) {
-        $charset = get_option('blog_charset');
+        $charset = get_option('blog_charset', 'UTF-8');
         $html = "<!DOCTYPE html>\n"; // Added newline for readability
         $html .= "<html lang=\"" . esc_attr(get_locale()) . "\">\n<head>\n";
         $html .= "<meta charset=\"" . esc_attr($charset) . "\">\n";

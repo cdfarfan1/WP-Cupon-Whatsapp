@@ -124,7 +124,7 @@ function wpcw_canjes_page() {
                             <td>
                                 <?php echo esc_html(
                                     date_i18n(
-                                        get_option('date_format') . ' ' . get_option('time_format'),
+                                        get_option('date_format', 'Y-m-d') . ' ' . get_option('time_format', 'H:i:s'),
                                         strtotime($canje->fecha_solicitud_canje)
                                     )
                                 ); ?>

@@ -28,7 +28,7 @@ function wpcw_mongodb_section_callback() {
             if ($last_sync) {
                 echo '<p>' . sprintf(
                     esc_html__('Última sincronización: %s', 'wp-cupon-whatsapp'),
-                    date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($last_sync))
+                    date_i18n(get_option('date_format', 'Y-m-d') . ' ' . get_option('time_format', 'H:i:s'), strtotime($last_sync))
                 ) . '</p>';
             }
         } else {
