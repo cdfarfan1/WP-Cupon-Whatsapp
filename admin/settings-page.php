@@ -473,7 +473,7 @@ function wpcw_render_export_button_field( $args ) {
  */
 function wpcw_render_text_input_field( $args ) {
     $option_name = $args['option_name'];
-    $option_value = get_option( $option_name );
+    $option_value = get_option( $option_name, '' );
     if ( $option_value === false && isset($args['default']) ) {
         $option_value = $args['default'];
     } elseif ($option_value === false) {

@@ -114,7 +114,7 @@ function wpcw_render_mis_canjes_content() {
 
         // Fecha Solicitud
         echo '<td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-date" data-title="' . esc_attr__( 'Fecha Solicitud', 'wp-cupon-whatsapp' ) . '">';
-        echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $canje->fecha_solicitud_canje ) ) );
+        echo esc_html( date_i18n( get_option( 'date_format', 'Y-m-d' ), strtotime( $canje->fecha_solicitud_canje ) ) );
         echo '</td>';
 
         // Estado

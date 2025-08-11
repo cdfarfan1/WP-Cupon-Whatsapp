@@ -490,11 +490,11 @@ if (did_action('elementor/loaded')) {
 
 // Admin specific includes
 if ( is_admin() ) {
-    error_log('WPCW: Entrando en sección admin, cargando archivos...');
+    // error_log('WPCW: Entrando en sección admin, cargando archivos...');
     
     // TEMPORAL: Cargar diagnóstico completo
-    require_once WPCW_PLUGIN_DIR . 'diagnostico-completo.php';
-    require_once WPCW_PLUGIN_DIR . 'debug-menu-especifico.php';
+    // require_once WPCW_PLUGIN_DIR . 'diagnostico-completo.php';
+    // require_once WPCW_PLUGIN_DIR . 'debug-menu-especifico.php';
     
     require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
     require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php';
@@ -506,10 +506,10 @@ if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
     require_once WPCW_PLUGIN_DIR . 'admin/setup-wizard.php';
     require_once WPCW_PLUGIN_DIR . 'admin/roles-page.php';
-    error_log('WPCW: Archivos admin cargados correctamente');
+    // error_log('WPCW: Archivos admin cargados correctamente');
     
     // El hook admin_menu se registra automáticamente en admin-menu.php
-    error_log('WPCW: admin-menu.php cargado - hook admin_menu se registrará automáticamente');
+    // error_log('WPCW: admin-menu.php cargado - hook admin_menu se registrará automáticamente');
 }
 
 /**
