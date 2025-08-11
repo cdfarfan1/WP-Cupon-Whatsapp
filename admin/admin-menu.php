@@ -10,6 +10,121 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Renders the plugin dashboard page.
+ */
+if ( ! function_exists( 'wpcw_render_plugin_dashboard_page' ) ) {
+    function wpcw_render_plugin_dashboard_page() {
+        // Verificar si se completó el setup wizard
+        $setup_completed = get_option('wpcw_setup_wizard_completed', false);
+        $show_success = isset($_GET['setup']) && $_GET['setup'] === 'completed';
+        
+        ?>
+        <div class="wrap">
+            <h1>🎯 Dashboard - WP Cupón WhatsApp</h1>
+            <p class="description">Centro de control para la gestión del sistema de cupones y programa de fidelización.</p>
+            
+            <?php if ($show_success): ?>
+            <div class="notice notice-success is-dismissible">
+                <p><strong>🎉 ¡Configuración completada exitosamente!</strong> El plugin está listo para usar. Puedes comenzar creando cupones y configurando comercios.</p>
+            </div>
+            <?php endif; ?>
+            
+            <?php if (!$setup_completed && !$show_success): ?>
+            <div class="notice notice-info" style="border-left-color: #0073aa; padding: 15px; margin: 20px 0;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="font-size: 24px;">🚀</div>
+                    <div>
+                        <h3 style="margin: 0 0 10px 0; color: #0073aa;">¡Configuración Inicial Recomendada!</h3>
+                        <p style="margin: 0 0 10px 0;">Para aprovechar al máximo el plugin, te recomendamos completar la configuración inicial guiada.</p>
+                        <a href="<?php echo admin_url('admin.php?page=wpcw-setup-wizard'); ?>" class="button button-primary">🎯 Iniciar Configuración</a>
+                        <a href="<?php echo admin_url('admin.php?page=wpcw-settings'); ?>" class="button button-secondary" style="margin-left: 10px;">⚙️ Configuración Manual</a>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+            
+            <div class="wpcw-dashboard">
+                <div class="wpcw-dashboard-cards">
+                    <div class="wpcw-card wpcw-card-primary">
+                        <h2>📝 Solicitudes</h2>
+                        <p>Administra las solicitudes de adhesión de comercios e instituciones al programa.</p>
+                        <a href="<?php echo esc_url(admin_url('edit.php?post_type=wpcw_application')); ?>" class="button button-primary">Ver Solicitudes</a>
+                    </div>
+                    <div class="wpcw-card wpcw-card-success">
+                        <h2>🏪 Comercios</h2>
+                        <p>Controla y administra todos los comercios registrados en el sistema.</p>
+                        <a href="<?php echo esc_url(admin_url('edit.php?post_type=wpcw_business')); ?>" class="button button-primary">Ver Comercios</a>
+                    </div>
+                    <div class="wpcw-card wpcw-card-info">
+                        <h2>🏫 Instituciones</h2>
+                        <p>Supervisa todas las instituciones participantes del programa.</p>
+                        <a href="<?php echo esc_url(admin_url('edit.php?post_type=wpcw_institution')); ?>" class="button button-primary">Ver Instituciones</a>
+                    </div>
+                    <div class="wpcw-card wpcw-card-warning">
+                        <h2>🎫 Canjes</h2>
+                        <p>Supervisa y administra todos los canjes realizados en el sistema.</p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=wpcw-canjes')); ?>" class="button button-primary">Ver Canjes</a>
+                    </div>
+                    <div class="wpcw-card wpcw-card-secondary">
+                        <h2>📊 Estadísticas</h2>
+                        <p>Analiza métricas y reportes generales del programa de fidelización.</p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=wpcw-stats')); ?>" class="button button-primary">Ver Estadísticas</a>
+                    </div>
+                    <div class="wpcw-card wpcw-card-dark">
+                        <h2>⚙️ Configuración</h2>
+                        <p>Configura parámetros y ajustes generales del sistema.</p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=wpcw-settings')); ?>" class="button button-primary">Ir a Configuración</a>
+                    </div>
+                </div>
+             </div>
+             <style>
+             .wpcw-dashboard-cards {
+                 display: grid;
+                 grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                 gap: 20px;
+                 margin-top: 30px;
+             }
+             .wpcw-card {
+                 background: #fff;
+                 border-left: 5px solid #ddd;
+                 border-radius: 8px;
+                 padding: 25px;
+                 box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+                 transition: transform 0.2s ease, box-shadow 0.2s ease;
+             }
+             .wpcw-card:hover {
+                 transform: translateY(-2px);
+                 box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+             }
+             .wpcw-card-primary { border-left-color: #007cba; }
+             .wpcw-card-success { border-left-color: #46b450; }
+             .wpcw-card-info { border-left-color: #00a0d2; }
+             .wpcw-card-warning { border-left-color: #ffb900; }
+             .wpcw-card-secondary { border-left-color: #826eb4; }
+             .wpcw-card-dark { border-left-color: #32373c; }
+             .wpcw-card h2 {
+                 margin-top: 0;
+                 margin-bottom: 15px;
+                 color: #333;
+                 font-size: 18px;
+             }
+             .wpcw-card p {
+                 color: #666;
+                 margin-bottom: 20px;
+                 line-height: 1.5;
+             }
+             .description {
+                 font-size: 16px;
+                 color: #666;
+                 margin-bottom: 10px;
+             }
+             </style>
+         </div>
+         <?php
+     }
+ }
+
+/**
  * Registers the admin menu pages for the WPCW plugin.
  */
 function wpcw_register_plugin_admin_menu() {
@@ -133,121 +248,6 @@ function wpcw_redirect_to_instituciones() {
 }
 
 // Los post types ahora tienen show_in_menu => false, por lo que no necesitan remoción manual
-
-/**
- * Renders the plugin dashboard page.
- */
-if ( ! function_exists( 'wpcw_render_plugin_dashboard_page' ) ) {
-    function wpcw_render_plugin_dashboard_page() {
-        // Verificar si se completó el setup wizard
-        $setup_completed = get_option('wpcw_setup_wizard_completed', false);
-        $show_success = isset($_GET['setup']) && $_GET['setup'] === 'completed';
-        
-        ?>
-        <div class="wrap">
-            <h1>🎯 Dashboard - WP Cupón WhatsApp</h1>
-            <p class="description">Centro de control para la gestión del sistema de cupones y programa de fidelización.</p>
-            
-            <?php if ($show_success): ?>
-            <div class="notice notice-success is-dismissible">
-                <p><strong>🎉 ¡Configuración completada exitosamente!</strong> El plugin está listo para usar. Puedes comenzar creando cupones y configurando comercios.</p>
-            </div>
-            <?php endif; ?>
-            
-            <?php if (!$setup_completed && !$show_success): ?>
-            <div class="notice notice-info" style="border-left-color: #0073aa; padding: 15px; margin: 20px 0;">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div style="font-size: 24px;">🚀</div>
-                    <div>
-                        <h3 style="margin: 0 0 10px 0; color: #0073aa;">¡Configuración Inicial Recomendada!</h3>
-                        <p style="margin: 0 0 10px 0;">Para aprovechar al máximo el plugin, te recomendamos completar la configuración inicial guiada.</p>
-                        <a href="<?php echo admin_url('admin.php?page=wpcw-setup-wizard'); ?>" class="button button-primary">🎯 Iniciar Configuración</a>
-                        <a href="<?php echo admin_url('admin.php?page=wpcw-settings'); ?>" class="button button-secondary" style="margin-left: 10px;">⚙️ Configuración Manual</a>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
-            
-            <div class="wpcw-dashboard">
-                <div class="wpcw-dashboard-cards">
-                    <div class="wpcw-card wpcw-card-primary">
-                        <h2>📝 Solicitudes</h2>
-                        <p>Administra las solicitudes de adhesión de comercios e instituciones al programa.</p>
-                        <a href="<?php echo esc_url(admin_url('edit.php?post_type=wpcw_application')); ?>" class="button button-primary">Ver Solicitudes</a>
-                    </div>
-                    <div class="wpcw-card wpcw-card-success">
-                        <h2>🏪 Comercios</h2>
-                        <p>Controla y administra todos los comercios registrados en el sistema.</p>
-                        <a href="<?php echo esc_url(admin_url('edit.php?post_type=wpcw_business')); ?>" class="button button-primary">Ver Comercios</a>
-                    </div>
-                    <div class="wpcw-card wpcw-card-info">
-                        <h2>🏫 Instituciones</h2>
-                        <p>Supervisa todas las instituciones participantes del programa.</p>
-                        <a href="<?php echo esc_url(admin_url('edit.php?post_type=wpcw_institution')); ?>" class="button button-primary">Ver Instituciones</a>
-                    </div>
-                    <div class="wpcw-card wpcw-card-warning">
-                        <h2>🎫 Canjes</h2>
-                        <p>Supervisa y administra todos los canjes realizados en el sistema.</p>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=wpcw-canjes')); ?>" class="button button-primary">Ver Canjes</a>
-                    </div>
-                    <div class="wpcw-card wpcw-card-secondary">
-                        <h2>📊 Estadísticas</h2>
-                        <p>Analiza métricas y reportes generales del programa de fidelización.</p>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=wpcw-stats')); ?>" class="button button-primary">Ver Estadísticas</a>
-                    </div>
-                    <div class="wpcw-card wpcw-card-dark">
-                        <h2>⚙️ Configuración</h2>
-                        <p>Configura parámetros y ajustes generales del sistema.</p>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=wpcw-settings')); ?>" class="button button-primary">Configurar</a>
-                    </div>
-                </div>
-            </div>
-            <style>
-            .wpcw-dashboard-cards {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-                gap: 20px;
-                margin-top: 30px;
-            }
-            .wpcw-card {
-                background: #fff;
-                border-left: 5px solid #ddd;
-                border-radius: 8px;
-                padding: 25px;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-            }
-            .wpcw-card:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            }
-            .wpcw-card-primary { border-left-color: #007cba; }
-            .wpcw-card-success { border-left-color: #46b450; }
-            .wpcw-card-info { border-left-color: #00a0d2; }
-            .wpcw-card-warning { border-left-color: #ffb900; }
-            .wpcw-card-secondary { border-left-color: #826eb4; }
-            .wpcw-card-dark { border-left-color: #32373c; }
-            .wpcw-card h2 {
-                margin-top: 0;
-                margin-bottom: 15px;
-                color: #333;
-                font-size: 18px;
-            }
-            .wpcw-card p {
-                color: #666;
-                margin-bottom: 20px;
-                line-height: 1.5;
-            }
-            .description {
-                font-size: 16px;
-                color: #666;
-                margin-bottom: 10px;
-            }
-            </style>
-        </div>
-        <?php
-    }
-}
 
 /**
  * Wrapper function for rendering the superadmin stats page.
