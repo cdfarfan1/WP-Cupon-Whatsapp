@@ -39,10 +39,14 @@ function wpcw_debug_menu_especifico() {
                         $func_name = $callback['function'][0] . '::' . $callback['function'][1];
                     }
                 } else {
-                    $func_name = $callback['function'];
+                    if (is_string($callback['function'])) {
+                        $func_name = $callback['function'];
+                    } else {
+                        $func_name = 'Closure o función anónima';
+                    }
                 }
                 
-                if (strpos($func_name, 'wpcw') !== false) {
+                if (is_string($func_name) && strpos($func_name, 'wpcw') !== false) {
                     error_log('DEBUG: Hook WPCW encontrado - Prioridad: ' . $priority . ', Función: ' . $func_name);
                 }
             }
