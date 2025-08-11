@@ -177,4 +177,36 @@ if (!function_exists('wpcw_render_superadmin_stats_page_content_wrapper')) {
     }
 }
 
+/**
+ * Failsafe function to force CPTs into the correct submenu.
+ * This runs late to override any other plugin/theme that might be interfering.
+ */
+function wpcw_force_cpt_submenu_structure() {
+    global $menu, $submenu;
+
+    // The slug of our desired parent menu
+    $parent_slug = 'wpcw-dashboard';
+
+    // Slugs of the CPTs that should be submenus
+    $cpt_slugs = array(
+        'edit.php?post_type=wpcw_application',
+        'edit.php?post_type=wpcw_business',
+        'edit.php?post_type=wpcw_institution',
+    );
+
+    // Find and move the top-level CPT menus
+    foreach ($menu as $key => $menu_item) {
+        // $menu_item[2] is the slug
+        if (in_array($menu_item[2], $cpt_slugs)) {
+
+            // Re-create the submenu item under our desired parent
+            $submenu[$parent_slug][] = $menu_item;
+
+            // Remove the top-level menu item
+            unset($menu[$key]);
+        }
+    }
+}
+add_action('admin_menu', 'wpcw_force_cpt_submenu_structure', 999);
+
 ?>
