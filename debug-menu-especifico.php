@@ -33,7 +33,11 @@ function wpcw_debug_menu_especifico() {
             foreach ($callbacks as $callback) {
                 $func_name = '';
                 if (is_array($callback['function'])) {
-                    $func_name = get_class($callback['function'][0]) . '::' . $callback['function'][1];
+                    if (is_object($callback['function'][0])) {
+                        $func_name = get_class($callback['function'][0]) . '::' . $callback['function'][1];
+                    } else {
+                        $func_name = $callback['function'][0] . '::' . $callback['function'][1];
+                    }
                 } else {
                     $func_name = $callback['function'];
                 }
