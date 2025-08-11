@@ -132,16 +132,7 @@ function wpcw_redirect_to_instituciones() {
     exit;
 }
 
-/**
- * Remover menús duplicados de post types para mantener organización
- */
-function wpcw_remove_duplicate_menus() {
-    // Remover menús automáticos de post types para evitar duplicados
-    remove_menu_page('edit.php?post_type=wpcw_application');
-    remove_menu_page('edit.php?post_type=wpcw_business');
-    remove_menu_page('edit.php?post_type=wpcw_institution');
-}
-add_action('admin_menu', 'wpcw_remove_duplicate_menus', 999);
+// Los post types ahora tienen show_in_menu => false, por lo que no necesitan remoción manual
 
 /**
  * Renders the plugin dashboard page.
