@@ -120,11 +120,11 @@ function wpcw_validate_custom_register_fields( $username, $email, $validation_er
     if ( !empty($required_settings['birth_date']) && $required_settings['birth_date'] === '1' ) {
         if ( empty($birth_date_value) ) {
             $validation_errors->add('wpcw_birth_date_error', __('Por favor, introduce tu Fecha de Nacimiento.', 'wp-cupon-whatsapp'));
-        } elseif ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value) || !wp_checkdate(substr($birth_date_value, 5, 2), substr($birth_date_value, 8, 2), substr($birth_date_value, 0, 4), $birth_date_value) ) {
+        } elseif ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value) || !wp_checkdate((string)substr($birth_date_value, 5, 2), (string)substr($birth_date_value, 8, 2), (string)substr($birth_date_value, 0, 4), $birth_date_value) ) {
             $validation_errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
         }
     } elseif (!empty($birth_date_value)) { // Validar formato si se ingresa algo, aunque no sea obligatorio
-         if ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value) || !wp_checkdate(substr($birth_date_value, 5, 2), substr($birth_date_value, 8, 2), substr($birth_date_value, 0, 4), $birth_date_value) ) {
+         if ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value) || !wp_checkdate((string)substr($birth_date_value, 5, 2), (string)substr($birth_date_value, 8, 2), (string)substr($birth_date_value, 0, 4), $birth_date_value) ) {
             $validation_errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
         }
     }
@@ -311,11 +311,11 @@ function wpcw_validate_custom_account_fields( &$errors, $user ) {
     if ( !empty($required_settings['birth_date']) && $required_settings['birth_date'] === '1' ) {
         if ( empty($birth_date_value_acc) ) {
             $errors->add('wpcw_birth_date_error', __('Por favor, introduce tu Fecha de Nacimiento.', 'wp-cupon-whatsapp'));
-        } elseif ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value_acc) || !wp_checkdate(substr($birth_date_value_acc, 5, 2), substr($birth_date_value_acc, 8, 2), substr($birth_date_value_acc, 0, 4), $birth_date_value_acc) ) {
+        } elseif ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value_acc) || !wp_checkdate((string)substr($birth_date_value_acc, 5, 2), (string)substr($birth_date_value_acc, 8, 2), (string)substr($birth_date_value_acc, 0, 4), $birth_date_value_acc) ) {
             $errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
         }
     } elseif (!empty($birth_date_value_acc)) { // Validar formato si se ingresa algo, aunque no sea obligatorio
-         if ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value_acc) || !wp_checkdate(substr($birth_date_value_acc, 5, 2), substr($birth_date_value_acc, 8, 2), substr($birth_date_value_acc, 0, 4), $birth_date_value_acc) ) {
+         if ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value_acc) || !wp_checkdate((string)substr($birth_date_value_acc, 5, 2), (string)substr($birth_date_value_acc, 8, 2), (string)substr($birth_date_value_acc, 0, 4), $birth_date_value_acc) ) {
             $errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
         }
     }
