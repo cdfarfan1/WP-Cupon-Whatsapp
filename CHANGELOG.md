@@ -4,6 +4,21 @@ Este archivo documenta todos los cambios importantes realizados en el plugin.
 
 ---
 
+## [Versión 1.2.3] - 2025-01-15
+
+Esta versión corrige los errores de "headers already sent" que persistían después de las correcciones de PHP 8+.
+
+### 🐛 **Corrección de Errores Críticos**
+
+*   **Corrección de Errores "Headers Already Sent":**
+    *   Comentadas todas las líneas de debug `error_log()` activas que causaban output antes de los headers
+    *   **Archivos corregidos:** `wp-cupon-whatsapp.php`, `admin/admin-menu.php`
+    *   Deshabilitada carga temporal de archivos de diagnóstico (`diagnostico-completo.php`, `debug-menu-especifico.php`)
+    *   **Resultado:** Eliminados los warnings "Cannot modify header information - headers already sent"
+    *   **Solución final:** Plugin completamente funcional sin errores de headers en PHP 8+
+
+---
+
 ## [Versión 1.2.2] - 2025-01-15
 
 Esta versión completa la corrección de errores Deprecated de PHP 8+ iniciada en la versión 1.2.1.
