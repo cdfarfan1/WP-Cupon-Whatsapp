@@ -111,7 +111,7 @@ class WPCW_MongoDB {
             
             switch ($format) {
                 case 'json':
-                    return json_encode($data);
+                    return json_encode($data ?: array());
                 
                 case 'csv':
                     $output = fopen('php://temp', 'r+');

@@ -43,7 +43,7 @@ class WPCW_Logger {
                 '[WPCW] %s - %s - %s',
                 $tiempo,
                 $mensaje,
-                json_encode($contexto)
+                json_encode($contexto ?: array())
             ));
         }
     }
@@ -65,7 +65,7 @@ class WPCW_Logger {
                 'tiempo' => $datos_log['tiempo'],
                 'tipo' => $datos_log['tipo'],
                 'mensaje' => $datos_log['mensaje'],
-                'contexto' => json_encode($datos_log['contexto'])
+                'contexto' => json_encode($datos_log['contexto'] ?: array())
             ),
             array('%s', '%s', '%s', '%s')
         );

@@ -127,7 +127,9 @@ function wpcw_handle_email_verification() {
         if (is_wp_error($result)) {
             wp_die($result->get_error_message(), __('Error de Verificación', 'wp-cupon-whatsapp'));
         } else {
-            wp_redirect(add_query_arg('email_verified', '1', wc_get_account_endpoint_url('dashboard')));
+            $dashboard_url = wc_get_account_endpoint_url('dashboard');
+            $redirect_url = $dashboard_url ? add_query_arg('email_verified', '1', $dashboard_url) : home_url('/?email_verified=1');
+            wp_redirect($redirect_url);
             exit;
         }
     }

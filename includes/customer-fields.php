@@ -199,9 +199,9 @@ function wpcw_add_custom_account_fields() {
         return;
     }
 
-    $dni_number = get_user_meta( $user_id, '_wpcw_dni_number', true );
-    $birth_date = get_user_meta( $user_id, '_wpcw_birth_date', true );
-    $whatsapp_number = get_user_meta( $user_id, '_wpcw_whatsapp_number', true );
+    $dni_number = get_user_meta( $user_id, '_wpcw_dni_number', true ) ?: '';
+    $birth_date = get_user_meta( $user_id, '_wpcw_birth_date', true ) ?: '';
+    $whatsapp_number = get_user_meta( $user_id, '_wpcw_whatsapp_number', true ) ?: '';
     ?>
     <fieldset>
         <legend><?php esc_html_e( 'Información Adicional', 'wp-cupon-whatsapp' ); ?></legend>
@@ -223,7 +223,7 @@ function wpcw_add_custom_account_fields() {
 
         <?php
         // Institution Field
-        $user_institution_id = get_user_meta( $user_id, '_wpcw_user_institution_id', true );
+        $user_institution_id = get_user_meta( $user_id, '_wpcw_user_institution_id', true ) ?: '';
         $institutions = get_posts( array(
             'post_type' => 'wpcw_institution',
             'post_status' => 'publish',

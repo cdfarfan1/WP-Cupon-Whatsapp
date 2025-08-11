@@ -559,8 +559,9 @@ function wpcw_render_cupones_publicos_page() {
 
         // Paginación
         $big = 999999999; // need an unlikely integer
+        $pagenum_link = get_pagenum_link( $big );
         $pagination_args = array(
-            'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+            'base'    => $pagenum_link ? str_replace( $big, '%#%', esc_url( $pagenum_link ) ) : home_url( '/' ),
             'format'  => '?paged=%#%',
             'current' => max( 1, $paged ), // Usar $paged que ya definimos
             'total'   => $public_coupons_query->max_num_pages,

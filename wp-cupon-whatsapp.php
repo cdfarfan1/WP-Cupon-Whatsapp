@@ -220,7 +220,7 @@ if (!wpcw_check_dependencies()) {
 if (version_compare(get_bloginfo('version'), WPCW_MIN_WP_VERSION, '<')) {
     add_action('admin_notices', function() {
         ?>
-        <div class="error">
+        <div class="error is-dismissible">
             <p><?php echo sprintf('WP Canje Cupón WhatsApp requiere WordPress %s o superior.', WPCW_MIN_WP_VERSION); ?></p>
         </div>
         <?php
@@ -287,18 +287,7 @@ function wpcw_activate_plugin() {
         ));
     }
 
-    if (version_compare(get_bloginfo('version'), WPCW_MIN_WP_VERSION, '<')) {
-        deactivate_plugins(plugin_basename(__FILE__));
-        wp_die(sprintf(
-            'WP Canje Cupón WhatsApp requiere WordPress %s o superior.',
-            WPCW_MIN_WP_VERSION
-        ));
-    }
-
-    if (!class_exists('WooCommerce')) {
-        deactivate_plugins(plugin_basename(__FILE__));
-        wp_die('WP Canje Cupón WhatsApp requiere que WooCommerce esté instalado y activado.');
-    }
+    // Código duplicado eliminado - las verificaciones ya se hicieron arriba
 
     // Include required files
         // Load required files
@@ -315,7 +304,7 @@ function wpcw_activate_plugin() {
     if (!$table_created) {
         add_action('admin_notices', function() {
             ?>
-            <div class="error">
+            <div class="error is-dismissible">
                 <p><?php echo esc_html('Error: No se pudo crear la tabla de canjes. Por favor, revise los permisos de la base de datos.'); ?></p>
             </div>
             <?php
@@ -371,7 +360,7 @@ function wpcw_check_woocommerce() {
     if (!class_exists('WooCommerce')) {
         add_action('admin_notices', function() {
             ?>
-            <div class="error">
+            <div class="error is-dismissible">
                 <p><?php echo esc_html('WP Cupón WhatsApp requiere que WooCommerce esté instalado y activado.'); ?></p>
             </div>
             <?php
@@ -382,7 +371,7 @@ function wpcw_check_woocommerce() {
     if (version_compare(WC_VERSION, WPCW_MIN_WOOCOMMERCE_VERSION, '<')) {
         add_action('admin_notices', function() {
             ?>
-            <div class="error">
+            <div class="error is-dismissible">
                 <p><?php echo sprintf('WP Cupón WhatsApp requiere WooCommerce %s o superior.', WPCW_MIN_WOOCOMMERCE_VERSION); ?></p>
             </div>
             <?php
@@ -426,7 +415,7 @@ foreach ($core_files as $file) {
         }
         add_action('admin_notices', function() use ($file) {
             ?>
-            <div class="error">
+            <div class="error is-dismissible">
                 <p><?php echo sprintf('WP Canje Cupón WhatsApp: Archivo core no encontrado: %s', $file); ?></p>
             </div>
             <?php
@@ -479,7 +468,7 @@ if (did_action('elementor/loaded')) {
     } else {
         add_action('admin_notices', function() {
             ?>
-            <div class="error">
+            <div class="error is-dismissible">
                 <p><?php echo sprintf('WP Canje Cupón WhatsApp requiere Elementor %s o superior para sus widgets.', WPCW_MIN_ELEMENTOR_VERSION); ?></p>
             </div>
             <?php
@@ -610,3 +599,13 @@ function wpcw_dismiss_dependencies_notice() {
     wp_die(); // Terminar la ejecución AJAX
 }
 add_action('wp_ajax_wpcw_dismiss_dependencies_notice', 'wpcw_dismiss_dependencies_notice');
+
+/**
+ * Agregar enlaces de acción al plugin en la página de plugins
+ */
+function wpcw_add_plugin_action_links($links) {
+    $settings_link = '<a href="' . admin_url('admin.php?page=wpcw-settings') . '">' . __('Ajustes', 'wp-cupon-whatsapp') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
+}
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'wpcw_add_plugin_action_links');

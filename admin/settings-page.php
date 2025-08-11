@@ -622,7 +622,9 @@ function wpcw_handle_admin_actions() {
         }
 
         // Redirigir para evitar reenvío del formulario
-        wp_redirect(add_query_arg('settings-updated', 'true', wp_get_referer()));
+        $referer = wp_get_referer();
+        $redirect_url = $referer ? add_query_arg('settings-updated', 'true', $referer) : admin_url('admin.php?page=wpcw-settings&settings-updated=true');
+        wp_redirect($redirect_url);
         exit;
     }
 

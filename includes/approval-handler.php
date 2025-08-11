@@ -110,7 +110,9 @@ class WPCW_Approval_Handler {
         // Notificar al comercio/institución
         self::notify_business_approval($post_id, true);
 
-        wp_redirect(add_query_arg('approved', '1', get_edit_post_link($post_id, 'url')));
+        $edit_link = get_edit_post_link($post_id, 'url');
+        $redirect_url = $edit_link ? add_query_arg('approved', '1', $edit_link) : admin_url('edit.php?post_type=' . get_post_type($post_id) . '&approved=1');
+        wp_redirect($redirect_url);
         exit;
     }
 
@@ -138,7 +140,9 @@ class WPCW_Approval_Handler {
         // Notificar al comercio/institución
         self::notify_business_approval($post_id, false);
 
-        wp_redirect(add_query_arg('rejected', '1', get_edit_post_link($post_id, 'url')));
+        $edit_link = get_edit_post_link($post_id, 'url');
+        $redirect_url = $edit_link ? add_query_arg('rejected', '1', $edit_link) : admin_url('edit.php?post_type=' . get_post_type($post_id) . '&rejected=1');
+        wp_redirect($redirect_url);
         exit;
     }
 

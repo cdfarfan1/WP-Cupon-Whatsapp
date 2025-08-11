@@ -74,13 +74,13 @@ function wpcw_coupon_meta_box_content($post) {
     wp_nonce_field('wpcw_coupon_meta_box', 'wpcw_coupon_meta_box_nonce');
 
     // Obtener valores guardados
-    $enabled = get_post_meta($post->ID, '_wpcw_enabled', true);
-    $business_id = get_post_meta($post->ID, '_wpcw_associated_business_id', true);
-    $expiry_reminder = get_post_meta($post->ID, '_wpcw_expiry_reminder', true);
-    $auto_confirm = get_post_meta($post->ID, '_wpcw_auto_confirm', true);
-    $whatsapp_text = get_post_meta($post->ID, '_wpcw_whatsapp_text', true);
-    $max_uses = get_post_meta($post->ID, '_wpcw_max_uses_per_user', true);
-    $redemption_hours = get_post_meta($post->ID, '_wpcw_redemption_hours', true);
+    $enabled = get_post_meta($post->ID, '_wpcw_enabled', true) ?: '';
+    $business_id = get_post_meta($post->ID, '_wpcw_associated_business_id', true) ?: '';
+    $expiry_reminder = get_post_meta($post->ID, '_wpcw_expiry_reminder', true) ?: '';
+    $auto_confirm = get_post_meta($post->ID, '_wpcw_auto_confirm', true) ?: '';
+    $whatsapp_text = get_post_meta($post->ID, '_wpcw_whatsapp_text', true) ?: '';
+    $max_uses = get_post_meta($post->ID, '_wpcw_max_uses_per_user', true) ?: '';
+    $redemption_hours = get_post_meta($post->ID, '_wpcw_redemption_hours', true) ?: '';
     ?>
     <div class="wpcw-meta-box-tabs">
         <ul class="wpcw-tabs">

@@ -63,7 +63,9 @@ function wpcw_process_redemption_form() {
     }
 
     // Si no hay URL de WhatsApp, redirigir a la página de éxito
-    wp_redirect(add_query_arg('redemption_id', $result, wc_get_account_endpoint_url('mis-cupones')));
+    $cupones_url = wc_get_account_endpoint_url('mis-cupones');
+    $redirect_url = $cupones_url ? add_query_arg('redemption_id', $result, $cupones_url) : home_url('/?redemption_id=' . $result);
+    wp_redirect($redirect_url);
     exit;
 }
 add_action('admin_post_wpcw_redeem_coupon', 'wpcw_process_redemption_form');
@@ -72,9 +74,10 @@ add_action('admin_post_wpcw_redeem_coupon', 'wpcw_process_redemption_form');
  * Redirige con un mensaje de error
  */
 function wpcw_redirect_with_error($message) {
-    $redirect_url = add_query_arg(array(
+    $referer = wp_get_referer();
+    $redirect_url = $referer ? add_query_arg(array(
         'error' => urlencode($message)
-    ), wp_get_referer());
+    ), $referer) : home_url('/?error=' . urlencode($message));
 
     wp_redirect($redirect_url);
     exit;

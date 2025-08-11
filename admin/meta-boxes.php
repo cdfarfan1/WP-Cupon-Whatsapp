@@ -42,11 +42,11 @@ function wpcw_coupon_details_metabox_html( $post ) {
     wp_nonce_field( 'wpcw_save_coupon_meta', 'wpcw_coupon_meta_nonce' );
 
     // Obtener valores guardados
-    $is_loyalty_coupon = get_post_meta( $post->ID, '_wpcw_is_loyalty_coupon', true );
-    $is_public_coupon = get_post_meta( $post->ID, '_wpcw_is_public_coupon', true );
-    $associated_business_id = get_post_meta( $post->ID, '_wpcw_associated_business_id', true );
-    $coupon_category_id = get_post_meta( $post->ID, '_wpcw_coupon_category_id', true );
-    $coupon_image_id = get_post_meta( $post->ID, '_wpcw_coupon_image_id', true );
+    $is_loyalty_coupon = get_post_meta( $post->ID, '_wpcw_is_loyalty_coupon', true ) ?: '';
+    $is_public_coupon = get_post_meta( $post->ID, '_wpcw_is_public_coupon', true ) ?: '';
+    $associated_business_id = get_post_meta( $post->ID, '_wpcw_associated_business_id', true ) ?: '';
+    $coupon_category_id = get_post_meta( $post->ID, '_wpcw_coupon_category_id', true ) ?: '';
+    $coupon_image_id = get_post_meta( $post->ID, '_wpcw_coupon_image_id', true ) ?: '';
 
     // Estructura de tabla para alinear campos y etiquetas
     echo '<table class="form-table wpcw-metabox-table">';
