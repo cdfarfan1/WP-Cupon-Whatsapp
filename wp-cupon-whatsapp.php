@@ -121,7 +121,8 @@ function wpcw_check_dependencies() {
             </div>
             <?php
         });
-        return false;
+        // NO retornar false para permitir que el menú se muestre con advertencias
+        error_log('WPCW: Continuando carga a pesar de dependencias faltantes para mostrar menú con advertencias');
     }
 
     error_log('WPCW: Todas las dependencias verificadas correctamente');
@@ -186,9 +187,10 @@ register_deactivation_hook(__FILE__, function() {
     flush_rewrite_rules();
 });
 
-// Verificar dependencias
+// Verificar dependencias - permitir continuar para mostrar menú con advertencias
 if (!wpcw_check_dependencies()) {
-    return;
+    error_log('WPCW: Dependencias faltantes, pero continuando para mostrar menú administrativo');
+    // No hacer return para permitir que el menú se muestre
 }
 
 // Verificar versión mínima de WordPress
@@ -368,9 +370,10 @@ function wpcw_check_woocommerce() {
     return true;
 }
 
-// Verificar WooCommerce antes de cargar el plugin
+// Verificar WooCommerce - permitir continuar para mostrar menú con advertencias
 if (!wpcw_check_woocommerce()) {
-    return;
+    error_log('WPCW: WooCommerce no disponible, pero continuando para mostrar menú administrativo');
+    // No hacer return para permitir que el menú se muestre
 }
 
 // Core functionality files - orden basado en dependencias

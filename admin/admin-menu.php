@@ -23,6 +23,28 @@ if ( ! function_exists( 'wpcw_render_plugin_dashboard_page' ) ) {
             <h1>🎯 Dashboard - WP Cupón WhatsApp</h1>
             <p class="description">Centro de control para la gestión del sistema de cupones y programa de fidelización.</p>
             
+            <?php 
+            // Verificar dependencias y mostrar advertencias
+            $missing_dependencies = array();
+            if (!class_exists('WooCommerce')) {
+                $missing_dependencies[] = 'WooCommerce no está instalado o activado';
+            }
+            if (!did_action('elementor/loaded')) {
+                $missing_dependencies[] = 'Elementor no está instalado o activado';
+            }
+            
+            if (!empty($missing_dependencies)): ?>
+            <div class="notice notice-warning">
+                <p><strong>⚠️ Dependencias Faltantes:</strong></p>
+                <ul style="list-style-type: disc; margin-left: 20px;">
+                    <?php foreach ($missing_dependencies as $dependency): ?>
+                        <li><?php echo esc_html($dependency); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+                <p>El plugin funcionará con limitaciones hasta que se instalen todas las dependencias.</p>
+            </div>
+            <?php endif; ?>
+            
             <?php if ($show_success): ?>
             <div class="notice notice-success is-dismissible">
                 <p><strong>🎉 ¡Configuración completada exitosamente!</strong> El plugin está listo para usar. Puedes comenzar creando cupones y configurando comercios.</p>
