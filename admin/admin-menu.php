@@ -39,32 +39,8 @@ function wpcw_register_plugin_admin_menu() {
         'wpcw_render_dashboard_page'   // function
     );
 
-    // Submenú: Solicitudes
-    add_submenu_page(
-        'wpcw-dashboard',
-        'Solicitudes de Adhesión',
-        'Solicitudes',
-        'manage_options',
-        'edit.php?post_type=wpcw_application'
-    );
-
-    // Submenú: Comercios
-    add_submenu_page(
-        'wpcw-dashboard',
-        'Gestionar Comercios',
-        'Comercios',
-        'manage_options',
-        'edit.php?post_type=wpcw_business'
-    );
-
-    // Submenú: Instituciones
-    add_submenu_page(
-        'wpcw-dashboard',
-        'Gestionar Instituciones',
-        'Instituciones',
-        'manage_options',
-        'edit.php?post_type=wpcw_institution'
-    );
+    // Los submenús para Solicitudes, Comercios e Instituciones son añadidos
+    // automáticamente al registrar los Custom Post Types con 'show_in_menu'.
 
     // Submenú: Canjes
     add_submenu_page(
