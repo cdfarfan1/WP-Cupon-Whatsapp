@@ -98,7 +98,7 @@ function wpcw_handle_redemption_confirmation_request( WP_REST_Request $request )
         return $response;
     }
 
-    $new_coupon_code = strtoupper( 'CANJE-' . str_replace(array('WPCW-', '-'), '', $numero_canje_original) . '-' . wp_rand(100,999) );
+    $new_coupon_code = strtoupper( 'CANJE-' . str_replace(array('WPCW-', '-'), '', (string) $numero_canje_original) . '-' . wp_rand(100,999) );
     $new_coupon_description = sprintf( __('Cupón de canje para "%s". Solicitud Nro: %s.', 'wp-cupon-whatsapp'), $original_coupon_post->post_title, $numero_canje_original );
 
     $coupon_args = array(

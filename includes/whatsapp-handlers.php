@@ -136,7 +136,7 @@ function wpcw_get_message_template($type, $data = array()) {
     
     $message = $templates[$type];
     foreach ($data as $key => $value) {
-        $message = str_replace('{' . $key . '}', $value, $message);
+        $message = str_replace('{' . $key . '}', (string) $value, $message);
     }
     
     return $message;

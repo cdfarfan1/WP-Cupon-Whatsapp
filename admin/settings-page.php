@@ -729,7 +729,7 @@ if ( ! function_exists( 'wpcw_do_create_plugin_pages' ) ) {
             if ( $page_id ) {
                 $existing_post = get_post( $page_id );
                 if ( $existing_post && 'page' === $existing_post->post_type && 'trash' !== $existing_post->post_status ) {
-                    if ( has_shortcode( $existing_post->post_content, str_replace(array('[', ']'), '', $page_config['shortcode']) ) ) {
+                    if ( has_shortcode( $existing_post->post_content, str_replace(array('[', ']'), '', (string) $page_config['shortcode']) ) ) {
                         $page_exists_valid = true;
                     } else {
                          add_settings_error(

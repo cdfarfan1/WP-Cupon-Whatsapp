@@ -208,7 +208,7 @@ if (version_compare(get_bloginfo('version'), WPCW_MIN_WP_VERSION, '<')) {
 // Cargar estilos y scripts del admin
 function wpcw_enqueue_admin_scripts($hook) {
     // Solo cargar en páginas de nuestro plugin
-    if (strpos($hook, 'wpcw') === false) {
+    if (strpos((string) $hook, 'wpcw') === false) {
         return;
     }
 
