@@ -129,9 +129,11 @@ if ( ! function_exists( 'wpcw_render_plugin_dashboard_page' ) ) {
  */
 function wpcw_register_plugin_admin_menu() {
     // Debug: Log que la función se está ejecutando
+    error_log('WPCW: *** INICIANDO FUNCIÓN wpcw_register_plugin_admin_menu ***');
     error_log('WPCW: Registrando menú de administración');
     error_log('WPCW: Usuario actual puede manage_options: ' . (current_user_can('manage_options') ? 'SÍ' : 'NO'));
     error_log('WPCW: Admin actual: ' . (is_admin() ? 'SÍ' : 'NO'));
+    error_log('WPCW: Función existe: ' . (function_exists('add_menu_page') ? 'SÍ' : 'NO'));
     
     // TEMPORAL: Eliminar verificación de permisos para diagnóstico
     // if (!current_user_can('manage_options')) {
@@ -224,6 +226,8 @@ function wpcw_register_plugin_admin_menu() {
 
     // Los submenús específicos para comercios e instituciones se manejan dentro de las estadísticas generales
     // basándose en los permisos del usuario actual
+    
+    error_log('WPCW: *** FUNCIÓN wpcw_register_plugin_admin_menu COMPLETADA ***');
 }
 
 // Registrar el hook para crear el menú administrativo

@@ -455,6 +455,7 @@ if ( is_admin() ) {
     
     // TEMPORAL: Cargar diagnóstico completo
     require_once WPCW_PLUGIN_DIR . 'diagnostico-completo.php';
+    require_once WPCW_PLUGIN_DIR . 'debug-menu-especifico.php';
     
     require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
     require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php';
