@@ -42,10 +42,15 @@ function wpcw_diagnostico_completo() {
                     if (is_object($callback['function'][0])) {
                         error_log('4. - Callback: ' . get_class($callback['function'][0]) . '::' . $callback['function'][1]);
                     } else {
-                        error_log('4. - Callback: ' . $callback['function'][0] . '::' . $callback['function'][1]);
+                        $class_name = is_string($callback['function'][0]) ? $callback['function'][0] : 'Clase no string';
+                        error_log('4. - Callback: ' . $class_name . '::' . $callback['function'][1]);
                     }
                 } else {
-                    error_log('4. - Callback: ' . $callback['function']);
+                    if (is_string($callback['function'])) {
+                        error_log('4. - Callback: ' . $callback['function']);
+                    } else {
+                        error_log('4. - Callback: Closure o función anónima');
+                    }
                 }
             }
         }
@@ -59,7 +64,9 @@ function wpcw_diagnostico_completo() {
     if (is_array($menu)) {
         foreach ($menu as $item) {
             if (is_array($item) && isset($item[0], $item[2])) {
-                error_log('5. - Menú: ' . strip_tags($item[0]) . ' (slug: ' . $item[2] . ')');
+                $menu_name = is_string($item[0]) ? strip_tags($item[0]) : 'Menú no string';
+                $menu_slug = is_string($item[2]) ? $item[2] : 'Slug no string';
+                error_log('5. - Menú: ' . $menu_name . ' (slug: ' . $menu_slug . ')');
             }
         }
     }

@@ -58,8 +58,13 @@ function wpcw_debug_menu_especifico() {
     if (is_array($menu)) {
         foreach ($menu as $item) {
             if (is_array($item) && isset($item[0], $item[2])) {
-                if (strpos($item[2], 'wpcw') !== false || strpos($item[0], 'WP Cupón') !== false) {
-                    error_log('DEBUG: Menú WPCW encontrado: ' . strip_tags($item[0]) . ' (slug: ' . $item[2] . ')');
+                $item_slug = is_string($item[2]) ? $item[2] : '';
+                $item_name = is_string($item[0]) ? $item[0] : '';
+                if ((is_string($item_slug) && strpos($item_slug, 'wpcw') !== false) || 
+                    (is_string($item_name) && strpos($item_name, 'WP Cupón') !== false)) {
+                    $safe_name = is_string($item[0]) ? strip_tags($item[0]) : 'Menú no string';
+                    $safe_slug = is_string($item[2]) ? $item[2] : 'Slug no string';
+                    error_log('DEBUG: Menú WPCW encontrado: ' . $safe_name . ' (slug: ' . $safe_slug . ')');
                 }
             }
         }
