@@ -14,10 +14,10 @@ if (!defined('WPINC')) {
  */
 function wpcw_add_roles_page() {
     add_submenu_page(
-        'wpcw-dashboard',
+        'wpcw-main-dashboard',
         __('Administración de Roles', 'wp-cupon-whatsapp'),
         __('Roles', 'wp-cupon-whatsapp'),
-        'manage_options',
+        'read',
         'wpcw-roles',
         'wpcw_roles_page_content'
     );

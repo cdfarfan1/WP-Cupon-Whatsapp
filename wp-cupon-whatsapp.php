@@ -452,6 +452,7 @@ if (did_action('elementor/loaded')) {
 // Admin specific includes
 if ( is_admin() ) {
     error_log('WPCW: Entrando en sección admin, cargando archivos...');
+    
     require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
     require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php';
     require_once WPCW_PLUGIN_DIR . 'admin/stats-page.php';

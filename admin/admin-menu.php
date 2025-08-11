@@ -143,8 +143,8 @@ function wpcw_register_plugin_admin_menu() {
     $result = add_menu_page(
         'WP Cupón WhatsApp',                     // Título de la página
         'WP Cupón WhatsApp',                     // Título del menú
-        'manage_options',                        // Capacidad mínima requerida
-        'wpcw-dashboard',                        // Slug del menú (corregido)
+        'read',                                  // Capacidad mínima requerida (cambiado temporalmente)
+        'wpcw-main-dashboard',                   // Slug del menú (cambiado)
         'wpcw_render_plugin_dashboard_page',     // Callback para página de escritorio
         'dashicons-tickets-alt',                 // Icono de cupones
         25                                       // Posición en el menú
@@ -154,70 +154,70 @@ function wpcw_register_plugin_admin_menu() {
 
     // Submenú Dashboard (página principal)
     add_submenu_page(
-        'wpcw-dashboard',                        // Slug del menú padre (corregido)
+        'wpcw-main-dashboard',                   // Slug del menú padre (actualizado)
         'Dashboard',                             // Título de la página
         'Dashboard',                             // Título del submenú
-        'manage_options',                        // Capacidad mínima requerida
+        'read',                                  // Capacidad mínima requerida (cambiado temporalmente)
         'wpcw-dashboard',                        // Mismo slug que el menú principal
         'wpcw_render_plugin_dashboard_page'      // Callback para el contenido
     );
 
     // Solicitudes
     add_submenu_page(
-        'wpcw-dashboard',                        // Slug del menú padre
+        'wpcw-main-dashboard',                   // Slug del menú padre (actualizado)
         'Solicitudes',                           // Título de la página
         'Solicitudes',                           // Título del submenú
-        'manage_options',                        // Capacidad requerida
+        'read',                                  // Capacidad requerida (cambiado temporalmente)
         'wpcw-solicitudes',                      // Slug único del submenú
         'wpcw_redirect_to_solicitudes'           // Callback de redirección
     );
 
     // Comercios
     add_submenu_page(
-        'wpcw-dashboard',                        // Slug del menú padre
+        'wpcw-main-dashboard',                   // Slug del menú padre (actualizado)
         'Comercios',                             // Título de la página
         'Comercios',                             // Título del submenú
-        'manage_options',                        // Capacidad requerida
+        'read',                                  // Capacidad requerida (cambiado temporalmente)
         'wpcw-comercios',                        // Slug único del submenú
         'wpcw_redirect_to_comercios'             // Callback de redirección
     );
 
     // Instituciones
     add_submenu_page(
-        'wpcw-dashboard',                        // Slug del menú padre
+        'wpcw-main-dashboard',                   // Slug del menú padre (actualizado)
         'Instituciones',                         // Título de la página
         'Instituciones',                         // Título del submenú
-        'manage_options',                        // Capacidad requerida
+        'read',                                  // Capacidad requerida (cambiado temporalmente)
         'wpcw-instituciones',                    // Slug único del submenú
         'wpcw_redirect_to_instituciones'         // Callback de redirección
     );
 
     // Canjes
     add_submenu_page(
-        'wpcw-dashboard',                        // Slug del menú padre (corregido)
+        'wpcw-main-dashboard',                   // Slug del menú padre (actualizado)
         'Canjes',                                // Título de la página
         'Canjes',                                // Título del submenú
-        'manage_woocommerce',                    // Capacidad requerida
+        'read',                                  // Capacidad requerida (cambiado temporalmente)
         'wpcw-canjes',                          // Slug de este submenú
         'wpcw_canjes_page'                      // Callback para el contenido
     );
 
     // Estadísticas
     add_submenu_page(
-        'wpcw-dashboard',                        // Slug del menú padre (corregido)
+        'wpcw-main-dashboard',                   // Slug del menú padre (actualizado)
         'Estadísticas',                          // Título de la página
         'Estadísticas',                          // Título del submenú
-        'manage_options',                        // Capacidad requerida
+        'read',                                  // Capacidad requerida (cambiado temporalmente)
         'wpcw-stats',                           // Slug de este submenú
         'wpcw_render_superadmin_stats_page_content_wrapper' // Callback
     );
 
     // Configuración
     add_submenu_page(
-        'wpcw-dashboard',                        // Slug del menú padre (corregido)
+        'wpcw-main-dashboard',                   // Slug del menú padre (actualizado)
         'Configuración',                         // Título de la página
         'Configuración',                         // Título del submenú
-        'manage_options',                        // Capacidad requerida
+        'read',                                  // Capacidad requerida (cambiado temporalmente)
         'wpcw-settings',                         // Slug de este submenú
         'wpcw_render_plugin_settings_page'       // Callback
     );
@@ -227,7 +227,7 @@ function wpcw_register_plugin_admin_menu() {
 }
 
 // Registrar el hook para crear el menú administrativo
-add_action('admin_menu', 'wpcw_register_plugin_admin_menu');
+add_action('admin_menu', 'wpcw_register_plugin_admin_menu', 1);
 
 /**
  * Funciones de redirección para mantener los elementos agrupados en el menú
