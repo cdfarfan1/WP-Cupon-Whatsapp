@@ -17,26 +17,23 @@ function wpcw_register_post_types() {
 
     // Register wpcw_business CPT
     $business_labels = array(
-        'name'                  => __( 'Comercios', 'wp-cupon-whatsapp' ),
-        'singular_name'         => __( 'Comercio', 'wp-cupon-whatsapp' ),
-        'menu_name'             => __( 'Comercios', 'wp-cupon-whatsapp' ),
-        'name_admin_bar'        => __( 'Comercio', 'wp-cupon-whatsapp' ),
-        'add_new_item'          => __( 'Añadir Nuevo Comercio', 'wp-cupon-whatsapp' ),
-        'add_new'               => __( 'Añadir Nuevo', 'wp-cupon-whatsapp' ),
-        'new_item'              => __( 'Nuevo Comercio', 'wp-cupon-whatsapp' ),
-        'edit_item'             => __( 'Editar Comercio', 'wp-cupon-whatsapp' ),
-        'view_item'             => __( 'Ver Comercio', 'wp-cupon-whatsapp' ),
-        'all_items'             => __( 'Todos los Comercios', 'wp-cupon-whatsapp' ),
-        'search_items'          => __( 'Buscar Comercios', 'wp-cupon-whatsapp' ),
-        'not_found'             => __( 'No se encontraron Comercios.', 'wp-cupon-whatsapp' ),
-        'not_found_in_trash'    => __( 'No se encontraron Comercios en la papelera.', 'wp-cupon-whatsapp' ),
+        'name'                  => 'Comercios',
+        'singular_name'         => 'Comercio',
+        'menu_name'             => 'Comercios',
+        'name_admin_bar'        => 'Comercio',
+        'add_new_item'          => 'Añadir Nuevo Comercio',
+        'add_new'               => 'Añadir Nuevo',
+        'new_item'              => 'Nuevo Comercio',
+        'edit_item'             => 'Editar Comercio',
+        'view_item'             => 'Ver Comercio',
+        'all_items'             => 'Todos los Comercios',
+        'search_items'          => 'Buscar Comercios',
+        'not_found'             => 'No se encontraron Comercios.',
+        'not_found_in_trash'    => 'No se encontraron Comercios en la papelera.',
     );
     $business_args = array(
         'labels'             => $business_labels,
         'public'             => true,
-        'show_in_menu'       => false, // No mostrar en menú automáticamente
-        'show_ui'            => true,  // Pero sí mostrar interfaz
-        'menu_position'      => 20,
         'has_archive'        => true,
         'rewrite'            => array( 'slug' => 'wpcw-business' ),
         'supports'           => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
@@ -63,9 +60,6 @@ function wpcw_register_post_types() {
     $institution_args = array(
         'labels'             => $institution_labels,
         'public'             => true,
-        'show_in_menu'       => false, // No mostrar en menú automáticamente
-        'show_ui'            => true,  // Pero sí mostrar interfaz
-        'menu_position'      => 21,
         'has_archive'        => true,
         'rewrite'            => array( 'slug' => 'wpcw-institution' ),
         'supports'           => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
@@ -93,8 +87,6 @@ function wpcw_register_post_types() {
         'labels'             => $application_labels,
         'public'             => false,
         'show_ui'            => true,
-        'show_in_menu'       => false, // No mostrar en menú automáticamente
-        'menu_position'      => 19,
         'rewrite'            => array( 'slug' => 'wpcw-applications' ),
         'supports'           => array( 'title', 'editor', 'custom-fields' ),
         'capability_type'    => 'post',

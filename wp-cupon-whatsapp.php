@@ -201,7 +201,7 @@ function wpcw_enqueue_admin_scripts($hook) {
     wp_enqueue_style('wpcw-admin-styles', WPCW_PLUGIN_URL . 'admin/css/admin.css', array(), WPCW_VERSION);
 
     // Estilos específicos de canjes
-    if ($hook === 'wpcw-main-menu_page_wpcw-canjes') {
+    if ($hook === 'toplevel_page_wpcw-dashboard' || $hook === 'wpcw-dashboard_page_wpcw-canjes') {
         wp_enqueue_style('wpcw-canjes-styles', WPCW_PLUGIN_URL . 'admin/css/canjes.css', array(), WPCW_VERSION);
     }
 }
@@ -290,6 +290,12 @@ function wpcw_activate_plugin() {
     wpcw_register_taxonomies();
     // Add User Roles.
     wpcw_add_roles();
+    
+    // Create plugin pages automatically
+    WPCW_Installer::auto_create_pages();
+    
+    // Initialize plugin settings
+    WPCW_Installer::init_settings();
 
     // Flush rewrite rules
     flush_rewrite_rules();
