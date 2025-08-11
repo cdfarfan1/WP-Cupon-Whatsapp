@@ -108,8 +108,15 @@ function wpcw_check_dependencies() {
     if (!empty($dependency_errors)) {
         // error_log('WPCW: Errores de dependencias encontrados: ' . implode(', ', $dependency_errors));
         add_action('admin_notices', function() use ($dependency_errors) {
+            // Verificar si el usuario ha cerrado este aviso
+            $user_id = get_current_user_id();
+            $dismissed_key = 'wpcw_dependencies_dismissed_' . md5(implode('|', $dependency_errors));
+            
+            if (get_user_meta($user_id, $dismissed_key, true)) {
+                return; // No mostrar si ya fue cerrado
+            }
             ?>
-            <div class="error">
+            <div class="notice notice-error is-dismissible" id="wpcw-dependencies-notice" data-dismiss-key="<?php echo esc_attr($dismissed_key); ?>">
                 <p>
                     <strong><?php echo esc_html('WP Canje Cupón WhatsApp requiere:'); ?></strong>
                     <ul style="list-style-type: disc; margin-left: 20px;">
@@ -119,6 +126,22 @@ function wpcw_check_dependencies() {
                     </ul>
                 </p>
             </div>
+            <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $('#wpcw-dependencies-notice').on('click', '.notice-dismiss', function() {
+                    var dismissKey = $('#wpcw-dependencies-notice').data('dismiss-key');
+                    $.ajax({
+                        url: ajaxurl,
+                        type: 'POST',
+                        data: {
+                            action: 'wpcw_dismiss_dependencies_notice',
+                            dismiss_key: dismissKey,
+                            nonce: '<?php echo wp_create_nonce('wpcw_dismiss_notice'); ?>'
+                        }
+                    });
+                });
+            });
+            </script>
             <?php
         });
         // NO retornar false para permitir que el menú se muestre con advertencias
@@ -565,3 +588,25 @@ function wpcw_public_enqueue_scripts_styles() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'wpcw_public_enqueue_scripts_styles' );
+
+// Handler AJAX para cerrar avisos de dependencias
+function wpcw_dismiss_dependencies_notice() {
+    // Verificar nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'wpcw_dismiss_notice')) {
+        wp_die('Nonce verification failed');
+    }
+    
+    // Verificar que el usuario tenga permisos
+    if (!current_user_can('manage_options')) {
+        wp_die('Insufficient permissions');
+    }
+    
+    $dismiss_key = sanitize_text_field($_POST['dismiss_key']);
+    $user_id = get_current_user_id();
+    
+    // Guardar que el usuario ha cerrado este aviso
+    update_user_meta($user_id, $dismiss_key, true);
+    
+    wp_die(); // Terminar la ejecución AJAX
+}
+add_action('wp_ajax_wpcw_dismiss_dependencies_notice', 'wpcw_dismiss_dependencies_notice');
