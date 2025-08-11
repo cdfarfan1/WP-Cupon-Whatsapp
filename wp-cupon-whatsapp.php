@@ -461,6 +461,7 @@ if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/meta-boxes.php';
     require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
     require_once WPCW_PLUGIN_DIR . 'admin/setup-wizard.php';
+    require_once WPCW_PLUGIN_DIR . 'admin/roles-page.php';
     error_log('WPCW: Archivos admin cargados correctamente');
     
     // DIAGNÓSTICO TEMPORAL - incluir archivo de diagnóstico

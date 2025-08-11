@@ -14,11 +14,11 @@ if (!defined('WPINC')) {
  */
 function wpcw_add_roles_page() {
     add_submenu_page(
-        'wpcw_settings',
+        'wpcw-dashboard',
         __('Administración de Roles', 'wp-cupon-whatsapp'),
         __('Roles', 'wp-cupon-whatsapp'),
-        'manage_wpcw_settings',
-        'wpcw_roles',
+        'manage_options',
+        'wpcw-roles',
         'wpcw_roles_page_content'
     );
 }
@@ -29,7 +29,7 @@ add_action('admin_menu', 'wpcw_add_roles_page');
  */
 function wpcw_roles_page_content() {
     // Verificar permisos
-    if (!current_user_can('manage_wpcw_settings')) {
+    if (!current_user_can('manage_options')) {
         wp_die(__('No tienes permisos suficientes para acceder a esta página.', 'wp-cupon-whatsapp'));
     }
 
