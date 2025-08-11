@@ -39,7 +39,11 @@ function wpcw_diagnostico_completo() {
             error_log('4. Prioridad ' . $priority . ': ' . count($callbacks) . ' callbacks');
             foreach ($callbacks as $callback) {
                 if (is_array($callback['function'])) {
-                    error_log('4. - Callback: ' . get_class($callback['function'][0]) . '::' . $callback['function'][1]);
+                    if (is_object($callback['function'][0])) {
+                        error_log('4. - Callback: ' . get_class($callback['function'][0]) . '::' . $callback['function'][1]);
+                    } else {
+                        error_log('4. - Callback: ' . $callback['function'][0] . '::' . $callback['function'][1]);
+                    }
                 } else {
                     error_log('4. - Callback: ' . $callback['function']);
                 }
