@@ -4,7 +4,29 @@ Este archivo documenta todos los cambios importantes realizados en el plugin.
 
 ---
 
-## [Versión 1.2.0] - 2025-07-22 (En Desarrollo)
+## [Versión 1.2.1] - 2025-01-15 (En Desarrollo)
+
+Esta versión se centra en la corrección de errores críticos de compatibilidad con PHP 8+ y mejoras en la experiencia del usuario.
+
+### 🐛 **Corrección de Errores Críticos**
+
+*   **Solucionados Errores Deprecated de PHP 8+:**
+    *   Se han corregido todos los errores `Deprecated` relacionados con `strpos()` y `str_replace()` que causaban problemas de "headers already sent".
+    *   **Archivos corregidos:** `includes/whatsapp-handlers.php`, `wp-cupon-whatsapp.php`, `admin/settings-page.php`, `includes/rest-api.php`
+    *   **Solución:** Añadido casting explícito a `string` para evitar pasar valores `null` a funciones de cadena.
+    *   Se han añadido verificaciones `isset()` antes de usar `sanitize_text_field()` en múltiples archivos para prevenir errores futuros.
+    *   **Archivos adicionales corregidos:** `includes/customer-fields.php`, `admin/roles-page.php`, `includes/class-wpcw-registration-forms.php`
+
+### 🛠️ **Mejoras de Experiencia de Usuario**
+
+*   **Avisos de Dependencias Dismissibles:**
+    *   El mensaje de advertencia "WP Canje Cupón WhatsApp requiere: WooCommerce instalado y activado, Elementor instalado y activado" ahora es cerrable.
+    *   Se implementó un sistema de almacenamiento por usuario que recuerda cuando un usuario ha cerrado el aviso.
+    *   Incluye funcionalidad JavaScript y manejador AJAX para una experiencia fluida.
+
+---
+
+## [Versión 1.2.0] - 2025-07-22
 
 Esta versión se centra en la reorganización del menú de administración, la integración con Elementor y la corrección de errores críticos.
 

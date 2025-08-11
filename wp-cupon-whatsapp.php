@@ -3,7 +3,7 @@
  * Plugin Name: WP Canje Cupon Whatsapp
  * Plugin URI: https://www.pragmaticsolutions.com.ar
  * Description: Plugin para programa de fidelización y canje de cupones por WhatsApp integrado con WooCommerce.
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Cristian Farfan, Pragmatic Solutions
  * Author URI: https://www.pragmaticsolutions.com.ar
  * License: GPL-2.0+
@@ -25,7 +25,7 @@ if (!defined('WPINC')) {
 // error_log('WPCW: Elementor cargado: ' . (did_action('elementor/loaded') ? 'SÍ' : 'NO'));
 
 // Define constants first
-define('WPCW_VERSION', '1.2.0');
+define('WPCW_VERSION', '1.2.1');
 define('WPCW_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WPCW_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('WPCW_TEXT_DOMAIN', 'wp-cupon-whatsapp');
