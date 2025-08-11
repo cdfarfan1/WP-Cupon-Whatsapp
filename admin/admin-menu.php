@@ -49,32 +49,32 @@ function wpcw_register_plugin_admin_menu() {
 
     // Solicitudes
     add_submenu_page(
-        'wpcw-dashboard',                        // Slug del menú padre (corregido)
+        'wpcw-dashboard',                        // Slug del menú padre
         'Solicitudes',                           // Título de la página
         'Solicitudes',                           // Título del submenú
         'manage_options',                        // Capacidad requerida
-        'edit.php?post_type=wpcw_application',   // Enlace directo a solicitudes
-        ''                                       // Sin callback (enlace externo)
+        'wpcw-solicitudes',                      // Slug único del submenú
+        'wpcw_redirect_to_solicitudes'           // Callback de redirección
     );
 
     // Comercios
     add_submenu_page(
-        'wpcw-dashboard',                        // Slug del menú padre (corregido)
+        'wpcw-dashboard',                        // Slug del menú padre
         'Comercios',                             // Título de la página
         'Comercios',                             // Título del submenú
         'manage_options',                        // Capacidad requerida
-        'edit.php?post_type=wpcw_business',      // Enlace directo a comercios
-        ''                                       // Sin callback (enlace externo)
+        'wpcw-comercios',                        // Slug único del submenú
+        'wpcw_redirect_to_comercios'             // Callback de redirección
     );
 
     // Instituciones
     add_submenu_page(
-        'wpcw-dashboard',                        // Slug del menú padre (corregido)
+        'wpcw-dashboard',                        // Slug del menú padre
         'Instituciones',                         // Título de la página
         'Instituciones',                         // Título del submenú
         'manage_options',                        // Capacidad requerida
-        'edit.php?post_type=wpcw_institution',   // Enlace directo a instituciones
-        ''                                       // Sin callback (enlace externo)
+        'wpcw-instituciones',                    // Slug único del submenú
+        'wpcw_redirect_to_instituciones'         // Callback de redirección
     );
 
     // Canjes
@@ -113,6 +113,35 @@ function wpcw_register_plugin_admin_menu() {
 
 // Registrar el hook para crear el menú administrativo
 add_action('admin_menu', 'wpcw_register_plugin_admin_menu');
+
+/**
+ * Funciones de redirección para mantener los elementos agrupados en el menú
+ */
+function wpcw_redirect_to_solicitudes() {
+    wp_redirect(admin_url('edit.php?post_type=wpcw_application'));
+    exit;
+}
+
+function wpcw_redirect_to_comercios() {
+    wp_redirect(admin_url('edit.php?post_type=wpcw_business'));
+    exit;
+}
+
+function wpcw_redirect_to_instituciones() {
+    wp_redirect(admin_url('edit.php?post_type=wpcw_institution'));
+    exit;
+}
+
+/**
+ * Remover menús duplicados de post types para mantener organización
+ */
+function wpcw_remove_duplicate_menus() {
+    // Remover menús automáticos de post types para evitar duplicados
+    remove_menu_page('edit.php?post_type=wpcw_application');
+    remove_menu_page('edit.php?post_type=wpcw_business');
+    remove_menu_page('edit.php?post_type=wpcw_institution');
+}
+add_action('admin_menu', 'wpcw_remove_duplicate_menus', 999);
 
 /**
  * Renders the plugin dashboard page.
