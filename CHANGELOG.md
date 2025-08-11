@@ -4,7 +4,26 @@ Este archivo documenta todos los cambios importantes realizados en el plugin.
 
 ---
 
-## [Versión 1.2.0] - 2025-07-22 (En Desarrollo)
+## [Versión 1.3.0] - 2025-08-11
+
+### 🛠️ **Mejoras y Cambios**
+
+*   **Refactorización del Menú de Administración:** Se ha refactorizado y corregido la lógica de creación de menús para garantizar que todos los elementos (Comercios, Instituciones, etc.) se agrupen de forma fiable bajo un único panel principal "WP Cupón WhatsApp", evitando la creación de menús de nivel superior duplicados.
+*   **Organización del Código:** Se han eliminado archivos de prueba y depuración (`debug-menu.php`, `diagnostico-temp.php`, `menu-test.php`) que causaban errores, y se ha centralizado el código de diagnóstico en un único archivo dentro de la carpeta `admin`.
+
+### 🐛 **Corrección de Errores**
+
+*   **Solucionado Error Crítico de PHP:** Se han corregido los errores `PHP Deprecated` y `Warning: Cannot modify header information` que aparecían en los logs.
+    *   **Causa:** El problema se debía a la ejecución duplicada de la función de registro de menús, causada por un archivo de prueba (`menu-test.php`) que se estaba cargando incorrectamente.
+    *   **Solución:** Se ha eliminado el archivo de prueba problemático, resolviendo la causa raíz de los errores.
+
+### 📄 **Documentación**
+
+*   **Actualización de Versión:** El número de versión del plugin se ha actualizado a `1.3.0` en todos los archivos relevantes.
+
+---
+
+## [Versión 1.2.0] - 2025-07-22
 
 Esta versión se centra en la reorganización del menú de administración, la integración con Elementor y la corrección de errores críticos.
 

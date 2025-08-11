@@ -3,7 +3,7 @@ Contributors: Cristian Farfan, Pragmatic Solutions
 Tags: woocommerce, coupon, whatsapp, loyalty, rewards
 Requires at least: 5.0
 Tested up to: 6.4
-Stable tag: 1.1.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,13 +39,20 @@ Principales funcionalidades:
 
 == Changelog ==
 
+= 1.3.0 =
+* **Fix:** Corrected admin menu logic to reliably group all items under a single panel.
+* **Fix:** Resolved PHP Deprecated and 'Cannot modify header' errors by removing a test file that caused duplicate function execution.
+* **Tweak:** Cleaned up project structure by removing old test and debug files.
+* **Tweak:** Updated plugin version across all files.
+
+= 1.2.0 =
+* **Feature:** Unified admin menu under a single "WP Cupón WhatsApp" panel with a new dashboard page.
+* **Feature:** Added Elementor integration with "Coupon List" and "Application Form" widgets.
+* **Fix:** Corrected a critical error related to translation loading.
+* **Docs:** Created a detailed user manual and this changelog.
+
 = 1.1.0 =
-* Añadida integración con Elementor
-* Nuevo widget "Lista de Cupones WPCW" para Elementor
-* Nuevo widget "Formulario Solicitud Adhesión WPCW" para Elementor
-* Nueva categoría "WP Cupón WhatsApp" en Elementor
-* Mejorada la verificación de dependencias (PHP, WordPress, WooCommerce, Elementor)
-* Correcciones de errores y mejoras de rendimiento
+* Minor bug fixes and performance improvements.
 
 = 1.0.0 =
 * Initial release.
