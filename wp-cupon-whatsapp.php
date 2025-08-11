@@ -453,6 +453,9 @@ if (did_action('elementor/loaded')) {
 if ( is_admin() ) {
     error_log('WPCW: Entrando en sección admin, cargando archivos...');
     
+    // TEMPORAL: Cargar diagnóstico completo
+    require_once WPCW_PLUGIN_DIR . 'diagnostico-completo.php';
+    
     require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
     require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php';
     require_once WPCW_PLUGIN_DIR . 'admin/stats-page.php';

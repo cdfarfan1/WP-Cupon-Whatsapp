@@ -133,11 +133,11 @@ function wpcw_register_plugin_admin_menu() {
     error_log('WPCW: Usuario actual puede manage_options: ' . (current_user_can('manage_options') ? 'SÍ' : 'NO'));
     error_log('WPCW: Admin actual: ' . (is_admin() ? 'SÍ' : 'NO'));
     
-    // Verificar si el usuario tiene permisos
-    if (!current_user_can('manage_options')) {
-        error_log('WPCW: Usuario sin permisos manage_options, menú no registrado');
-        return;
-    }
+    // TEMPORAL: Eliminar verificación de permisos para diagnóstico
+    // if (!current_user_can('manage_options')) {
+    //     error_log('WPCW: Usuario sin permisos manage_options, menú no registrado');
+    //     return;
+    // }
     
     // Menú Principal del Plugin - Gestión Unificada
     $result = add_menu_page(
