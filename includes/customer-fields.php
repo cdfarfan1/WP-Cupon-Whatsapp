@@ -116,7 +116,7 @@ function wpcw_validate_custom_register_fields( $username, $email, $validation_er
 
 
     // Fecha de Nacimiento
-    $birth_date_value = isset($_POST['wpcw_birth_date']) ? trim($_POST['wpcw_birth_date']) : '';
+    $birth_date_value = isset($_POST['wpcw_birth_date']) ? trim((string)$_POST['wpcw_birth_date']) : '';
     if ( !empty($required_settings['birth_date']) && $required_settings['birth_date'] === '1' ) {
         if ( empty($birth_date_value) ) {
             $validation_errors->add('wpcw_birth_date_error', __('Por favor, introduce tu Fecha de Nacimiento.', 'wp-cupon-whatsapp'));
@@ -131,7 +131,7 @@ function wpcw_validate_custom_register_fields( $username, $email, $validation_er
 
 
     // Número de WhatsApp
-    $whatsapp_number_value = isset($_POST['wpcw_whatsapp_number']) ? trim($_POST['wpcw_whatsapp_number']) : '';
+    $whatsapp_number_value = isset($_POST['wpcw_whatsapp_number']) ? trim((string)$_POST['wpcw_whatsapp_number']) : '';
     if ( !empty($required_settings['whatsapp_number']) && $required_settings['whatsapp_number'] === '1' ) {
         if ( empty($whatsapp_number_value) ) {
             $validation_errors->add('wpcw_whatsapp_error', __('Por favor, introduce tu Número de WhatsApp.', 'wp-cupon-whatsapp'));
@@ -307,7 +307,7 @@ function wpcw_validate_custom_account_fields( &$errors, $user ) {
 
 
     // Fecha de Nacimiento
-    $birth_date_value_acc = isset($_POST['wpcw_birth_date']) ? trim($_POST['wpcw_birth_date']) : '';
+    $birth_date_value_acc = isset($_POST['wpcw_birth_date']) ? trim((string)$_POST['wpcw_birth_date']) : '';
     if ( !empty($required_settings['birth_date']) && $required_settings['birth_date'] === '1' ) {
         if ( empty($birth_date_value_acc) ) {
             $errors->add('wpcw_birth_date_error', __('Por favor, introduce tu Fecha de Nacimiento.', 'wp-cupon-whatsapp'));
@@ -321,7 +321,7 @@ function wpcw_validate_custom_account_fields( &$errors, $user ) {
     }
 
     // Número de WhatsApp
-    $whatsapp_number_value_acc = isset($_POST['wpcw_whatsapp_number']) ? trim($_POST['wpcw_whatsapp_number']) : '';
+    $whatsapp_number_value_acc = isset($_POST['wpcw_whatsapp_number']) ? trim((string)$_POST['wpcw_whatsapp_number']) : '';
     if ( !empty($required_settings['whatsapp_number']) && $required_settings['whatsapp_number'] === '1' ) {
         if ( empty($whatsapp_number_value_acc) ) {
             $errors->add('wpcw_whatsapp_error', __('Por favor, introduce tu Número de WhatsApp.', 'wp-cupon-whatsapp'));

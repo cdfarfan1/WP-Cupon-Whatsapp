@@ -208,7 +208,7 @@ function wpcw_update_role_capabilities() {
         return;
     }
 
-    $role_name = sanitize_text_field($_POST['role']);
+    $role_name = isset($_POST['role']) ? sanitize_text_field($_POST['role']) : '';
     $role = get_role($role_name);
     
     if (!$role) {
@@ -255,7 +255,7 @@ function wpcw_assign_role_to_user() {
     }
 
     $user_id = absint($_POST['user_id']);
-    $role = sanitize_text_field($_POST['role']);
+    $role = isset($_POST['role']) ? sanitize_text_field($_POST['role']) : '';
 
     if (!$user_id || !$role) {
         add_settings_error(

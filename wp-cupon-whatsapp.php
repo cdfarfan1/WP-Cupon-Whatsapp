@@ -601,7 +601,7 @@ function wpcw_dismiss_dependencies_notice() {
         wp_die('Insufficient permissions');
     }
     
-    $dismiss_key = sanitize_text_field($_POST['dismiss_key']);
+    $dismiss_key = isset($_POST['dismiss_key']) ? sanitize_text_field($_POST['dismiss_key']) : '';
     $user_id = get_current_user_id();
     
     // Guardar que el usuario ha cerrado este aviso

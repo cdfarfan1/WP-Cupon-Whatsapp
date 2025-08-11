@@ -180,7 +180,7 @@ class WPCW_Registration_Forms {
         check_ajax_referer('wpcw_business_registration', 'nonce');
 
         $business_data = array(
-            'post_title' => sanitize_text_field($_POST['business_name']),
+            'post_title' => isset($_POST['business_name']) ? sanitize_text_field($_POST['business_name']) : '',
             'post_content' => sanitize_textarea_field($_POST['business_description']),
             'post_type' => 'wpcw_business',
             'post_status' => 'pending'
@@ -191,7 +191,7 @@ class WPCW_Registration_Forms {
         if (!is_wp_error($business_id)) {
             // Guardar meta datos del comercio
             update_post_meta($business_id, '_wpcw_business_email', sanitize_email($_POST['business_email']));
-            update_post_meta($business_id, '_wpcw_business_phone', sanitize_text_field($_POST['business_phone']));
+            update_post_meta($business_id, '_wpcw_business_phone', isset($_POST['business_phone']) ? sanitize_text_field($_POST['business_phone']) : '');
             update_post_meta($business_id, '_wpcw_business_address', sanitize_textarea_field($_POST['business_address']));
 
             // Crear usuario para el propietario
@@ -199,7 +199,7 @@ class WPCW_Registration_Forms {
                 'user_login' => sanitize_email($_POST['owner_email']),
                 'user_email' => sanitize_email($_POST['owner_email']),
                 'user_pass' => $_POST['password'],
-                'first_name' => sanitize_text_field($_POST['owner_name']),
+                'first_name' => isset($_POST['owner_name']) ? sanitize_text_field($_POST['owner_name']) : '',
                 'role' => 'wpcw_business_owner'
             );
 
@@ -224,14 +224,14 @@ class WPCW_Registration_Forms {
             'user_login' => sanitize_email($_POST['customer_email']),
             'user_email' => sanitize_email($_POST['customer_email']),
             'user_pass' => $_POST['customer_password'],
-            'first_name' => sanitize_text_field($_POST['customer_name']),
+            'first_name' => isset($_POST['customer_name']) ? sanitize_text_field($_POST['customer_name']) : '',
             'role' => 'customer'
         );
 
         $user_id = wp_insert_user($user_data);
 
         if (!is_wp_error($user_id)) {
-            update_user_meta($user_id, '_wpcw_phone', sanitize_text_field($_POST['customer_phone']));
+            update_user_meta($user_id, '_wpcw_phone', isset($_POST['customer_phone']) ? sanitize_text_field($_POST['customer_phone']) : '');
             wp_send_json_success(__('Registro completado exitosamente.', 'wp-cupon-whatsapp'));
         }
 
