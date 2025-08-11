@@ -9,21 +9,21 @@ if (!defined('ABSPATH')) {
 
 // Función de debug específica para el menú
 function wpcw_debug_menu_especifico() {
-    error_log('=== DEBUG MENÚ ESPECÍFICO WPCW ===');
+    // error_log('=== DEBUG MENÚ ESPECÍFICO WPCW ===');
     
     // Verificar si la función principal existe
     if (function_exists('wpcw_register_plugin_admin_menu')) {
-        error_log('DEBUG: Función wpcw_register_plugin_admin_menu EXISTE');
+        // error_log('DEBUG: Función wpcw_register_plugin_admin_menu EXISTE');
         
         // Intentar ejecutar la función manualmente
         try {
             wpcw_register_plugin_admin_menu();
-            error_log('DEBUG: Función ejecutada manualmente SIN ERRORES');
+            // error_log('DEBUG: Función ejecutada manualmente SIN ERRORES');
         } catch (Exception $e) {
-            error_log('DEBUG: ERROR al ejecutar función: ' . $e->getMessage());
+            // error_log('DEBUG: ERROR al ejecutar función: ' . $e->getMessage());
         }
     } else {
-        error_log('DEBUG: Función wpcw_register_plugin_admin_menu NO EXISTE');
+        // error_log('DEBUG: Función wpcw_register_plugin_admin_menu NO EXISTE');
     }
     
     // Verificar hooks registrados específicamente para nuestro plugin
@@ -47,7 +47,7 @@ function wpcw_debug_menu_especifico() {
                 }
                 
                 if (is_string($func_name) && strpos($func_name, 'wpcw') !== false) {
-                    error_log('DEBUG: Hook WPCW encontrado - Prioridad: ' . $priority . ', Función: ' . $func_name);
+                    // error_log('DEBUG: Hook WPCW encontrado - Prioridad: ' . $priority . ', Función: ' . $func_name);
                 }
             }
         }
@@ -64,16 +64,16 @@ function wpcw_debug_menu_especifico() {
                     (is_string($item_name) && strpos($item_name, 'WP Cupón') !== false)) {
                     $safe_name = is_string($item[0]) ? strip_tags($item[0]) : 'Menú no string';
                     $safe_slug = is_string($item[2]) ? $item[2] : 'Slug no string';
-                    error_log('DEBUG: Menú WPCW encontrado: ' . $safe_name . ' (slug: ' . $safe_slug . ')');
+                    // error_log('DEBUG: Menú WPCW encontrado: ' . $safe_name . ' (slug: ' . $safe_slug . ')');
                 }
             }
         }
     }
     
-    error_log('=== FIN DEBUG MENÚ ESPECÍFICO ===');
+    // error_log('=== FIN DEBUG MENÚ ESPECÍFICO ===');
 }
 
 // Ejecutar después de que se registren todos los menús
 add_action('admin_menu', 'wpcw_debug_menu_especifico', 999);
 
-error_log('DEBUG: Archivo debug-menu-especifico.php cargado');
+// error_log('DEBUG: Archivo debug-menu-especifico.php cargado');

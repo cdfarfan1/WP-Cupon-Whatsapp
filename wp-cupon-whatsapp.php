@@ -17,12 +17,12 @@ if (!defined('WPINC')) {
     die;
 }
 
-// DIAGNÓSTICO: Log que el plugin se está cargando
-error_log('WPCW: Plugin iniciando carga...');
-error_log('WPCW: PHP Version: ' . PHP_VERSION);
-error_log('WPCW: WordPress Version: ' . get_bloginfo('version'));
-error_log('WPCW: WooCommerce activo: ' . (class_exists('WooCommerce') ? 'SÍ' : 'NO'));
-error_log('WPCW: Elementor cargado: ' . (did_action('elementor/loaded') ? 'SÍ' : 'NO'));
+// DIAGNÓSTICO: Log que el plugin se está cargando (TEMPORALMENTE DESHABILITADO)
+// error_log('WPCW: Plugin iniciando carga...');
+// error_log('WPCW: PHP Version: ' . PHP_VERSION);
+// error_log('WPCW: WordPress Version: ' . get_bloginfo('version'));
+// error_log('WPCW: WooCommerce activo: ' . (class_exists('WooCommerce') ? 'SÍ' : 'NO'));
+// error_log('WPCW: Elementor cargado: ' . (did_action('elementor/loaded') ? 'SÍ' : 'NO'));
 
 // Define constants first
 define('WPCW_VERSION', '1.2.0');
@@ -74,7 +74,7 @@ add_action('plugins_loaded', 'wpcw_load_textdomain');
  * Function to check dependencies
  */
 function wpcw_check_dependencies() {
-    error_log('WPCW: Verificando dependencias...');
+    // error_log('WPCW: Verificando dependencias...');
     $dependency_errors = array();
 
     // Verificar PHP version
@@ -106,7 +106,7 @@ function wpcw_check_dependencies() {
     }
 
     if (!empty($dependency_errors)) {
-        error_log('WPCW: Errores de dependencias encontrados: ' . implode(', ', $dependency_errors));
+        // error_log('WPCW: Errores de dependencias encontrados: ' . implode(', ', $dependency_errors));
         add_action('admin_notices', function() use ($dependency_errors) {
             ?>
             <div class="error">
@@ -122,15 +122,15 @@ function wpcw_check_dependencies() {
             <?php
         });
         // NO retornar false para permitir que el menú se muestre con advertencias
-        error_log('WPCW: Continuando carga a pesar de dependencias faltantes para mostrar menú con advertencias');
+        // error_log('WPCW: Continuando carga a pesar de dependencias faltantes para mostrar menú con advertencias');
     }
 
-    error_log('WPCW: Todas las dependencias verificadas correctamente');
+    // error_log('WPCW: Todas las dependencias verificadas correctamente');
     return true;
 }
 
 // Load core files
-error_log('WPCW: Iniciando carga de archivos principales...');
+// error_log('WPCW: Iniciando carga de archivos principales...');
 $core_files = [
     'includes/class-wpcw-logger.php',
     'includes/class-wpcw-messages.php',
@@ -146,14 +146,14 @@ $core_files = [
 foreach ($core_files as $file) {
     $file_path = WPCW_PLUGIN_DIR . $file;
     if (file_exists($file_path)) {
-        error_log('WPCW: Cargando archivo: ' . $file);
+        // error_log('WPCW: Cargando archivo: ' . $file);
         require_once $file_path;
-        error_log('WPCW: Archivo cargado exitosamente: ' . $file);
+        // error_log('WPCW: Archivo cargado exitosamente: ' . $file);
     } else {
-        error_log('WPCW: ARCHIVO NO ENCONTRADO: ' . $file);
+        // error_log('WPCW: ARCHIVO NO ENCONTRADO: ' . $file);
     }
 }
-error_log('WPCW: Todos los archivos principales cargados');
+// error_log('WPCW: Todos los archivos principales cargados');
 
 // Plugin activation
 register_activation_hook(__FILE__, function() {
@@ -189,7 +189,7 @@ register_deactivation_hook(__FILE__, function() {
 
 // Verificar dependencias - permitir continuar para mostrar menú con advertencias
 if (!wpcw_check_dependencies()) {
-    error_log('WPCW: Dependencias faltantes, pero continuando para mostrar menú administrativo');
+    // error_log('WPCW: Dependencias faltantes, pero continuando para mostrar menú administrativo');
     // No hacer return para permitir que el menú se muestre
 }
 
@@ -372,7 +372,7 @@ function wpcw_check_woocommerce() {
 
 // Verificar WooCommerce - permitir continuar para mostrar menú con advertencias
 if (!wpcw_check_woocommerce()) {
-    error_log('WPCW: WooCommerce no disponible, pero continuando para mostrar menú administrativo');
+    // error_log('WPCW: WooCommerce no disponible, pero continuando para mostrar menú administrativo');
     // No hacer return para permitir que el menú se muestre
 }
 
