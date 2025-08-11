@@ -552,7 +552,7 @@ class WPCW_Elementor_Formulario_Adhesion_Widget extends \Elementor\Widget_Base {
                             }
 
                             // Admin Email Notification (copied from shortcode, should be refactored into a function)
-                            $admin_email = get_option( 'admin_email' );
+                            $admin_email = get_option( 'admin_email', 'admin@example.com' );
                             $subject = sprintf( __( 'Nueva Solicitud de Adhesión: %s', 'wp-cupon-whatsapp' ), $fantasy_name );
                             $message_body = sprintf( __( 'Se ha recibido una nueva solicitud de adhesión para el programa WP Canje Cupon Whatsapp.', 'wp-cupon-whatsapp' ) ) . "\r\n\r\n";
                             $message_body .= sprintf( __( 'Nombre de Fantasía: %s', 'wp-cupon-whatsapp' ), $fantasy_name ) . "\r\n";

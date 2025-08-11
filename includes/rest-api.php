@@ -81,7 +81,7 @@ function wpcw_handle_redemption_confirmation_request( WP_REST_Request $request )
         }
         $html_already_processed = wpcw_confirm_redemption_html_error_page($error_title, $error_message);
         $response = new WP_REST_Response( $html_already_processed, 400 );
-        $response->header( 'Content-Type', 'text/html; charset=' . get_option( 'blog_charset' ) );
+        $response->header( 'Content-Type', 'text/html; charset=' . get_option( 'blog_charset', 'UTF-8' ) );
         return $response;
     }
 

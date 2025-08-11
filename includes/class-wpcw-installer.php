@@ -135,7 +135,7 @@ class WPCW_Installer {
         $error_pages_count = 0;
 
         foreach ( $pages_to_create as $page_config ) {
-            $existing_page_id = get_option( $page_config['option_name'] );
+            $existing_page_id = get_option( $page_config['option_name'], 0 );
             
             // Verificar si la página ya existe y es válida
             if ( $existing_page_id && get_post_status( $existing_page_id ) !== false ) {

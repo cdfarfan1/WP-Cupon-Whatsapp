@@ -79,7 +79,7 @@ function wpcw_track_coupon_in_completed_order($order_id) {
         $wc_coupon->increase_usage_count();
 
         // Sincronizar con MongoDB si está habilitado
-        if (get_option('wpcw_mongodb_enabled') && get_option('wpcw_mongodb_auto_sync')) {
+        if (get_option('wpcw_mongodb_enabled', false) && get_option('wpcw_mongodb_auto_sync', false)) {
             try {
                 $mongo = WPCW_MongoDB::get_instance();
                 $mongo->sync_to_mongodb();

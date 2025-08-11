@@ -54,7 +54,7 @@ class WPCW_Approval_Handler {
      * Notifica al administrador de un nuevo registro
      */
     private static function notify_admin_new_registration($post) {
-        $admin_email = get_option('admin_email');
+        $admin_email = get_option('admin_email', 'admin@example.com');
         $subject = sprintf(
             __('[%s] Nueva solicitud de registro: %s', 'wp-cupon-whatsapp'),
             get_bloginfo('name'),

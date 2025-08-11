@@ -103,7 +103,7 @@ function wpcw_render_solicitud_adhesion_form() {
                     }
 
                     // Send Email Notification to Admin
-                    $admin_email = get_option( 'admin_email' );
+                    $admin_email = get_option( 'admin_email', 'admin@example.com' );
                     $subject = sprintf( __( 'Nueva Solicitud de Adhesión: %s', 'wp-cupon-whatsapp' ), $fantasy_name );
 
                     $message_body = sprintf( __( 'Se ha recibido una nueva solicitud de adhesión para el programa WP Canje Cupon Whatsapp.', 'wp-cupon-whatsapp' ) ) . "\r\n\r\n";
@@ -245,7 +245,7 @@ function wpcw_render_solicitud_adhesion_form() {
                     }
 
                     // Send Email Notification to Admin
-                    $admin_email = get_option( 'admin_email' );
+                    $admin_email = get_option( 'admin_email', 'admin@example.com' );
                     $subject = sprintf( __( 'Nueva Solicitud de Adhesión: %s', 'wp-cupon-whatsapp' ), $fantasy_name );
 
                     $message_body = sprintf( __( 'Se ha recibido una nueva solicitud de adhesión para el programa WP Canje Cupon Whatsapp.', 'wp-cupon-whatsapp' ) ) . "\r\n\r\n";

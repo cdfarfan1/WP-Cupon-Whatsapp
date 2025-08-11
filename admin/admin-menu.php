@@ -259,18 +259,27 @@ add_action('admin_menu', 'wpcw_register_plugin_admin_menu', 1);
  * Funciones de redirección para mantener los elementos agrupados en el menú
  */
 function wpcw_redirect_to_solicitudes() {
-    wp_redirect(admin_url('edit.php?post_type=wpcw_application'));
-    exit;
+    $redirect_url = admin_url('edit.php?post_type=wpcw_application');
+    if (!empty($redirect_url)) {
+        wp_redirect($redirect_url);
+        exit;
+    }
 }
 
 function wpcw_redirect_to_comercios() {
-    wp_redirect(admin_url('edit.php?post_type=wpcw_business'));
-    exit;
+    $redirect_url = admin_url('edit.php?post_type=wpcw_business');
+    if (!empty($redirect_url)) {
+        wp_redirect($redirect_url);
+        exit;
+    }
 }
 
 function wpcw_redirect_to_instituciones() {
-    wp_redirect(admin_url('edit.php?post_type=wpcw_institution'));
-    exit;
+    $redirect_url = admin_url('edit.php?post_type=wpcw_institution');
+    if (!empty($redirect_url)) {
+        wp_redirect($redirect_url);
+        exit;
+    }
 }
 
 // Los post types ahora tienen show_in_menu => false, por lo que no necesitan remoción manual

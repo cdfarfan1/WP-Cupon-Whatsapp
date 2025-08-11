@@ -459,7 +459,7 @@ function wpcw_check_plugin_pages_status() {
     
     $status = array();
     foreach ($pages as $page) {
-        $page_id = get_option($page['option_name']);
+        $page_id = get_option($page['option_name'], 0);
         $exists = $page_id && get_post_status($page_id) !== false;
         
         $status[] = array(

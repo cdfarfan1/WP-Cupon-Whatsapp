@@ -177,7 +177,7 @@ class WPCW_Redemption_Handler {
         update_post_meta($redemption->coupon_id, '_wpcw_coupon_stats', $stats);
 
         // 4. Registrar en MongoDB si está habilitado
-        if (class_exists('WPCW_MongoDB') && get_option('wpcw_mongodb_enabled')) {
+        if (class_exists('WPCW_MongoDB') && get_option('wpcw_mongodb_enabled', false)) {
             $mongo = WPCW_MongoDB::get_instance();
             $mongo->sync_redemption_usage($redemption_id);
         }

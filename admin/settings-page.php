@@ -16,7 +16,7 @@ function wpcw_mongodb_section_callback() {
     echo '<p>' . esc_html__('Configura la integración con MongoDB para sincronización y respaldo de datos.', 'wp-cupon-whatsapp') . '</p>';
     
     // Mostrar estado de la conexión si MongoDB está habilitado
-    if (get_option('wpcw_mongodb_enabled')) {
+    if (get_option('wpcw_mongodb_enabled', false)) {
         $mongo = WPCW_MongoDB::get_instance();
         if ($mongo->test_connection()) {
             echo '<div class="notice notice-success inline"><p>' . 
@@ -24,7 +24,7 @@ function wpcw_mongodb_section_callback() {
                  '</p></div>';
             
             // Mostrar última sincronización
-            $last_sync = get_option('wpcw_last_mongo_sync');
+            $last_sync = get_option('wpcw_last_mongo_sync', '');
             if ($last_sync) {
                 echo '<p>' . sprintf(
                     esc_html__('Última sincronización: %s', 'wp-cupon-whatsapp'),
@@ -723,7 +723,7 @@ if ( ! function_exists( 'wpcw_do_create_plugin_pages' ) ) {
         $error_pages_count = 0;
 
         foreach ( $pages_to_create as $page_config ) {
-            $page_id = get_option( $page_config['option_name'] );
+            $page_id = get_option( $page_config['option_name'], 0 );
             $page_exists_valid = false;
 
             if ( $page_id ) {

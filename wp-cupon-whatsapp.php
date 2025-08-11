@@ -537,9 +537,9 @@ function wpcw_public_enqueue_scripts_styles() {
             // Verificar si es una página de Mi Cuenta de WooCommerce
             is_account_page() ||
             // Verificar si es una página configurada en las opciones del plugin
-            $post->ID == get_option('wpcw_page_id_mis_cupones') ||
-            $post->ID == get_option('wpcw_page_id_cupones_publicos') ||
-            $post->ID == get_option('wpcw_page_id_solicitud_adhesion')
+            $post->ID == get_option('wpcw_page_id_mis_cupones', 0) ||
+            $post->ID == get_option('wpcw_page_id_cupones_publicos', 0) ||
+            $post->ID == get_option('wpcw_page_id_solicitud_adhesion', 0)
         );
 
         // Verificar si necesitamos cargar scripts
