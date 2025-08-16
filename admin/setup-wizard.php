@@ -24,6 +24,11 @@ add_action('admin_init', 'wpcw_show_setup_wizard');
  * Mostrar aviso del asistente de configuración
  */
 function wpcw_setup_wizard_notice() {
+    // Verificar que no se hayan enviado headers
+    if (headers_sent()) {
+        return;
+    }
+    
     $screen = get_current_screen();
     
     // Solo mostrar en páginas relevantes
@@ -31,21 +36,21 @@ function wpcw_setup_wizard_notice() {
         return;
     }
     
-    ?>
-    <div class="notice notice-info is-dismissible wpcw-setup-notice" style="border-left-color: #0073aa; padding: 15px;">
+    // Crear el contenido del aviso
+    $notice_content = '
         <div style="display: flex; align-items: center; gap: 15px;">
             <div style="font-size: 24px;">🎉</div>
             <div>
                 <h3 style="margin: 0 0 10px 0; color: #0073aa;">¡Bienvenido a WP Cupón WhatsApp!</h3>
                 <p style="margin: 0 0 10px 0;">El plugin se ha instalado correctamente. Te recomendamos completar la configuración inicial para aprovechar todas las funcionalidades.</p>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <a href="<?php echo admin_url('admin.php?page=wpcw-setup-wizard'); ?>" class="button button-primary">
+                    <a href="' . esc_url(admin_url('admin.php?page=wpcw-setup-wizard')) . '" class="button button-primary">
                         🚀 Iniciar Configuración Guiada
                     </a>
-                    <a href="<?php echo admin_url('admin.php?page=wpcw-dashboard'); ?>" class="button button-secondary">
+                    <a href="' . esc_url(admin_url('admin.php?page=wpcw-dashboard')) . '" class="button button-secondary">
                         📋 Ir al Dashboard
                     </a>
-                    <a href="<?php echo admin_url('admin.php?page=wpcw-settings'); ?>" class="button button-secondary">
+                    <a href="' . esc_url(admin_url('admin.php?page=wpcw-settings')) . '" class="button button-secondary">
                         ⚙️ Configuración Manual
                     </a>
                     <button type="button" class="button button-link" onclick="wpcwDismissSetupNotice()" style="color: #666;">
@@ -54,24 +59,33 @@ function wpcw_setup_wizard_notice() {
                 </div>
             </div>
         </div>
-    </div>
+    ';
     
+    // Agregar el script JavaScript
+    $notice_content .= '
     <script>
     function wpcwDismissSetupNotice() {
-        if (confirm('¿Estás seguro de que no quieres ver más este aviso? Siempre puedes acceder a la configuración desde el menú del plugin.')) {
-            fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
-                method: 'POST',
+        if (confirm("¿Estás seguro de que no quieres ver más este aviso? Siempre puedes acceder a la configuración desde el menú del plugin.")) {
+            fetch("' . esc_url(admin_url('admin-ajax.php')) . '", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    "Content-Type": "application/x-www-form-urlencoded",
                 },
-                body: 'action=wpcw_dismiss_setup_notice&nonce=<?php echo wp_create_nonce('wpcw_dismiss_setup'); ?>'
+                body: "action=wpcw_dismiss_setup_notice&nonce=' . wp_create_nonce('wpcw_dismiss_setup') . '"
             }).then(() => {
-                document.querySelector('.wpcw-setup-notice').style.display = 'none';
+                document.querySelector(".wpcw-setup-notice").style.display = "none";
             });
         }
     }
-    </script>
-    <?php
+    </script>';
+    
+    // Usar la función segura para mostrar el aviso
+    if (function_exists('wpcw_safe_admin_notice')) {
+        wpcw_safe_admin_notice($notice_content, 'info');
+    } else {
+        // Fallback si la función no está disponible
+        echo '<div class="notice notice-info is-dismissible wpcw-setup-notice" style="border-left-color: #0073aa; padding: 15px;">' . $notice_content . '</div>';
+    }
 }
 
 /**

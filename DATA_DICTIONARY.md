@@ -48,13 +48,24 @@ Prefijo general: `_wpcw_`
 |-------------------------------------|-------------------------------|---------------------------------------------------------------------------------------|
 | `_wpcw_owner_user_id`               | Integer (ID de Usuario)       | ID del usuario WordPress (`wpcw_business_owner`) dueño de este comercio.              |
 | `_wpcw_legal_name`                  | String                        | Nombre legal del comercio.                                                            |
+| `_wpcw_fantasy_name`                | String                        | Nombre de fantasía del comercio.                                                      |
 | `_wpcw_cuit`                        | String                        | CUIT del comercio.                                                                    |
-| `_wpcw_contact_person`              | String                        | Persona de contacto.                                                                  |
-| `_wpcw_email`                       | String (email)                | Email de contacto del comercio.                                                       |
-| `_wpcw_whatsapp`                    | String                        | Número de WhatsApp del comercio.                                                      |
-| `_wpcw_address_main`                | String                        | Dirección principal del comercio.                                                     |
+| `_wpcw_business_description`        | Text                          | Descripción del comercio.                                                             |
+| `_wpcw_website`                     | String (URL)                  | Sitio web del comercio.                                                               |
+| `_wpcw_business_email`              | String (email)                | Email de contacto del comercio.                                                       |
+| `_wpcw_business_phone`              | String                        | Teléfono del comercio.                                                                |
+| `_wpcw_business_whatsapp`           | String                        | Número de WhatsApp del comercio (validación mejorada v1.3.0+).                       |
+| `_wpcw_business_address`            | String                        | Dirección del comercio.                                                               |
+| `_wpcw_business_city`               | String                        | Ciudad del comercio.                                                                  |
+| `_wpcw_business_province`           | String                        | Provincia del comercio.                                                               |
+| `_wpcw_business_postal_code`        | String                        | Código postal del comercio.                                                           |
+| `_wpcw_business_status`             | String                        | Estado del comercio (activo, inactivo, etc.).                                         |
+| `_wpcw_auto_approve_coupons`        | String (`yes`/`no`)           | Auto-aprobación de cupones.                                                           |
+| `_wpcw_max_coupons_per_month`       | Integer                       | Límite mensual de cupones.                                                            |
 | `_wpcw_original_application_id`     | Integer (ID de Post)          | ID de la `wpcw_application` original desde la que se creó este comercio.            |
 | `_wpcw_logo_image_id`               | Integer (ID de Adjunto)       | ID del logo del comercio. _(Previsto, UI no implementada para carga directa)_         |
+
+**Nota v1.3.0+**: El campo `_wpcw_business_category` fue eliminado como meta field y ahora se maneja a través de la taxonomía `wpcw_business_category`.
 
 *Nota: El nombre de fantasía es `post_title` y la descripción es `post_content`.*
 
@@ -131,7 +142,43 @@ Prefijo general: `wpcw_`
 | `WPCW_PLUGIN_FILE`        | Ruta absoluta al archivo principal del plugin.                            |
 | `WPCW_CANJES_TABLE_NAME`  | Nombre completo de la tabla de canjes (incluyendo prefijo `$wpdb->prefix`). |
 
-## 6. Roles de Usuario Personalizados
+## 6. Taxonomías Personalizadas
+
+Prefijo general: `wpcw_`
+
+| Taxonomía                    | Asociada a CPT        | Descripción/Propósito                                                                 | Versión |
+|------------------------------|----------------------|---------------------------------------------------------------------------------------|---------|
+| `wpcw_business_type`         | `wpcw_business`      | Tipos de comercio (restaurante, tienda, servicio, etc.).                             | 1.0.0+  |
+| `wpcw_business_category`     | `wpcw_business`      | Categorías de comercio para mejor organización y filtrado. Reemplaza meta field.     | 1.3.0+  |
+| `wpcw_coupon_category`       | `shop_coupon`        | Categorías de cupones (descuentos, promociones, etc.).                               | 1.0.0+  |
+
+### 6.1. Taxonomía: `wpcw_business_category` (v1.3.0+)
+
+**Características:**
+- **Jerárquica**: Sí (permite subcategorías)
+- **Pública**: Sí
+- **Interfaz de administración**: Sí
+- **Columna en admin**: Sí
+- **Metabox**: Usa el metabox nativo de categorías de WordPress
+
+**Propósito:**
+- Organizar comercios por categorías (ej: Restaurantes, Tiendas, Servicios, etc.)
+- Facilitar filtrado y búsqueda de comercios
+- Mejor integración con el sistema nativo de WordPress
+- Reemplaza el sistema anterior de campos meta `_wpcw_business_category`
+
+**Implementación:**
+```php
+register_taxonomy('wpcw_business_category', 'wpcw_business', [
+    'hierarchical' => true,
+    'public' => true,
+    'show_ui' => true,
+    'show_admin_column' => true,
+    'meta_box_cb' => 'post_categories_meta_box',
+]);
+```
+
+## 7. Roles de Usuario Personalizados
 
 | Rol                          | Descripción/Propósito                                                              | Capacidades Clave (además de las base)                                                                                                |
 |------------------------------|------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|

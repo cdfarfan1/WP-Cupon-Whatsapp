@@ -22,6 +22,7 @@ Plugin de WordPress para la gestión de cupones canjeables a través de WhatsApp
 
 #### Taxonomías
 - `wpcw_business_type`: Tipos de comercio
+- `wpcw_business_category`: Categorías de comercio (v1.3.0+)
 
 ### APIs y Endpoints
 
@@ -151,6 +152,74 @@ wp wpcw coupon create
 wp wpcw business import
 wp wpcw stats generate
 ```
+
+### Mejoras Versión 1.3.0
+
+#### Nueva Taxonomía: wpcw_business_category
+
+**Implementación:**
+```php
+// Registro de taxonomía en includes/taxonomies.php
+register_taxonomy('wpcw_business_category', 'wpcw_business', [
+    'labels' => [
+        'name' => 'Categorías de Comercio',
+        'singular_name' => 'Categoría de Comercio',
+        'menu_name' => 'Categorías',
+    ],
+    'hierarchical' => true,
+    'public' => true,
+    'show_ui' => true,
+    'show_admin_column' => true,
+    'show_in_nav_menus' => true,
+    'show_tagcloud' => true,
+    'meta_box_cb' => 'post_categories_meta_box',
+]);
+```
+
+**Uso en Metaboxes:**
+```php
+// Obtener categoría actual del comercio
+$current_categories = wp_get_object_terms($post->ID, 'wpcw_business_category', ['fields' => 'ids']);
+$current_category_id = !empty($current_categories) ? $current_categories[0] : 0;
+
+// Guardar categoría
+if (!empty($business_category)) {
+    wp_set_object_terms($post_id, intval($business_category), 'wpcw_business_category');
+} else {
+    wp_delete_object_term_relationships($post_id, 'wpcw_business_category');
+}
+```
+
+#### Sistema de Guardado Mejorado
+
+**Hook save_post Automático:**
+```php
+// Función de manejo en admin/interactive-forms.php
+function wpcw_handle_save_post($post_id) {
+    // Prevenir bucles infinitos
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    
+    // Verificar permisos
+    if (!current_user_can('edit_post', $post_id)) return;
+    
+    $post_type = get_post_type($post_id);
+    
+    if ($post_type === 'wpcw_business') {
+        wpcw_save_business_data($post_id);
+    } elseif ($post_type === 'wpcw_institution') {
+        wpcw_save_institution_data($post_id);
+    }
+}
+
+// Registro del hook
+add_action('save_post', 'wpcw_handle_save_post');
+```
+
+**Beneficios:**
+- Guardado automático sin necesidad de AJAX
+- Mejor integración con WordPress
+- Protección contra bucles infinitos
+- Verificación de permisos integrada
 
 ### Testing
 

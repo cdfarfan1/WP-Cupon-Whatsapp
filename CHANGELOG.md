@@ -4,6 +4,77 @@ Este archivo documenta todos los cambios importantes realizados en el plugin.
 
 ---
 
+## [Versión 1.3.1] - 2025-01-16
+
+Versión de corrección que resuelve errores críticos relacionados con funciones duplicadas y sintaxis PHP.
+
+### 🐛 **Correcciones Críticas**
+
+*   **Error Fatal de Redeclaración de Función:**
+    *   Corregido error fatal: "Cannot redeclare wpcw_start_output_buffering()"
+    *   Función duplicada comentada en `debug-output.php`
+    *   Mantenida función principal en `fix-headers.php`
+    *   **Archivos afectados:** `debug-output.php`, `fix-headers.php`
+
+*   **Error de Sintaxis PHP:**
+    *   Corregido error de sintaxis: "Unclosed '{' on line 32" en `debug-headers.php`
+    *   Añadida llave de cierre faltante para el bucle `foreach`
+    *   Estructura de llaves corregida y validada
+    *   **Archivo afectado:** `debug-headers.php`
+
+*   **Verificación de Funciones Duplicadas:**
+    *   Revisión completa del código para detectar otras posibles duplicaciones
+    *   Confirmado que no existen otras funciones duplicadas en archivos de debug
+    *   Sistema de depuración optimizado y sin conflictos
+
+---
+
+## [Versión 1.3.0] - 2025-01-16
+
+Esta versión introduce mejoras significativas en el sistema de taxonomías y metaboxes para comercios, optimizando la gestión de categorías y el guardado de datos.
+
+### ✨ **Nuevas Funcionalidades**
+
+*   **Nueva Taxonomía para Categorías de Comercios:**
+    *   Implementada taxonomía `wpcw_business_category` para una mejor organización de comercios
+    *   Reemplaza el sistema anterior de campos meta por una taxonomía nativa de WordPress
+    *   Soporte completo para jerarquías y términos personalizados
+    *   **Archivo:** `includes/taxonomies.php`
+
+*   **Sistema de Guardado Mejorado:**
+    *   Implementado hook `save_post` automático para comercios e instituciones
+    *   Función `wpcw_handle_save_post` con protección contra bucles infinitos
+    *   Verificación de permisos y nonces integrada
+    *   **Archivo:** `admin/interactive-forms.php`
+
+### 🔧 **Mejoras Técnicas**
+
+*   **Metaboxes de Comercios Optimizados:**
+    *   Corrección en la obtención de categorías usando `wp_get_object_terms()`
+    *   Eliminación de campos meta redundantes para categorías
+    *   Mejor integración con el sistema de taxonomías de WordPress
+    *   **Archivo:** `admin/interactive-forms.php`
+
+*   **Funcionalidad WhatsApp Verificada:**
+    *   Confirmado funcionamiento correcto de enlaces `wa.me`
+    *   Validación de números de teléfono para Argentina (prefijo 54)
+    *   Plantillas de mensajes predefinidas para diferentes eventos
+    *   **Archivo:** `includes/whatsapp-handlers.php`
+
+### 🐛 **Correcciones**
+
+*   **Guardado de Categorías:**
+    *   Corregido guardado de categorías de comercio usando taxonomías en lugar de meta fields
+    *   Eliminación de código redundante para `_wpcw_business_category`
+    *   Mejor consistencia en el manejo de datos
+
+*   **Visualización de Metaboxes:**
+    *   Verificada correcta visualización de todos los metaboxes en el panel de administración
+    *   Hooks `add_meta_boxes` correctamente conectados
+    *   Campos de teléfono y WhatsApp funcionando correctamente
+
+---
+
 ## [Versión 1.2.3] - 2025-01-15
 
 Esta versión corrige los errores de "headers already sent" que persistían después de las correcciones de PHP 8+.

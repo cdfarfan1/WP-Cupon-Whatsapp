@@ -485,6 +485,16 @@ if ( is_admin() ) {
     // require_once WPCW_PLUGIN_DIR . 'diagnostico-completo.php';
     // require_once WPCW_PLUGIN_DIR . 'debug-menu-especifico.php';
     
+    // Fix headers already sent issues (load first)
+    require_once WPCW_PLUGIN_DIR . 'fix-headers.php';
+    
+    // Debug headers issues (only in debug mode)
+    if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+        require_once WPCW_PLUGIN_DIR . 'debug-output.php';
+        require_once WPCW_PLUGIN_DIR . 'debug-headers.php';
+        require_once WPCW_PLUGIN_DIR . 'test-headers.php';
+    }
+    
     require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
     require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php';
     require_once WPCW_PLUGIN_DIR . 'admin/stats-page.php';
@@ -495,6 +505,7 @@ if ( is_admin() ) {
     require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
     require_once WPCW_PLUGIN_DIR . 'admin/setup-wizard.php';
     require_once WPCW_PLUGIN_DIR . 'admin/roles-page.php';
+    require_once WPCW_PLUGIN_DIR . 'admin/interactive-forms.php';
     // error_log('WPCW: Archivos admin cargados correctamente');
     
     // El hook admin_menu se registra automáticamente en admin-menu.php
