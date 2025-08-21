@@ -4,6 +4,74 @@ Este archivo documenta todos los cambios importantes realizados en el plugin.
 
 ---
 
+## [Versión 1.4.0] - 2025-08-21
+
+Versión mayor que introduce un sistema completo de validaciones mejoradas para email y WhatsApp, además de correcciones críticas en la carga de datos de teléfono.
+
+### ✨ **Nuevas Funcionalidades**
+
+*   **Sistema de Validación Mejorada de Email:**
+    *   Detección automática de errores comunes en dominios (gmail, hotmail, yahoo)
+    *   Sugerencias inteligentes de corrección para dominios mal escritos
+    *   Validación robusta combinando filtros PHP nativos con expresiones regulares
+    *   Validación AJAX en tiempo real desde el frontend
+    *   **Archivo:** `includes/validation-enhanced.php`
+
+*   **Validación Completa de WhatsApp con wa.me:**
+    *   Formateo automático de números argentinos al formato `+54 9 11 1234-5678`
+    *   Generación automática de enlaces `wa.me` para prueba directa sin API
+    *   Detección de números falsos y patrones no válidos
+    *   Validación específica para Argentina con longitud y formato correctos
+    *   Prueba automática de enlaces wa.me para verificar validez
+    *   **Archivos:** `includes/validation-enhanced.php`, `admin/js/validation-enhanced.js`
+
+*   **Sistema de Pruebas Exhaustivo:**
+    *   Script completo de pruebas con interfaz web amigable
+    *   Pruebas de email válidos e inválidos con sugerencias
+    *   Pruebas de números WhatsApp con diferentes formatos
+    *   Pruebas de corrección de carga de teléfono
+    *   **Archivo:** `test-validation-enhanced.php`
+
+### 🐛 **Correcciones Críticas**
+
+*   **Error de Carga del Teléfono:**
+    *   Corregido error crítico donde los campos de teléfono no se cargaban correctamente
+    *   Implementada función `fix_phone_loading()` para manejar datos serializados
+    *   Manejo automático de arrays mal formateados y valores nulos
+    *   Filtros de WordPress para interceptar metadatos problemáticos
+    *   **Archivos afectados:** `includes/validation-enhanced.php`, `admin/js/validation-enhanced.js`
+
+### 🔧 **Mejoras Técnicas**
+
+*   **Validación Dual (Cliente/Servidor):**
+    *   Validación en tiempo real en JavaScript para mejor UX
+    *   Validación robusta en PHP para seguridad del servidor
+    *   Sincronización perfecta entre ambos sistemas
+
+*   **Sin Dependencias Externas:**
+    *   No requiere APIs de terceros para WhatsApp
+    *   Utiliza únicamente enlaces wa.me estándar
+    *   Compatible con cualquier entorno WordPress
+
+*   **Manejo Robusto de Errores:**
+    *   Gestión de datos corruptos o mal formateados
+    *   Recuperación automática de errores de carga
+    *   Logging detallado para debugging
+
+### 📁 **Archivos Nuevos**
+
+*   `includes/validation-enhanced.php` - Clase principal de validaciones mejoradas
+*   `admin/js/validation-enhanced.js` - Validaciones del lado del cliente
+*   `test-validation-enhanced.php` - Script de pruebas exhaustivo
+*   `MEJORAS_VALIDACION.md` - Documentación detallada de las mejoras
+
+### 📝 **Archivos Modificados**
+
+*   `wp-cupon-whatsapp-fixed.php` - Inclusión del sistema de validación
+*   `admin/interactive-forms.php` - Carga de scripts de validación mejorada
+
+---
+
 ## [Versión 1.3.1] - 2025-01-16
 
 Versión de corrección que resuelve errores críticos relacionados con funciones duplicadas y sintaxis PHP.

@@ -617,6 +617,15 @@ function wpcw_enqueue_interactive_forms_assets( $hook ) {
         true
     );
     
+    // Enqueue enhanced validation script
+    wp_enqueue_script(
+        'wpcw-validation-enhanced',
+        $plugin_url . 'admin/js/validation-enhanced.js',
+        array( 'jquery', 'wpcw-interactive-forms' ),
+        $version,
+        true
+    );
+    
     // Localize script
     wp_localize_script( 'wpcw-interactive-forms', 'wpcwInteractiveForms', array(
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
