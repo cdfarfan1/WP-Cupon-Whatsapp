@@ -1,16 +1,23 @@
 <?php
-// Debug Headers - WP Cupon WhatsApp
-// Version ultra-limpia ASCII
+/**
+ * Debug Headers - WP Cupon WhatsApp
+ * Version completamente limpia sin caracteres especiales
+ */
 
+// Prevenir ejecucion directa
 if (!defined('ABSPATH')) {
     exit;
 }
 
+// Prevenir multiples inclusiones
 if (defined('WPCW_DEBUG_HEADERS_LOADED')) {
     return;
 }
 define('WPCW_DEBUG_HEADERS_LOADED', true);
 
+/**
+ * Funcion principal de debug de headers
+ */
 function wpcw_debug_headers() {
     if (!defined('WP_DEBUG') || !WP_DEBUG) {
         return array();
@@ -39,14 +46,17 @@ function wpcw_debug_headers() {
             continue;
         }
         
+        // Verificar BOM
         if (substr($content, 0, 3) === "\xEF\xBB\xBF") {
             $issues[] = "BOM detected in: $file";
         }
         
+        // Verificar espacios antes de <?php
         if (preg_match('/^\s+<\?php/', $content)) {
             $issues[] = "Whitespace before <?php in: $file";
         }
         
+        // Verificar contenido despues de ?>
         if (preg_match('/\?>\s*\S/', $content)) {
             $issues[] = "Content after closing ?> in: $file";
         }
@@ -59,6 +69,9 @@ function wpcw_debug_headers() {
     return $issues;
 }
 
+/**
+ * Mostrar avisos de administracion
+ */
 function wpcw_add_debug_admin_notice() {
     if (!current_user_can('manage_options')) {
         return;
@@ -78,6 +91,9 @@ function wpcw_add_debug_admin_notice() {
     }
 }
 
+/**
+ * Verificar estado del buffer de salida
+ */
 function wpcw_check_output_buffering() {
     if (!current_user_can('manage_options') || !defined('WP_DEBUG') || !WP_DEBUG) {
         return;
@@ -88,11 +104,15 @@ function wpcw_check_output_buffering() {
     }
 }
 
+// Registrar hooks solo en admin y con debug activo
 if (is_admin() && defined('WP_DEBUG') && WP_DEBUG) {
     add_action('admin_notices', 'wpcw_add_debug_admin_notice');
     add_action('init', 'wpcw_check_output_buffering', 1);
 }
 
+/**
+ * Funcion de utilidad para verificacion manual
+ */
 function wpcw_manual_header_check() {
     if (!current_user_can('manage_options')) {
         return false;
