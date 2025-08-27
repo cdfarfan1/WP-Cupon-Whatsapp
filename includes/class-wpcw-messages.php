@@ -6,7 +6,7 @@
  */
 
 // If this file is called directly, abort.
-if (!defined('WPINC')) {
+if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
@@ -26,7 +26,7 @@ class WPCW_Messages {
      *
      * @var array
      */
-    private static $valid_types = array('success', 'error', 'warning', 'info');
+    private static $valid_types = array( 'success', 'error', 'warning', 'info' );
 
     /**
      * Añade un mensaje
@@ -35,19 +35,19 @@ class WPCW_Messages {
      * @param string $type Tipo de mensaje (success|error|warning|info)
      * @param string $context Contexto del mensaje (admin|public)
      */
-    public static function add($message, $type = 'info', $context = 'admin') {
-        if (!in_array($type, self::$valid_types)) {
+    public static function add( $message, $type = 'info', $context = 'admin' ) {
+        if ( ! in_array( $type, self::$valid_types ) ) {
             $type = 'info';
         }
 
         self::$messages[] = array(
             'message' => $message,
-            'type' => $type,
-            'context' => $context
+            'type'    => $type,
+            'context' => $context,
         );
 
-        if ($context === 'admin') {
-            add_action('admin_notices', array(__CLASS__, 'display_admin_messages'));
+        if ( $context === 'admin' ) {
+            add_action( 'admin_notices', array( __CLASS__, 'display_admin_messages' ) );
         }
     }
 
@@ -55,13 +55,13 @@ class WPCW_Messages {
      * Muestra mensajes en el admin
      */
     public static function display_admin_messages() {
-        foreach (self::$messages as $msg) {
-            if ($msg['context'] === 'admin') {
+        foreach ( self::$messages as $msg ) {
+            if ( $msg['context'] === 'admin' ) {
                 $class = 'notice notice-' . $msg['type'];
                 printf(
                     '<div class="%1$s"><p>%2$s</p></div>',
-                    esc_attr($class),
-                    esc_html($msg['message'])
+                    esc_attr( $class ),
+                    esc_html( $msg['message'] )
                 );
             }
         }
@@ -74,8 +74,8 @@ class WPCW_Messages {
      */
     public static function get_public_messages() {
         $public_messages = array();
-        foreach (self::$messages as $msg) {
-            if ($msg['context'] === 'public') {
+        foreach ( self::$messages as $msg ) {
+            if ( $msg['context'] === 'public' ) {
                 $public_messages[] = $msg;
             }
         }
@@ -93,14 +93,14 @@ class WPCW_Messages {
      * Devuelve mensajes de error formateados para AJAX
      *
      * @param string $message
-     * @param mixed $data
+     * @param mixed  $data
      * @return array
      */
-    public static function ajax_error($message, $data = null) {
+    public static function ajax_error( $message, $data = null ) {
         return array(
             'success' => false,
             'message' => $message,
-            'data' => $data
+            'data'    => $data,
         );
     }
 
@@ -108,14 +108,14 @@ class WPCW_Messages {
      * Devuelve mensajes de éxito formateados para AJAX
      *
      * @param string $message
-     * @param mixed $data
+     * @param mixed  $data
      * @return array
      */
-    public static function ajax_success($message, $data = null) {
+    public static function ajax_success( $message, $data = null ) {
         return array(
             'success' => true,
             'message' => $message,
-            'data' => $data
+            'data'    => $data,
         );
     }
 }

@@ -52,11 +52,11 @@ function wpcw_add_mis_canjes_menu_item( $items ) {
                 // Añadir nuestro item antes de "Salir"
                 $new_items['mis-canjes'] = __( 'Mis Canjes', 'wp-cupon-whatsapp' );
             }
-            $new_items[$key] = $value;
+            $new_items[ $key ] = $value;
         }
     } else {
         // Si "Salir" no está, añadir todos los items y luego el nuestro
-        $new_items = $items;
+        $new_items               = $items;
         $new_items['mis-canjes'] = __( 'Mis Canjes', 'wp-cupon-whatsapp' );
     }
 
@@ -69,7 +69,7 @@ add_filter( 'woocommerce_account_menu_items', 'wpcw_add_mis_canjes_menu_item', 1
  */
 function wpcw_render_mis_canjes_content() {
     $user_id = get_current_user_id();
-    if ( !$user_id ) {
+    if ( ! $user_id ) {
         echo '<p>' . esc_html__( 'No se pudo identificar al usuario.', 'wp-cupon-whatsapp' ) . '</p>';
         return;
     }
@@ -79,10 +79,12 @@ function wpcw_render_mis_canjes_content() {
 
     // Consulta para obtener los canjes del usuario actual
     // Ordenados por fecha de solicitud descendente
-    $canjes = $wpdb->get_results( $wpdb->prepare(
-        "SELECT * FROM {$tabla_canjes} WHERE cliente_id = %d ORDER BY fecha_solicitud_canje DESC",
-        $user_id
-    ) );
+    $canjes = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT * FROM {$tabla_canjes} WHERE cliente_id = %d ORDER BY fecha_solicitud_canje DESC",
+            $user_id
+        )
+    );
 
     echo '<h2>' . esc_html__( 'Historial de Mis Canjes', 'wp-cupon-whatsapp' ) . '</h2>';
 
@@ -125,41 +127,41 @@ function wpcw_render_mis_canjes_content() {
 
         // Cupón (Nombre)
         echo '<td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-total" data-title="' . esc_attr__( 'Cupón', 'wp-cupon-whatsapp' ) . '">';
-        $coupon_title = $canje->cupon_id ? get_the_title( $canje->cupon_id ) : __('N/A', 'wp-cupon-whatsapp');
+        $coupon_title = $canje->cupon_id ? get_the_title( $canje->cupon_id ) : __( 'N/A', 'wp-cupon-whatsapp' );
         echo esc_html( $coupon_title );
         echo '</td>';
 
         // Comercio (Nombre)
         echo '<td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-total" data-title="' . esc_attr__( 'Comercio', 'wp-cupon-whatsapp' ) . '">';
         $comercio_title = '';
-        if ( !empty($canje->comercio_id) ) {
-            $comercio_post = get_post($canje->comercio_id);
-            if ($comercio_post && $comercio_post->post_type === 'wpcw_business') {
-                $comercio_title = get_the_title($canje->comercio_id);
+        if ( ! empty( $canje->comercio_id ) ) {
+            $comercio_post = get_post( $canje->comercio_id );
+            if ( $comercio_post && $comercio_post->post_type === 'wpcw_business' ) {
+                $comercio_title = get_the_title( $canje->comercio_id );
             } else {
-                $comercio_title = __('Comercio no especificado o inválido', 'wp-cupon-whatsapp');
+                $comercio_title = __( 'Comercio no especificado o inválido', 'wp-cupon-whatsapp' );
             }
         } else {
-             // Podría ser un cupón de institución o uno no asociado a un comercio específico
-            $original_coupon_post = get_post($canje->cupon_id);
-            if ($original_coupon_post) {
+            // Podría ser un cupón de institución o uno no asociado a un comercio específico
+            $original_coupon_post = get_post( $canje->cupon_id );
+            if ( $original_coupon_post ) {
                 $coupon_author_id = $original_coupon_post->post_author;
-                $user_data = get_userdata($coupon_author_id);
-                if ($user_data && in_array('wpcw_institution_manager', (array) $user_data->roles)) {
+                $user_data        = get_userdata( $coupon_author_id );
+                if ( $user_data && in_array( 'wpcw_institution_manager', (array) $user_data->roles ) ) {
                     // Intentar obtener el nombre de la institución asociada al manager
                     // Esto asume que el manager está vinculado a un CPT wpcw_institution
                     // Esta lógica puede necesitar ajuste según cómo se vinculen managers e instituciones
-                    $linked_institution_id = get_user_meta($coupon_author_id, '_wpcw_associated_entity_id', true);
-                    if ($linked_institution_id && get_post_type($linked_institution_id) === 'wpcw_institution') {
-                         $comercio_title = get_the_title($linked_institution_id);
+                    $linked_institution_id = get_user_meta( $coupon_author_id, '_wpcw_associated_entity_id', true );
+                    if ( $linked_institution_id && get_post_type( $linked_institution_id ) === 'wpcw_institution' ) {
+                        $comercio_title = get_the_title( $linked_institution_id );
                     } else {
                         $comercio_title = $user_data->display_name; // Nombre del manager si no hay CPT de institución
                     }
                 } else {
-                    $comercio_title = __('N/A', 'wp-cupon-whatsapp');
+                    $comercio_title = __( 'N/A', 'wp-cupon-whatsapp' );
                 }
             } else {
-                $comercio_title = __('N/A', 'wp-cupon-whatsapp');
+                $comercio_title = __( 'N/A', 'wp-cupon-whatsapp' );
             }
         }
         echo esc_html( $comercio_title );
@@ -167,12 +169,12 @@ function wpcw_render_mis_canjes_content() {
 
         // Código Cupón WC
         echo '<td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-actions" data-title="' . esc_attr__( 'Código WC', 'wp-cupon-whatsapp' ) . '">';
-        if ( !empty($canje->codigo_cupon_wc) ) {
+        if ( ! empty( $canje->codigo_cupon_wc ) ) {
             echo '<strong>' . esc_html( $canje->codigo_cupon_wc ) . '</strong>';
         } else {
             // Si el estado es 'pendiente_confirmacion', podríamos mostrar un mensaje.
-            if ($canje->estado_canje === 'pendiente_confirmacion') {
-                echo '<em>' . esc_html__('Esperando confirmación del negocio', 'wp-cupon-whatsapp') . '</em>';
+            if ( $canje->estado_canje === 'pendiente_confirmacion' ) {
+                echo '<em>' . esc_html__( 'Esperando confirmación del negocio', 'wp-cupon-whatsapp' ) . '</em>';
             } else {
                 echo '-';
             }
@@ -197,15 +199,13 @@ add_action( 'woocommerce_account_mis-canjes_endpoint', 'wpcw_render_mis_canjes_c
 if ( ! function_exists( 'wpcw_get_displayable_canje_status' ) ) {
     function wpcw_get_displayable_canje_status( $status_key ) {
         $statuses = array(
-            'pendiente_confirmacion'    => __( 'Pendiente Confirmación Negocio', 'wp-cupon-whatsapp' ),
-            'confirmado_por_negocio'    => __( 'Confirmado (Código WC generado)', 'wp-cupon-whatsapp' ),
-            'utilizado_en_pedido_wc'    => __( 'Utilizado en Pedido', 'wp-cupon-whatsapp' ),
-            'cancelado_por_usuario'     => __( 'Cancelado por Usuario', 'wp-cupon-whatsapp' ),
-            'cancelado_por_admin'       => __( 'Cancelado por Administrador', 'wp-cupon-whatsapp' ),
-            'vencido'                   => __( 'Vencido', 'wp-cupon-whatsapp' ),
+            'pendiente_confirmacion' => __( 'Pendiente Confirmación Negocio', 'wp-cupon-whatsapp' ),
+            'confirmado_por_negocio' => __( 'Confirmado (Código WC generado)', 'wp-cupon-whatsapp' ),
+            'utilizado_en_pedido_wc' => __( 'Utilizado en Pedido', 'wp-cupon-whatsapp' ),
+            'cancelado_por_usuario'  => __( 'Cancelado por Usuario', 'wp-cupon-whatsapp' ),
+            'cancelado_por_admin'    => __( 'Cancelado por Administrador', 'wp-cupon-whatsapp' ),
+            'vencido'                => __( 'Vencido', 'wp-cupon-whatsapp' ),
         );
-        return isset( $statuses[$status_key] ) ? $statuses[$status_key] : ucwords( str_replace( '_', ' ', (string) $status_key ) );
+        return isset( $statuses[ $status_key ] ) ? $statuses[ $status_key ] : ucwords( str_replace( '_', ' ', (string) $status_key ) );
     }
 }
-
-?>

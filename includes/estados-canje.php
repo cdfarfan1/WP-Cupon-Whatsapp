@@ -6,7 +6,7 @@
  */
 
 // If this file is called directly, abort.
-if (!defined('WPINC')) {
+if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
@@ -17,11 +17,11 @@ if (!defined('WPINC')) {
  */
 function wpcw_get_estados_canje() {
     return array(
-        'pendiente_confirmacion' => __('Pendiente de Confirmación', 'wp-cupon-whatsapp'),
-        'confirmado' => __('Confirmado', 'wp-cupon-whatsapp'),
-        'rechazado' => __('Rechazado', 'wp-cupon-whatsapp'),
-        'expirado' => __('Expirado', 'wp-cupon-whatsapp'),
-        'cancelado' => __('Cancelado', 'wp-cupon-whatsapp')
+        'pendiente_confirmacion' => __( 'Pendiente de Confirmación', 'wp-cupon-whatsapp' ),
+        'confirmado'             => __( 'Confirmado', 'wp-cupon-whatsapp' ),
+        'rechazado'              => __( 'Rechazado', 'wp-cupon-whatsapp' ),
+        'expirado'               => __( 'Expirado', 'wp-cupon-whatsapp' ),
+        'cancelado'              => __( 'Cancelado', 'wp-cupon-whatsapp' ),
     );
 }
 
@@ -31,8 +31,8 @@ function wpcw_get_estados_canje() {
  * @param string $estado
  * @return boolean
  */
-function wpcw_es_estado_canje_valido($estado) {
-    return array_key_exists($estado, wpcw_get_estados_canje());
+function wpcw_es_estado_canje_valido( $estado ) {
+    return array_key_exists( $estado, wpcw_get_estados_canje() );
 }
 
 /**
@@ -41,9 +41,9 @@ function wpcw_es_estado_canje_valido($estado) {
  * @param string $estado
  * @return string
  */
-function wpcw_get_estado_canje_texto($estado) {
+function wpcw_get_estado_canje_texto( $estado ) {
     $estados = wpcw_get_estados_canje();
-    return isset($estados[$estado]) ? $estados[$estado] : $estado;
+    return isset( $estados[ $estado ] ) ? $estados[ $estado ] : $estado;
 }
 
 /**
@@ -52,15 +52,15 @@ function wpcw_get_estado_canje_texto($estado) {
  * @param string $estado
  * @return string
  */
-function wpcw_get_estado_canje_clase($estado) {
+function wpcw_get_estado_canje_clase( $estado ) {
     $clases = array(
         'pendiente_confirmacion' => 'estado-pendiente',
-        'confirmado' => 'estado-confirmado',
-        'rechazado' => 'estado-rechazado',
-        'expirado' => 'estado-expirado',
-        'cancelado' => 'estado-cancelado'
+        'confirmado'             => 'estado-confirmado',
+        'rechazado'              => 'estado-rechazado',
+        'expirado'               => 'estado-expirado',
+        'cancelado'              => 'estado-cancelado',
     );
-    return isset($clases[$estado]) ? $clases[$estado] : '';
+    return isset( $clases[ $estado ] ) ? $clases[ $estado ] : '';
 }
 
 /**
@@ -70,15 +70,15 @@ function wpcw_get_estado_canje_clase($estado) {
  * @param string $nuevo_estado
  * @return boolean
  */
-function wpcw_es_transicion_estado_valida($estado_actual, $nuevo_estado) {
+function wpcw_es_transicion_estado_valida( $estado_actual, $nuevo_estado ) {
     $transiciones_validas = array(
-        'pendiente_confirmacion' => array('confirmado', 'rechazado', 'cancelado', 'expirado'),
-        'confirmado' => array('cancelado'),
-        'rechazado' => array('pendiente_confirmacion'),
-        'expirado' => array(),
-        'cancelado' => array('pendiente_confirmacion')
+        'pendiente_confirmacion' => array( 'confirmado', 'rechazado', 'cancelado', 'expirado' ),
+        'confirmado'             => array( 'cancelado' ),
+        'rechazado'              => array( 'pendiente_confirmacion' ),
+        'expirado'               => array(),
+        'cancelado'              => array( 'pendiente_confirmacion' ),
     );
-    
-    return isset($transiciones_validas[$estado_actual]) && 
-           in_array($nuevo_estado, $transiciones_validas[$estado_actual]);
+
+    return isset( $transiciones_validas[ $estado_actual ] ) &&
+            in_array( $nuevo_estado, $transiciones_validas[ $estado_actual ] );
 }

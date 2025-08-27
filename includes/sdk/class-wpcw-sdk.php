@@ -9,7 +9,7 @@
 
 namespace WPCW\SDK;
 
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
@@ -42,8 +42,8 @@ class WPCW_SDK {
      * @param string $api_url    URL base de la API
      * @param string $auth_token Token de autenticación
      */
-    public function __construct($api_url, $auth_token) {
-        $this->api_url = rtrim($api_url, '/');
+    public function __construct( $api_url, $auth_token ) {
+        $this->api_url    = rtrim( $api_url, '/' );
         $this->auth_token = $auth_token;
     }
 
@@ -55,30 +55,30 @@ class WPCW_SDK {
      * @param array  $data     Datos a enviar
      * @return array|WP_Error
      */
-    private function request($endpoint, $method = 'GET', $data = null) {
-        $url = $this->api_url . '/' . ltrim($endpoint, '/');
+    private function request( $endpoint, $method = 'GET', $data = null ) {
+        $url = $this->api_url . '/' . ltrim( $endpoint, '/' );
 
         $args = array(
             'method'  => $method,
             'headers' => array(
                 'Authorization' => 'Bearer ' . $this->auth_token,
-                'Content-Type' => 'application/json',
-                'Accept'       => 'application/json',
+                'Content-Type'  => 'application/json',
+                'Accept'        => 'application/json',
             ),
         );
 
-        if ($data !== null) {
-            $args['body'] = json_encode($data);
+        if ( $data !== null ) {
+            $args['body'] = json_encode( $data );
         }
 
-        $response = wp_remote_request($url, $args);
+        $response = wp_remote_request( $url, $args );
 
-        if (is_wp_error($response)) {
+        if ( is_wp_error( $response ) ) {
             return $response;
         }
 
-        $body = wp_remote_retrieve_body($response);
-        return json_decode($body, true);
+        $body = wp_remote_retrieve_body( $response );
+        return json_decode( $body, true );
     }
 
     /**
@@ -87,8 +87,8 @@ class WPCW_SDK {
      * @param int $coupon_id ID del cupón
      * @return array|WP_Error
      */
-    public function get_coupon($coupon_id) {
-        return $this->request('/coupons/' . $coupon_id);
+    public function get_coupon( $coupon_id ) {
+        return $this->request( '/coupons/' . $coupon_id );
     }
 
     /**
@@ -97,8 +97,8 @@ class WPCW_SDK {
      * @param array $coupon_data Datos del cupón
      * @return array|WP_Error
      */
-    public function create_coupon($coupon_data) {
-        return $this->request('/coupons', 'POST', $coupon_data);
+    public function create_coupon( $coupon_data ) {
+        return $this->request( '/coupons', 'POST', $coupon_data );
     }
 
     /**
@@ -108,8 +108,8 @@ class WPCW_SDK {
      * @param array $data      Datos del canje
      * @return array|WP_Error
      */
-    public function redeem_coupon($coupon_id, $data) {
-        return $this->request('/coupons/' . $coupon_id . '/redeem', 'POST', $data);
+    public function redeem_coupon( $coupon_id, $data ) {
+        return $this->request( '/coupons/' . $coupon_id . '/redeem', 'POST', $data );
     }
 
     /**
@@ -118,8 +118,8 @@ class WPCW_SDK {
      * @param int $coupon_id ID del cupón
      * @return array|WP_Error
      */
-    public function get_coupon_stats($coupon_id) {
-        return $this->request('/coupons/' . $coupon_id . '/stats');
+    public function get_coupon_stats( $coupon_id ) {
+        return $this->request( '/coupons/' . $coupon_id . '/stats' );
     }
 
     /**
@@ -128,8 +128,8 @@ class WPCW_SDK {
      * @param int $business_id ID del comercio
      * @return array|WP_Error
      */
-    public function get_business($business_id) {
-        return $this->request('/businesses/' . $business_id);
+    public function get_business( $business_id ) {
+        return $this->request( '/businesses/' . $business_id );
     }
 
     /**
@@ -138,8 +138,8 @@ class WPCW_SDK {
      * @param array $business_data Datos del comercio
      * @return array|WP_Error
      */
-    public function create_business($business_data) {
-        return $this->request('/businesses', 'POST', $business_data);
+    public function create_business( $business_data ) {
+        return $this->request( '/businesses', 'POST', $business_data );
     }
 
     /**
@@ -149,8 +149,8 @@ class WPCW_SDK {
      * @param array $business_data Datos del comercio
      * @return array|WP_Error
      */
-    public function update_business($business_id, $business_data) {
-        return $this->request('/businesses/' . $business_id, 'PUT', $business_data);
+    public function update_business( $business_id, $business_data ) {
+        return $this->request( '/businesses/' . $business_id, 'PUT', $business_data );
     }
 
     /**
@@ -159,8 +159,8 @@ class WPCW_SDK {
      * @param int $business_id ID del comercio
      * @return array|WP_Error
      */
-    public function get_business_stats($business_id) {
-        return $this->request('/businesses/' . $business_id . '/stats');
+    public function get_business_stats( $business_id ) {
+        return $this->request( '/businesses/' . $business_id . '/stats' );
     }
 
     /**
@@ -169,8 +169,8 @@ class WPCW_SDK {
      * @param array $params Parámetros del reporte
      * @return array|WP_Error
      */
-    public function generate_report($params) {
-        return $this->request('/reports/generate', 'POST', $params);
+    public function generate_report( $params ) {
+        return $this->request( '/reports/generate', 'POST', $params );
     }
 
     /**
@@ -180,11 +180,15 @@ class WPCW_SDK {
      * @param array  $events Eventos a suscribir
      * @return array|WP_Error
      */
-    public function subscribe_webhook($url, $events) {
-        return $this->request('/webhooks', 'POST', array(
-            'url' => $url,
-            'events' => $events
-        ));
+    public function subscribe_webhook( $url, $events ) {
+        return $this->request(
+            '/webhooks',
+            'POST',
+            array(
+				'url'    => $url,
+				'events' => $events,
+            )
+        );
     }
 
     /**
@@ -193,7 +197,7 @@ class WPCW_SDK {
      * @return array|WP_Error
      */
     public function list_webhooks() {
-        return $this->request('/webhooks');
+        return $this->request( '/webhooks' );
     }
 
     /**
@@ -202,7 +206,7 @@ class WPCW_SDK {
      * @param string $webhook_id ID del webhook
      * @return array|WP_Error
      */
-    public function delete_webhook($webhook_id) {
-        return $this->request('/webhooks/' . $webhook_id, 'DELETE');
+    public function delete_webhook( $webhook_id ) {
+        return $this->request( '/webhooks/' . $webhook_id, 'DELETE' );
     }
 }

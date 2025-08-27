@@ -54,7 +54,7 @@ function wpcw_on_save_application( $post_id, $post, $update ) {
         wpcw_handle_approved_application( $post_id );
     } else {
         // Log an error if the handler function is missing, which would be a critical issue.
-        error_log('WPCW Critical Error: wpcw_handle_approved_application function does not exist.');
+        error_log( 'WPCW Critical Error: wpcw_handle_approved_application function does not exist.' );
     }
 
     return $post_id; // Not strictly necessary to return but good practice for save_post hooks
@@ -68,24 +68,24 @@ add_action( 'save_post_wpcw_application', 'wpcw_on_save_application', 10, 3 );
  * @param int $application_id The ID of the approved wpcw_application post.
  */
 function wpcw_handle_approved_application( $application_id ) {
-    error_log("WPCW: Iniciando procesamiento para solicitud ID: " . $application_id);
+    error_log( 'WPCW: Iniciando procesamiento para solicitud ID: ' . $application_id );
 
     // Recuperar datos de la solicitud
-    $applicant_type = get_post_meta( $application_id, '_wpcw_applicant_type', true );
-    $fantasy_name = get_the_title( $application_id ); // El título del CPT wpcw_application es el nombre de fantasía
-    $legal_name = get_post_meta( $application_id, '_wpcw_legal_name', true );
-    $cuit = get_post_meta( $application_id, '_wpcw_cuit', true );
-    $contact_person = get_post_meta( $application_id, '_wpcw_contact_person', true );
-    $email = get_post_meta( $application_id, '_wpcw_email', true );
-    $whatsapp = get_post_meta( $application_id, '_wpcw_whatsapp', true );
-    $address_main = get_post_meta( $application_id, '_wpcw_address_main', true );
+    $applicant_type   = get_post_meta( $application_id, '_wpcw_applicant_type', true );
+    $fantasy_name     = get_the_title( $application_id ); // El título del CPT wpcw_application es el nombre de fantasía
+    $legal_name       = get_post_meta( $application_id, '_wpcw_legal_name', true );
+    $cuit             = get_post_meta( $application_id, '_wpcw_cuit', true );
+    $contact_person   = get_post_meta( $application_id, '_wpcw_contact_person', true );
+    $email            = get_post_meta( $application_id, '_wpcw_email', true );
+    $whatsapp         = get_post_meta( $application_id, '_wpcw_whatsapp', true );
+    $address_main     = get_post_meta( $application_id, '_wpcw_address_main', true );
     $application_post = get_post( $application_id );
-    $description = $application_post ? $application_post->post_content : ''; // La descripción se guardó como post_content
-    $created_user_id = get_post_meta( $application_id, '_wpcw_created_user_id', true ); // ID del usuario que llenó el formulario, si estaba logueado
+    $description      = $application_post ? $application_post->post_content : ''; // La descripción se guardó como post_content
+    $created_user_id  = get_post_meta( $application_id, '_wpcw_created_user_id', true ); // ID del usuario que llenó el formulario, si estaba logueado
 
     // Verificación básica de datos recuperados
     if ( empty( $applicant_type ) || empty( $email ) || empty( $fantasy_name ) ) {
-        error_log("WPCW Error: Faltan datos críticos (tipo, email o nombre fantasía) en la solicitud ID: " . $application_id);
+        error_log( 'WPCW Error: Faltan datos críticos (tipo, email o nombre fantasía) en la solicitud ID: ' . $application_id );
         // Optionally, update application status to 'error_procesamiento'
         // update_post_meta( $application_id, '_wpcw_application_status', 'error_procesamiento' );
         // update_post_meta( $application_id, '_wpcw_processing_error_details', 'Faltan datos críticos: tipo, email o nombre fantasía.' );
@@ -99,8 +99,8 @@ function wpcw_handle_approved_application( $application_id ) {
     } elseif ( $applicant_type === 'institucion' ) {
         $new_cpt_type = 'wpcw_institution';
     } else {
-        error_log("WPCW Error: Tipo de solicitante desconocido ('" . esc_html($applicant_type) . "') en la solicitud ID: " . $application_id);
-        update_post_meta($application_id, '_wpcw_processing_error', sprintf(__('Tipo de solicitante desconocido: %s', 'wp-cupon-whatsapp'), esc_html($applicant_type)));
+        error_log( "WPCW Error: Tipo de solicitante desconocido ('" . esc_html( $applicant_type ) . "') en la solicitud ID: " . $application_id );
+        update_post_meta( $application_id, '_wpcw_processing_error', sprintf( __( 'Tipo de solicitante desconocido: %s', 'wp-cupon-whatsapp' ), esc_html( $applicant_type ) ) );
         return; // Salir si el tipo no es válido
     }
 
@@ -109,7 +109,7 @@ function wpcw_handle_approved_application( $application_id ) {
     // If $fantasy_name or $description could contain malicious HTML/script (e.g. if they were from post meta directly without sanitization),
     // they should be sanitized here. get_the_title is generally safe. $description from $application_post->post_content is raw.
 
-    $cpt_data = array(
+    $cpt_data   = array(
         'post_title'   => $fantasy_name,
         'post_content' => $description,
         'post_type'    => $new_cpt_type,
@@ -118,8 +118,8 @@ function wpcw_handle_approved_application( $application_id ) {
     $new_cpt_id = wp_insert_post( $cpt_data, true ); // true para devolver WP_Error en caso de fallo
 
     if ( is_wp_error( $new_cpt_id ) ) {
-        error_log("WPCW Error: Falló la creación del CPT para la solicitud ID: " . $application_id . ". Error: " . $new_cpt_id->get_error_message());
-        update_post_meta($application_id, '_wpcw_processing_error', sprintf(__('Falló la creación del CPT: %s', 'wp-cupon-whatsapp'), $new_cpt_id->get_error_message()));
+        error_log( 'WPCW Error: Falló la creación del CPT para la solicitud ID: ' . $application_id . '. Error: ' . $new_cpt_id->get_error_message() );
+        update_post_meta( $application_id, '_wpcw_processing_error', sprintf( __( 'Falló la creación del CPT: %s', 'wp-cupon-whatsapp' ), $new_cpt_id->get_error_message() ) );
         return; // Salir si falla la creación del CPT
     }
 
@@ -135,25 +135,24 @@ function wpcw_handle_approved_application( $application_id ) {
     // Link back to the original application CPT
     update_post_meta( $new_cpt_id, '_wpcw_original_application_id', $application_id );
 
-
     update_post_meta( $application_id, '_wpcw_processed_entity_id', $new_cpt_id );
-    error_log("WPCW: CPT " . esc_html($new_cpt_type) . " (ID: " . $new_cpt_id . ") creado para solicitud ID: " . $application_id);
+    error_log( 'WPCW: CPT ' . esc_html( $new_cpt_type ) . ' (ID: ' . $new_cpt_id . ') creado para solicitud ID: ' . $application_id );
 
     // d. Crear Usuario WordPress
     // Generar un nombre de usuario único basado en el email
-    $base_user_login = sanitize_title(explode('@', $email)[0]); // Tomar la parte antes del @ del email
-    if (empty($base_user_login)) { // Fallback si el email es extraño o vacío (aunque ya validado)
-        $base_user_login = sanitize_title($contact_person ? str_replace(' ', '', (string) $contact_person) : str_replace(' ', '', (string) $fantasy_name));
+    $base_user_login = sanitize_title( explode( '@', $email )[0] ); // Tomar la parte antes del @ del email
+    if ( empty( $base_user_login ) ) { // Fallback si el email es extraño o vacío (aunque ya validado)
+        $base_user_login = sanitize_title( $contact_person ? str_replace( ' ', '', (string) $contact_person ) : str_replace( ' ', '', (string) $fantasy_name ) );
     }
-    if (empty($base_user_login)) { // Fallback extremo
+    if ( empty( $base_user_login ) ) { // Fallback extremo
         $base_user_login = 'user' . $application_id;
     }
 
     $user_login = $base_user_login;
-    $counter = 1;
+    $counter    = 1;
     while ( username_exists( $user_login ) ) {
         $user_login = $base_user_login . $counter;
-        $counter++;
+        ++$counter;
     }
 
     $user_pass = wp_generate_password( 16, true, true ); // Contraseña más larga
@@ -165,19 +164,19 @@ function wpcw_handle_approved_application( $application_id ) {
         'user_email'   => $email, // Email de contacto de la solicitud
         'role'         => $user_role,
         'display_name' => $contact_person ? $contact_person : $fantasy_name,
-        'first_name'   => $contact_person ? explode(' ', $contact_person)[0] : '', // Intento de primer nombre
+        'first_name'   => $contact_person ? explode( ' ', $contact_person )[0] : '', // Intento de primer nombre
         // 'last_name' => podrías intentar obtenerlo también de $contact_person
     );
     $user_id = wp_insert_user( $user_data );
 
     if ( is_wp_error( $user_id ) ) {
-        error_log("WPCW Error: Falló la creación del usuario para la solicitud ID: " . $application_id . ". Login: " . esc_html($user_login) . ". Error: " . $user_id->get_error_message());
-        update_post_meta($application_id, '_wpcw_processing_error', sprintf(__('Falló la creación del usuario: %s', 'wp-cupon-whatsapp'), $user_id->get_error_message()));
+        error_log( 'WPCW Error: Falló la creación del usuario para la solicitud ID: ' . $application_id . '. Login: ' . esc_html( $user_login ) . '. Error: ' . $user_id->get_error_message() );
+        update_post_meta( $application_id, '_wpcw_processing_error', sprintf( __( 'Falló la creación del usuario: %s', 'wp-cupon-whatsapp' ), $user_id->get_error_message() ) );
         // Considerar rollback del CPT creado: wp_delete_post($new_cpt_id, true);
         // Por ahora, para simplificar, no se hace rollback automático. El admin tendría que arreglarlo o rechazar la solicitud.
         return; // Salir si falla la creación del usuario
     }
-    error_log("WPCW: Usuario (ID: " . $user_id . ", Login: " . esc_html($user_login) . ") creado para solicitud ID: " . $application_id);
+    error_log( 'WPCW: Usuario (ID: ' . $user_id . ', Login: ' . esc_html( $user_login ) . ') creado para solicitud ID: ' . $application_id );
 
     // e. Asociar Usuario con CPT
     // $new_cpt_id, $user_id, $applicant_type are available here.
@@ -187,16 +186,16 @@ function wpcw_handle_approved_application( $application_id ) {
         update_post_meta( $new_cpt_id, '_wpcw_owner_user_id', $user_id );
         update_user_meta( $user_id, '_wpcw_associated_entity_id', $new_cpt_id );
         update_user_meta( $user_id, '_wpcw_associated_entity_type', $new_cpt_type ); // 'wpcw_business'
-        error_log("WPCW: Usuario ID " . $user_id . " asociado como owner al CPT business ID " . $new_cpt_id);
+        error_log( 'WPCW: Usuario ID ' . $user_id . ' asociado como owner al CPT business ID ' . $new_cpt_id );
     } elseif ( $applicant_type === 'institucion' ) {
         update_post_meta( $new_cpt_id, '_wpcw_manager_user_id', $user_id ); // Using a distinct meta key for clarity if needed, or could be generic like _wpcw_managing_user_id
         update_user_meta( $user_id, '_wpcw_associated_entity_id', $new_cpt_id );
         update_user_meta( $user_id, '_wpcw_associated_entity_type', $new_cpt_type ); // 'wpcw_institution'
-        error_log("WPCW: Usuario ID " . $user_id . " asociado como manager al CPT institution ID " . $new_cpt_id);
+        error_log( 'WPCW: Usuario ID ' . $user_id . ' asociado como manager al CPT institution ID ' . $new_cpt_id );
     } else {
         // This situation should not occur if previous validations are correct,
         // but it's good to have a log just in case.
-        error_log("WPCW Critical Error: Intentando asociar usuario a CPT con tipo de aplicante desconocido: " . esc_html($applicant_type) . " para CPT ID " . $new_cpt_id . " y User ID " . $user_id);
+        error_log( 'WPCW Critical Error: Intentando asociar usuario a CPT con tipo de aplicante desconocido: ' . esc_html( $applicant_type ) . ' para CPT ID ' . $new_cpt_id . ' y User ID ' . $user_id );
     }
 
     // TODO: Enviar Notificación al Nuevo Usuario (siguiente paso, incluir $user_pass)
@@ -210,9 +209,9 @@ function wpcw_handle_approved_application( $application_id ) {
     // y la función se encarga de enviar el correo con el enlace de reseteo de contraseña.
     if ( function_exists( 'wp_new_user_notification' ) ) {
         wp_new_user_notification( $user_id, null, 'user' );
-        error_log("WPCW: Notificación estándar de nuevo usuario enviada para User ID: " . $user_id);
+        error_log( 'WPCW: Notificación estándar de nuevo usuario enviada para User ID: ' . $user_id );
     } else {
-        error_log("WPCW Alerta: La función wp_new_user_notification() no existe. No se pudo notificar al usuario ID: " . $user_id);
+        error_log( 'WPCW Alerta: La función wp_new_user_notification() no existe. No se pudo notificar al usuario ID: ' . $user_id );
         // Considerar un email manual de fallback si esto fuera un problema común (no debería serlo).
     }
 
@@ -222,11 +221,10 @@ function wpcw_handle_approved_application( $application_id ) {
     // Optionally, set a final status like 'completada' if it's different from 'aprobada'
     // update_post_meta( $application_id, '_wpcw_application_status', 'completada' );
 
-
     $processing_log_message = sprintf(
-        __('Solicitud procesada exitosamente el %1$s. Tipo de entidad creada: %2$s (ID: %3$d). Usuario creado (ID: %4$d).', 'wp-cupon-whatsapp'),
-        current_time('mysql'),
-        esc_html($new_cpt_type), // $new_cpt_type was defined earlier
+        __( 'Solicitud procesada exitosamente el %1$s. Tipo de entidad creada: %2$s (ID: %3$d). Usuario creado (ID: %4$d).', 'wp-cupon-whatsapp' ),
+        current_time( 'mysql' ),
+        esc_html( $new_cpt_type ), // $new_cpt_type was defined earlier
         $new_cpt_id,
         $user_id
     );
@@ -235,7 +233,5 @@ function wpcw_handle_approved_application( $application_id ) {
     // Limpiar cualquier error de procesamiento previo si llegamos aquí con éxito.
     delete_post_meta( $application_id, '_wpcw_processing_error' );
 
-    error_log("WPCW: Procesamiento completado y marcado como procesada para Solicitud ID: " . $application_id . ". Log: " . $processing_log_message);
+    error_log( 'WPCW: Procesamiento completado y marcado como procesada para Solicitud ID: ' . $application_id . '. Log: ' . $processing_log_message );
 }
-
-?>

@@ -1,0 +1,106 @@
+# Archivo de ejemplo para despliegue masivo de WP Cupón WhatsApp
+# Formato: URL [perfil] [optimización]
+# 
+# PERFILES DISPONIBLES:
+# - minimal: Configuración básica para sitios pequeños
+# - standard: Configuración estándar (recomendado)
+# - enterprise: Configuración empresarial para alto tráfico
+# - development: Configuración para entornos de desarrollo
+#
+# OPTIMIZACIONES DISPONIBLES:
+# - none: Sin optimizaciones
+# - basic: Optimizaciones básicas (minificación, lazy loading)
+# - standard: Optimizaciones estándar (recomendado)
+# - aggressive: Optimizaciones agresivas (máximo rendimiento)
+#
+# EJEMPLOS DE USO:
+
+# === SITIOS DE PRODUCCIÓN ===
+
+# Sitios corporativos con alto tráfico
+https://empresa1.com enterprise aggressive
+https://empresa2.com enterprise aggressive
+https://tienda-online.com enterprise standard
+
+# Sitios estándar de clientes
+https://cliente1.com standard standard
+https://cliente2.com standard standard
+https://blog-personal.com standard basic
+https://pequeña-empresa.com standard basic
+
+# Sitios básicos o con pocos recursos
+https://sitio-basico.com minimal basic
+https://landing-page.com minimal none
+
+# === SITIOS DE DESARROLLO Y TESTING ===
+
+# Entornos de desarrollo
+https://dev.empresa1.com development none
+https://staging.cliente1.com development basic
+https://test.tienda-online.com development none
+
+# === SITIOS POR REGIÓN ===
+
+# Argentina
+https://empresa-argentina.com.ar standard standard
+https://tienda-buenos-aires.com standard basic
+
+# México
+https://empresa-mexico.com.mx standard standard
+https://tienda-cdmx.com standard basic
+
+# Colombia
+https://empresa-colombia.com.co standard standard
+https://tienda-bogota.com standard basic
+
+# España
+https://empresa-españa.es standard standard
+https://tienda-madrid.com standard basic
+
+# Estados Unidos
+https://company-usa.com enterprise aggressive
+https://store-newyork.com enterprise standard
+
+# Brasil
+https://empresa-brasil.com.br standard standard
+https://loja-saopaulo.com standard basic
+
+# === CASOS ESPECIALES ===
+
+# Sitios que usarán configuración por defecto (standard/standard)
+https://sitio-defecto1.com
+https://sitio-defecto2.com
+https://sitio-defecto3.com
+
+# Sitios con solo perfil especificado (usará optimización por defecto)
+https://sitio-minimal.com minimal
+https://sitio-enterprise.com enterprise
+
+# === MULTISITIO WORDPRESS ===
+
+# Red de sitios (requiere configuración especial)
+https://red-sitios.com/sitio1 enterprise standard
+https://red-sitios.com/sitio2 enterprise standard
+https://red-sitios.com/sitio3 enterprise standard
+
+# === NOTAS IMPORTANTES ===
+#
+# 1. Cada línea representa un sitio a configurar
+# 2. Las líneas que empiezan con # son comentarios
+# 3. Si no se especifica perfil, se usa 'standard'
+# 4. Si no se especifica optimización, se usa 'standard'
+# 5. Los sitios deben ser accesibles y tener WordPress instalado
+# 6. Se recomienda hacer una copia de seguridad antes del despliegue
+# 7. Usar modo --test primero para verificar la configuración
+#
+# COMANDOS DE EJEMPLO:
+#
+# Linux/Mac:
+# ./scripts/mass-deployment.sh examples/sitios-ejemplo.txt
+# ./scripts/mass-deployment.sh --test examples/sitios-ejemplo.txt
+# ./scripts/mass-deployment.sh -p enterprise -o aggressive examples/sitios-ejemplo.txt
+#
+# Windows:
+# .\scripts\mass-deployment.ps1 -SitesFile examples\sitios-ejemplo.txt
+# .\scripts\mass-deployment.ps1 -SitesFile examples\sitios-ejemplo.txt -TestMode
+# .\scripts\mass-deployment.ps1 -SitesFile examples\sitios-ejemplo.txt -Profile enterprise -Optimization aggressive

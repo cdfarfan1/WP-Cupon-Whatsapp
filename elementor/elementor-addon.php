@@ -74,7 +74,7 @@ final class WPCW_Elementor_Addon {
 	 * @access public
 	 */
 	public function __construct() {
-		add_action( 'plugins_loaded', [ $this, 'on_plugins_loaded' ] );
+		add_action( 'plugins_loaded', array( $this, 'on_plugins_loaded' ) );
 	}
 
 	/**
@@ -100,7 +100,7 @@ final class WPCW_Elementor_Addon {
 	 */
 	public function on_plugins_loaded() {
 		if ( $this->is_compatible() ) {
-			add_action( 'elementor/init', [ $this, 'init' ] );
+			add_action( 'elementor/init', array( $this, 'init' ) );
 		}
 	}
 
@@ -117,19 +117,19 @@ final class WPCW_Elementor_Addon {
 	public function is_compatible() {
 		// Check if Elementor installed and activated
 		if ( ! did_action( 'elementor/loaded' ) ) {
-			add_action( 'admin_notices', [ $this, 'admin_notice_missing_main_plugin' ] );
+			add_action( 'admin_notices', array( $this, 'admin_notice_missing_main_plugin' ) );
 			return false;
 		}
 
 		// Check for required Elementor version
 		if ( ! version_compare( ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=' ) ) {
-			add_action( 'admin_notices', [ $this, 'admin_notice_minimum_elementor_version' ] );
+			add_action( 'admin_notices', array( $this, 'admin_notice_minimum_elementor_version' ) );
 			return false;
 		}
 
 		// Check for required PHP version
 		if ( version_compare( PHP_VERSION, self::MINIMUM_PHP_VERSION, '<' ) ) {
-			add_action( 'admin_notices', [ $this, 'admin_notice_minimum_php_version' ] );
+			add_action( 'admin_notices', array( $this, 'admin_notice_minimum_php_version' ) );
 			return false;
 		}
 
@@ -146,9 +146,9 @@ final class WPCW_Elementor_Addon {
 	 */
 	public function init() {
 		// Add Plugin actions
-		add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
-		add_action( 'elementor/elements/categories_registered', [ $this, 'register_widget_categories' ] );
-		add_action( 'elementor/frontend/after_enqueue_styles', [ $this, 'widget_styles' ] );
+		add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ) );
+		add_action( 'elementor/elements/categories_registered', array( $this, 'register_widget_categories' ) );
+		add_action( 'elementor/frontend/after_enqueue_styles', array( $this, 'widget_styles' ) );
         // Elementor 3.5.0+ uses elementor/widgets/register hook.
         // For older versions, use elementor/widgets/widgets_registered.
         // The 'register' hook is more appropriate for modern Elementor.
@@ -166,7 +166,7 @@ final class WPCW_Elementor_Addon {
         wp_enqueue_style(
             'wpcw-elementor-widgets',
             WPCW_PLUGIN_URL . 'elementor/css/widgets.css',
-            [],
+            array(),
             self::VERSION
         );
     }
@@ -185,8 +185,8 @@ final class WPCW_Elementor_Addon {
 		$widgets_dir = WPCW_PLUGIN_DIR . 'elementor/widgets/';
 
 		// Include Widget files
-		require_once( $widgets_dir . 'widget-cupones-lista.php' );
-		require_once( $widgets_dir . 'widget-formulario-adhesion.php' );
+		require_once $widgets_dir . 'widget-cupones-lista.php';
+		require_once $widgets_dir . 'widget-formulario-adhesion.php';
 
 		// Register Widgets
 		$widgets_manager->register( new \WPCW_Elementor_Cupones_Lista_Widget() );
@@ -205,10 +205,10 @@ final class WPCW_Elementor_Addon {
 	public function register_widget_categories( $elements_manager ) {
 		$elements_manager->add_category(
 			'wpcw-categoria',
-			[
+			array(
 				'title' => __( 'WP Cupón WhatsApp', 'wp-cupon-whatsapp' ),
-				'icon' => 'fa fa-whatsapp', // Or your custom icon class
-			]
+				'icon'  => 'fa fa-whatsapp', // Or your custom icon class
+			)
 		);
 	}
 
@@ -222,7 +222,9 @@ final class WPCW_Elementor_Addon {
 	 * @access public
 	 */
 	public function admin_notice_missing_main_plugin() {
-		if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+		if ( isset( $_GET['activate'] ) ) {
+            unset( $_GET['activate'] );
+        }
 		$message = sprintf(
 			/* translators: 1: Plugin name 2: Elementor */
 			esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'wp-cupon-whatsapp' ),
@@ -241,7 +243,9 @@ final class WPCW_Elementor_Addon {
 	 * @access public
 	 */
 	public function admin_notice_minimum_elementor_version() {
-		if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+		if ( isset( $_GET['activate'] ) ) {
+            unset( $_GET['activate'] );
+        }
 		$message = sprintf(
 			/* translators: 1: Plugin name 2: Elementor 3: Minimum Elementor version */
 			esc_html__( '"%1$s" requires "%2$s" version %3$s or greater.', 'wp-cupon-whatsapp' ),
@@ -261,7 +265,9 @@ final class WPCW_Elementor_Addon {
 	 * @access public
 	 */
 	public function admin_notice_minimum_php_version() {
-		if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+		if ( isset( $_GET['activate'] ) ) {
+            unset( $_GET['activate'] );
+        }
 		$message = sprintf(
 			/* translators: 1: Plugin name 2: PHP 3: Minimum PHP version */
 			esc_html__( '"%1$s" requires "%2$s" version %3$s or greater.', 'wp-cupon-whatsapp' ),

@@ -105,13 +105,13 @@
         flex-direction: column;
         gap: 15px;
     }
-    
+
     .wpcw-filters select,
     .wpcw-filters input[type="search"] {
         max-width: 100%;
         width: 100%;
     }
-    
+
     .wpcw-filters .button {
         width: 100%;
         text-align: center;

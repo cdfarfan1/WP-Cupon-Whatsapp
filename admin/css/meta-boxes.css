@@ -118,11 +118,11 @@
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .caja-estadistica {
         margin-bottom: 10px;
     }
-    
+
     .caja-estadistica .valor-estadistica {
         font-size: 24px;
     }

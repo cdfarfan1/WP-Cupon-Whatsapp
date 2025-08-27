@@ -25,12 +25,12 @@ class WPCW_Elementor_Formulario_Adhesion_Widget extends \Elementor\Widget_Base {
 	}
 
 	public function get_categories() {
-		return [ 'wpcw-categoria' ];
+		return array( 'wpcw-categoria' );
 	}
 
     public function get_script_depends() {
-        $scripts = [];
-        if ( function_exists('wpcw_is_recaptcha_enabled') && wpcw_is_recaptcha_enabled() && function_exists('wpcw_get_recaptcha_site_key') && wpcw_get_recaptcha_site_key() ) {
+        $scripts = array();
+        if ( function_exists( 'wpcw_is_recaptcha_enabled' ) && wpcw_is_recaptcha_enabled() && function_exists( 'wpcw_get_recaptcha_site_key' ) && wpcw_get_recaptcha_site_key() ) {
             $scripts[] = 'google-recaptcha'; // Handle registered by wpcw_public_enqueue_scripts_styles in recaptcha-integration.php
         }
         return $scripts;
@@ -41,101 +41,101 @@ class WPCW_Elementor_Formulario_Adhesion_Widget extends \Elementor\Widget_Base {
 		// Content Tab: Form Texts
         $this->start_controls_section(
 			'section_content_form_texts',
-			[
+			array(
 				'label' => esc_html__( 'Textos del Formulario', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			)
 		);
 
         $this->add_control(
 			'legend_applicant_type',
-			[
-				'label' => esc_html__( 'Leyenda: Tipo de Solicitante', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
+			array(
+				'label'   => esc_html__( 'Leyenda: Tipo de Solicitante', 'wp-cupon-whatsapp' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
 				'default' => esc_html__( 'Tipo de Solicitante', 'wp-cupon-whatsapp' ),
-                'dynamic' => [ 'active' => true ],
-			]
+                'dynamic' => array( 'active' => true ),
+			)
 		);
         $this->add_control(
 			'label_applicant_type_comercio',
-			[
-				'label' => esc_html__( 'Etiqueta: Comercio', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
+			array(
+				'label'   => esc_html__( 'Etiqueta: Comercio', 'wp-cupon-whatsapp' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
 				'default' => esc_html__( 'Comercio', 'wp-cupon-whatsapp' ),
-                'dynamic' => [ 'active' => true ],
-			]
+                'dynamic' => array( 'active' => true ),
+			)
 		);
         $this->add_control(
 			'label_applicant_type_institucion',
-			[
-				'label' => esc_html__( 'Etiqueta: Institución', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
+			array(
+				'label'   => esc_html__( 'Etiqueta: Institución', 'wp-cupon-whatsapp' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
 				'default' => esc_html__( 'Institución', 'wp-cupon-whatsapp' ),
-                'dynamic' => [ 'active' => true ],
-			]
+                'dynamic' => array( 'active' => true ),
+			)
 		);
 
-        $fields = [
-            'wpcw_fantasy_name' => 'Nombre de Fantasía',
-            'wpcw_legal_name' => 'Nombre Legal',
-            'wpcw_cuit' => 'CUIT',
+        $fields = array(
+            'wpcw_fantasy_name'   => 'Nombre de Fantasía',
+            'wpcw_legal_name'     => 'Nombre Legal',
+            'wpcw_cuit'           => 'CUIT',
             'wpcw_contact_person' => 'Persona de Contacto',
-            'wpcw_email' => 'Email de Contacto',
-            'wpcw_whatsapp' => 'Número de WhatsApp',
-            'wpcw_address_main' => 'Dirección Principal',
-            'wpcw_description' => 'Descripción del Negocio/Institución',
-        ];
+            'wpcw_email'          => 'Email de Contacto',
+            'wpcw_whatsapp'       => 'Número de WhatsApp',
+            'wpcw_address_main'   => 'Dirección Principal',
+            'wpcw_description'    => 'Descripción del Negocio/Institución',
+        );
 
-        foreach ($fields as $key => $default_label_text) {
+        foreach ( $fields as $key => $default_label_text ) {
             $this->add_control(
                 'label_' . $key,
-                [
-                    'label' => sprintf(esc_html__( 'Etiqueta: %s', 'wp-cupon-whatsapp' ), esc_html__( $default_label_text, 'wp-cupon-whatsapp' )),
-                    'type' => \Elementor\Controls_Manager::TEXT,
+                array(
+                    'label'   => sprintf( esc_html__( 'Etiqueta: %s', 'wp-cupon-whatsapp' ), esc_html__( $default_label_text, 'wp-cupon-whatsapp' ) ),
+                    'type'    => \Elementor\Controls_Manager::TEXT,
                     'default' => esc_html__( $default_label_text, 'wp-cupon-whatsapp' ),
-                    'dynamic' => [ 'active' => true ],
-                ]
+                    'dynamic' => array( 'active' => true ),
+                )
             );
         }
 
         $this->add_control(
 			'text_submit_button',
-			[
-				'label' => esc_html__( 'Texto del Botón de Envío', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
+			array(
+				'label'   => esc_html__( 'Texto del Botón de Envío', 'wp-cupon-whatsapp' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
 				'default' => esc_html__( 'Enviar Solicitud', 'wp-cupon-whatsapp' ),
-                'dynamic' => [ 'active' => true ],
-			]
+                'dynamic' => array( 'active' => true ),
+			)
 		);
 
         $this->add_control(
 			'text_success_message',
-			[
-				'label' => esc_html__( 'Mensaje de Éxito', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::TEXTAREA,
+			array(
+				'label'   => esc_html__( 'Mensaje de Éxito', 'wp-cupon-whatsapp' ),
+				'type'    => \Elementor\Controls_Manager::TEXTAREA,
 				'default' => esc_html__( 'Su solicitud ha sido enviada con éxito. Nos pondremos en contacto a la brevedad.', 'wp-cupon-whatsapp' ),
-                'dynamic' => [ 'active' => true ],
-			]
+                'dynamic' => array( 'active' => true ),
+			)
 		);
 
         $this->end_controls_section();
 
         // Content Tab: reCAPTCHA
-        if ( function_exists('wpcw_is_recaptcha_enabled') && wpcw_is_recaptcha_enabled() ) {
+        if ( function_exists( 'wpcw_is_recaptcha_enabled' ) && wpcw_is_recaptcha_enabled() ) {
             $this->start_controls_section(
                 'section_content_recaptcha',
-                [
+                array(
                     'label' => esc_html__( 'Google reCAPTCHA', 'wp-cupon-whatsapp' ),
-                    'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-                ]
+                    'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+                )
             );
             $this->add_control(
                 'info_recaptcha',
-                [
-                    'type' => \Elementor\Controls_Manager::RAW_HTML,
-                    'raw' => __( 'Google reCAPTCHA v2 está activado en los ajustes del plugin y se mostrará en el formulario.', 'wp-cupon-whatsapp' ),
+                array(
+                    'type'            => \Elementor\Controls_Manager::RAW_HTML,
+                    'raw'             => __( 'Google reCAPTCHA v2 está activado en los ajustes del plugin y se mostrará en el formulario.', 'wp-cupon-whatsapp' ),
                     'content_classes' => 'elementor-descriptor',
-                ]
+                )
             );
             $this->end_controls_section();
         }
@@ -143,285 +143,315 @@ class WPCW_Elementor_Formulario_Adhesion_Widget extends \Elementor\Widget_Base {
         // Style Tab: Form General
         $this->start_controls_section(
 			'section_style_form_general',
-			[
+			array(
 				'label' => esc_html__( 'Formulario General', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
 		);
         $this->add_responsive_control(
 			'form_max_width',
-			[
-				'label' => esc_html__( 'Ancho Máximo del Formulario', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => [ 'px', '%' ],
-				'range' => [
-					'px' => [ 'min' => 200, 'max' => 1200 ],
-					'%' => [ 'min' => 10, 'max' => 100 ],
-				],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Ancho Máximo del Formulario', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px', '%' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 200,
+						'max' => 1200,
+					),
+					'%'  => array(
+						'min' => 10,
+						'max' => 100,
+					),
+				),
+				'selectors'  => array(
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor' => 'max-width: {{SIZE}}{{UNIT}}; margin-left: auto; margin-right: auto;',
-				],
-			]
+				),
+			)
 		);
         $this->end_controls_section();
-
 
 		// Style Tab: Field Labels
         $this->start_controls_section(
 			'section_style_labels',
-			[
+			array(
 				'label' => esc_html__( 'Etiquetas de Campos', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
 		);
         $this->add_control(
 			'label_color',
-			[
-				'label' => esc_html__( 'Color', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor label' => 'color: {{VALUE}};',
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor legend' => 'color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
 		$this->add_group_control(
 			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'label_typography',
+			array(
+				'name'     => 'label_typography',
 				'selector' => '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor label, {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor legend',
-			]
+			)
 		);
         $this->add_responsive_control(
 			'label_margin_bottom',
-			[
-				'label' => esc_html__( 'Espaciado Inferior', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
-				'range' => [ 'px' => [ 'min' => 0, 'max' => 50 ] ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Espaciado Inferior', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 50,
+					),
+				),
+				'selectors'  => array(
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor label' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor legend' => 'margin-bottom: {{SIZE}}{{UNIT}};',
                     '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor fieldset p label' => 'margin-bottom: 0;', // Reset for radio labels
-				],
-			]
+				),
+			)
 		);
         $this->end_controls_section();
 
         // Style Tab: Input Fields
         $this->start_controls_section(
 			'section_style_fields',
-			[
+			array(
 				'label' => esc_html__( 'Campos de Entrada (Texto, Email, Tel, Textarea)', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
 		);
         $this->add_group_control(
 			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'field_typography',
+			array(
+				'name'     => 'field_typography',
 				'selector' => '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="text"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="email"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="tel"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor textarea',
-			]
+			)
 		);
         $this->add_control(
 			'field_text_color',
-			[
-				'label' => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="text"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="email"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="tel"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor textarea' => 'color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
         $this->add_control(
 			'field_background_color',
-			[
-				'label' => esc_html__( 'Color de Fondo', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color de Fondo', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="text"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="email"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="tel"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor textarea' => 'background-color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
         $this->add_group_control(
 			\Elementor\Group_Control_Border::get_type(),
-			[
-				'name' => 'field_border',
+			array(
+				'name'     => 'field_border',
 				'selector' => '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="text"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="email"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="tel"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor textarea',
-			]
+			)
 		);
         $this->add_responsive_control(
 			'field_border_radius',
-			[
-				'label' => esc_html__( 'Radio del Borde', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Radio del Borde', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="text"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="email"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="tel"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor textarea' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
         $this->add_responsive_control(
 			'field_padding',
-			[
-				'label' => esc_html__( 'Padding', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Padding', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="text"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="email"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="tel"], {{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor textarea' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; width: 100%; box-sizing: border-box;',
-				],
-			]
+				),
+			)
 		);
         $this->add_responsive_control(
 			'field_margin_bottom',
-			[
-				'label' => esc_html__( 'Espaciado Inferior del Párrafo Contenedor', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
-                'range' => [ 'px' => [ 'min' => 0, 'max' => 60 ] ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Espaciado Inferior del Párrafo Contenedor', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+                'range'      => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 60,
+					),
+				),
+				'selectors'  => array(
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor p:not(.wpcw-submit-p)' => 'margin-bottom: {{SIZE}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
         $this->end_controls_section();
 
         // Style Tab: Submit Button
         $this->start_controls_section(
 			'section_style_submit_button',
-			[
+			array(
 				'label' => esc_html__( 'Botón de Envío', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
 		);
         $this->add_group_control(
 			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'button_typography',
+			array(
+				'name'     => 'button_typography',
 				'selector' => '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]',
-			]
+			)
 		);
 		$this->add_responsive_control(
 			'button_width',
-			[
-				'label' => esc_html__( 'Ancho del Botón', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'options' => [
-					'auto' => esc_html__( 'Automático', 'wp-cupon-whatsapp' ),
-					'full' => esc_html__( 'Ancho Completo', 'wp-cupon-whatsapp' ),
+			array(
+				'label'        => esc_html__( 'Ancho del Botón', 'wp-cupon-whatsapp' ),
+				'type'         => \Elementor\Controls_Manager::SELECT,
+				'options'      => array(
+					'auto'   => esc_html__( 'Automático', 'wp-cupon-whatsapp' ),
+					'full'   => esc_html__( 'Ancho Completo', 'wp-cupon-whatsapp' ),
                     'custom' => esc_html__( 'Personalizado', 'wp-cupon-whatsapp' ),
-				],
-				'default' => 'auto',
+				),
+				'default'      => 'auto',
                 'prefix_class' => 'wpcw-submit-button-width-',
-			]
+			)
 		);
         $this->add_responsive_control(
             'button_custom_width',
-            [
-                'label' => esc_html__( 'Ancho Personalizado', 'wp-cupon-whatsapp' ),
-                'type' => \Elementor\Controls_Manager::SLIDER,
-                'size_units' => [ '%', 'px' ],
-                'range' => [
-                    '%' => [ 'min' => 10, 'max' => 100 ],
-                    'px' => [ 'min' => 50, 'max' => 500 ],
-                ],
-                'selectors' => [
+            array(
+                'label'      => esc_html__( 'Ancho Personalizado', 'wp-cupon-whatsapp' ),
+                'type'       => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => array( '%', 'px' ),
+                'range'      => array(
+                    '%'  => array(
+						'min' => 10,
+						'max' => 100,
+					),
+                    'px' => array(
+						'min' => 50,
+						'max' => 500,
+					),
+                ),
+                'selectors'  => array(
                     '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]' => 'width: {{SIZE}}{{UNIT}};',
-                ],
-                'condition' => [ 'button_width' => 'custom' ],
-            ]
+                ),
+                'condition'  => array( 'button_width' => 'custom' ),
+            )
         );
         $this->add_responsive_control(
 			'button_align',
-			[
-				'label' => esc_html__( 'Alineación', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::CHOOSE,
-				'options' => [
-					'left' => [ 'title' => esc_html__( 'Izquierda', 'wp-cupon-whatsapp' ), 'icon' => 'eicon-text-align-left' ],
-					'center' => [ 'title' => esc_html__( 'Centro', 'wp-cupon-whatsapp' ), 'icon' => 'eicon-text-align-center' ],
-					'right' => [ 'title' => esc_html__( 'Derecha', 'wp-cupon-whatsapp' ), 'icon' => 'eicon-text-align-right' ],
-				],
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Alineación', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::CHOOSE,
+				'options'   => array(
+					'left'   => array(
+						'title' => esc_html__( 'Izquierda', 'wp-cupon-whatsapp' ),
+						'icon'  => 'eicon-text-align-left',
+					),
+					'center' => array(
+						'title' => esc_html__( 'Centro', 'wp-cupon-whatsapp' ),
+						'icon'  => 'eicon-text-align-center',
+					),
+					'right'  => array(
+						'title' => esc_html__( 'Derecha', 'wp-cupon-whatsapp' ),
+						'icon'  => 'eicon-text-align-right',
+					),
+				),
+				'selectors' => array(
 					'{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor .wpcw-submit-p' => 'text-align: {{VALUE}};',
-				],
-                'condition' => [ 'button_width!' => 'full' ],
-			]
+				),
+                'condition' => array( 'button_width!' => 'full' ),
+			)
 		);
         $this->start_controls_tabs( 'tabs_button_style' );
 		$this->start_controls_tab(
 			'tab_button_normal',
-			[ 'label' => esc_html__( 'Normal', 'wp-cupon-whatsapp' ) ]
+			array( 'label' => esc_html__( 'Normal', 'wp-cupon-whatsapp' ) )
 		);
         $this->add_control(
 			'button_text_color',
-			[
-				'label' => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [ '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]' => 'color: {{VALUE}};' ],
-			]
+			array(
+				'label'     => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]' => 'color: {{VALUE}};' ),
+			)
 		);
         $this->add_control(
 			'button_background_color',
-			[
-				'label' => esc_html__( 'Color de Fondo', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [ '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]' => 'background-color: {{VALUE}};' ],
-			]
+			array(
+				'label'     => esc_html__( 'Color de Fondo', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]' => 'background-color: {{VALUE}};' ),
+			)
 		);
         $this->add_group_control(
 			\Elementor\Group_Control_Border::get_type(),
-			[
-				'name' => 'button_border',
+			array(
+				'name'     => 'button_border',
 				'selector' => '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]',
-			]
+			)
 		);
         $this->add_responsive_control(
 			'button_border_radius',
-			[
-				'label' => esc_html__( 'Radio del Borde', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', '%' ],
-				'selectors' => [ '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
-			]
+			array(
+				'label'      => esc_html__( 'Radio del Borde', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => array( 'px', '%' ),
+				'selectors'  => array( '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+			)
 		);
         $this->add_responsive_control(
 			'button_padding',
-			[
-				'label' => esc_html__( 'Padding', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [ '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ],
-			]
+			array(
+				'label'      => esc_html__( 'Padding', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array( '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};' ),
+			)
 		);
         $this->end_controls_tab();
 		$this->start_controls_tab(
 			'tab_button_hover',
-			[ 'label' => esc_html__( 'Hover', 'wp-cupon-whatsapp' ) ]
+			array( 'label' => esc_html__( 'Hover', 'wp-cupon-whatsapp' ) )
 		);
         $this->add_control(
 			'button_text_color_hover',
-			[
-				'label' => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [ '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]:hover' => 'color: {{VALUE}};' ],
-			]
+			array(
+				'label'     => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]:hover' => 'color: {{VALUE}};' ),
+			)
 		);
         $this->add_control(
 			'button_background_color_hover',
-			[
-				'label' => esc_html__( 'Color de Fondo', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [ '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]:hover' => 'background-color: {{VALUE}};' ],
-			]
+			array(
+				'label'     => esc_html__( 'Color de Fondo', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]:hover' => 'background-color: {{VALUE}};' ),
+			)
 		);
         $this->add_control(
 			'button_border_color_hover',
-			[
-				'label' => esc_html__( 'Color del Borde', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [ '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]:hover' => 'border-color: {{VALUE}};' ],
-                'condition' => [ 'button_border_border!' => '' ]
-			]
+			array(
+				'label'     => esc_html__( 'Color del Borde', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} #wpcw-solicitud-adhesion-form-elementor input[type="submit"]:hover' => 'border-color: {{VALUE}};' ),
+                'condition' => array( 'button_border_border!' => '' ),
+			)
 		);
         $this->end_controls_tab();
 		$this->end_controls_tabs();
@@ -430,145 +460,155 @@ class WPCW_Elementor_Formulario_Adhesion_Widget extends \Elementor\Widget_Base {
         // Style Tab: Messages (Error/Success)
         $this->start_controls_section(
 			'section_style_messages',
-			[
+			array(
 				'label' => esc_html__( 'Mensajes (Error/Éxito)', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
 		);
         $this->add_group_control(
 			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'message_typography',
+			array(
+				'name'     => 'message_typography',
 				'selector' => '{{WRAPPER}} .wpcw-form-errors p, {{WRAPPER}} .wpcw-form-success',
-			]
+			)
 		);
         $this->add_control(
 			'success_message_color',
-			[
-				'label' => esc_html__( 'Color Texto Éxito', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [ '{{WRAPPER}} .wpcw-form-success' => 'color: {{VALUE}};' ],
-			]
+			array(
+				'label'     => esc_html__( 'Color Texto Éxito', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} .wpcw-form-success' => 'color: {{VALUE}};' ),
+			)
 		);
         $this->add_control(
 			'success_message_background_color',
-			[
-				'label' => esc_html__( 'Color Fondo Éxito', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [ '{{WRAPPER}} .wpcw-form-success' => 'background-color: {{VALUE}}; border-color: {{VALUE}}' ],
-			]
+			array(
+				'label'     => esc_html__( 'Color Fondo Éxito', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} .wpcw-form-success' => 'background-color: {{VALUE}}; border-color: {{VALUE}}' ),
+			)
 		);
         $this->add_control(
 			'error_message_color',
-			[
-				'label' => esc_html__( 'Color Texto Error', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [ '{{WRAPPER}} .wpcw-form-errors p' => 'color: {{VALUE}};' ],
-			]
+			array(
+				'label'     => esc_html__( 'Color Texto Error', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} .wpcw-form-errors p' => 'color: {{VALUE}};' ),
+			)
 		);
         $this->add_control(
 			'error_message_background_color',
-			[
-				'label' => esc_html__( 'Color Fondo Error', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [ '{{WRAPPER}} .wpcw-form-errors' => 'background-color: {{VALUE}}; border-color: {{VALUE}}' ],
-			]
+			array(
+				'label'     => esc_html__( 'Color Fondo Error', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array( '{{WRAPPER}} .wpcw-form-errors' => 'background-color: {{VALUE}}; border-color: {{VALUE}}' ),
+			)
 		);
         $this->add_responsive_control(
 			'message_padding',
-			[
-				'label' => esc_html__( 'Padding del Mensaje', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
-					'{{WRAPPER}} .wpcw-form-errors' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; margin-bottom: 15px; border-width: 1px; border-style: solid;',
+			array(
+				'label'      => esc_html__( 'Padding del Mensaje', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .wpcw-form-errors'  => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; margin-bottom: 15px; border-width: 1px; border-style: solid;',
                     '{{WRAPPER}} .wpcw-form-success' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; margin-bottom: 15px; border-width: 1px; border-style: solid;',
-                ],
-			]
+                ),
+			)
 		);
         $this->end_controls_section();
-
 	}
 
 	protected function render() {
-		$settings = $this->get_settings_for_display();
+		$settings                    = $this->get_settings_for_display();
         $form_processed_successfully = false;
-        $errors = []; // Initialize errors array
+        $errors                      = array(); // Initialize errors array
 
         // --- Start Form Processing Logic (similar to shortcode) ---
         if ( isset( $_POST['wpcw_submit_solicitud_elementor'] ) ) {
             if ( ! isset( $_POST['wpcw_solicitud_adhesion_nonce_elementor'] ) || ! wp_verify_nonce( sanitize_text_field( $_POST['wpcw_solicitud_adhesion_nonce_elementor'] ), 'wpcw_solicitud_adhesion_action_elementor' ) ) {
                 $errors[] = __( 'Error de seguridad. Inténtalo de nuevo.', 'wp-cupon-whatsapp' );
             } else {
-                if ( function_exists('wpcw_is_recaptcha_enabled') && wpcw_is_recaptcha_enabled() ) {
-                    $recaptcha_token = isset($_POST['g-recaptcha-response']) ? sanitize_text_field($_POST['g-recaptcha-response']) : '';
-                    if ( function_exists('wpcw_verify_recaptcha') && !wpcw_verify_recaptcha($recaptcha_token) ) {
-                        $errors[] = __('La verificación reCAPTCHA ha fallado. Por favor, inténtalo de nuevo.', 'wp-cupon-whatsapp');
+                if ( function_exists( 'wpcw_is_recaptcha_enabled' ) && wpcw_is_recaptcha_enabled() ) {
+                    $recaptcha_token = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( $_POST['g-recaptcha-response'] ) : '';
+                    if ( function_exists( 'wpcw_verify_recaptcha' ) && ! wpcw_verify_recaptcha( $recaptcha_token ) ) {
+                        $errors[] = __( 'La verificación reCAPTCHA ha fallado. Por favor, inténtalo de nuevo.', 'wp-cupon-whatsapp' );
                     }
                 }
 
                 if ( empty( $errors ) ) {
                     $applicant_type = isset( $_POST['wpcw_applicant_type'] ) ? sanitize_text_field( $_POST['wpcw_applicant_type'] ) : '';
-                    $fantasy_name = isset( $_POST['wpcw_fantasy_name'] ) ? sanitize_text_field( $_POST['wpcw_fantasy_name'] ) : '';
-                    $legal_name = isset( $_POST['wpcw_legal_name'] ) ? sanitize_text_field( $_POST['wpcw_legal_name'] ) : '';
-                    $cuit = isset( $_POST['wpcw_cuit'] ) ? sanitize_text_field( $_POST['wpcw_cuit'] ) : '';
+                    $fantasy_name   = isset( $_POST['wpcw_fantasy_name'] ) ? sanitize_text_field( $_POST['wpcw_fantasy_name'] ) : '';
+                    $legal_name     = isset( $_POST['wpcw_legal_name'] ) ? sanitize_text_field( $_POST['wpcw_legal_name'] ) : '';
+                    $cuit           = isset( $_POST['wpcw_cuit'] ) ? sanitize_text_field( $_POST['wpcw_cuit'] ) : '';
                     $contact_person = isset( $_POST['wpcw_contact_person'] ) ? sanitize_text_field( $_POST['wpcw_contact_person'] ) : '';
-                    $email = isset( $_POST['wpcw_email'] ) ? sanitize_email( $_POST['wpcw_email'] ) : '';
-                    $whatsapp = isset( $_POST['wpcw_whatsapp'] ) ? sanitize_text_field( $_POST['wpcw_whatsapp'] ) : '';
+                    $email          = isset( $_POST['wpcw_email'] ) ? sanitize_email( $_POST['wpcw_email'] ) : '';
+                    $whatsapp       = isset( $_POST['wpcw_whatsapp'] ) ? sanitize_text_field( $_POST['wpcw_whatsapp'] ) : '';
 
-                    if ( empty( $applicant_type ) ) $errors[] = __( 'Por favor, selecciona el tipo de solicitante.', 'wp-cupon-whatsapp' );
-                    if ( empty( $fantasy_name ) ) $errors[] = __( 'Por favor, introduce el nombre de fantasía.', 'wp-cupon-whatsapp' );
-                    if ( empty( $legal_name ) ) $errors[] = __( 'Por favor, introduce el nombre legal.', 'wp-cupon-whatsapp' );
-                    if ( empty( $cuit ) ) { $errors[] = __( 'Por favor, introduce el CUIT.', 'wp-cupon-whatsapp' ); }
-                    elseif ( ! preg_match( '/^[0-9]{10,11}$/', $cuit ) ) { $errors[] = __( 'Por favor, introduce un CUIT válido (solo números, 10 u 11 dígitos).', 'wp-cupon-whatsapp' );}
-                    if ( empty( $contact_person ) ) $errors[] = __( 'Por favor, introduce el nombre de la persona de contacto.', 'wp-cupon-whatsapp' );
-                    if ( empty( $email ) ) { $errors[] = __( 'Por favor, introduce un email de contacto.', 'wp-cupon-whatsapp' ); }
-                    elseif ( ! is_email( $email ) ) { $errors[] = __( 'Por favor, introduce un email de contacto válido.', 'wp-cupon-whatsapp' ); }
-                    if ( empty( $whatsapp ) ) { $errors[] = __( 'Por favor, introduce un número de WhatsApp.', 'wp-cupon-whatsapp' ); }
-                    elseif ( ! preg_match( '/^[0-9\s\+\(\)-]+$/', $whatsapp ) ) { $errors[] = __( 'Por favor, introduce un número de WhatsApp válido.', 'wp-cupon-whatsapp' ); }
-
-                    if ( empty( $errors ) ) {
-                        $address_main = isset( $_POST['wpcw_address_main'] ) ? sanitize_textarea_field( wp_unslash( $_POST['wpcw_address_main'] ) ) : '';
-                        $description = isset( $_POST['wpcw_description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['wpcw_description'] ) ) : '';
-                        $post_data = [
-                            'post_title'  => $fantasy_name,
-                            'post_content' => $description,
-                            'post_type'   => 'wpcw_application',
-                            'post_status' => 'publish',
-                        ];
-                        $post_id = wp_insert_post( $post_data );
-
-                        if ( ! is_wp_error( $post_id ) && $post_id > 0 ) {
-                            update_post_meta( $post_id, '_wpcw_applicant_type', $applicant_type );
-                            update_post_meta( $post_id, '_wpcw_legal_name', $legal_name );
-                            update_post_meta( $post_id, '_wpcw_cuit', $cuit );
-                            update_post_meta( $post_id, '_wpcw_contact_person', $contact_person );
-                            update_post_meta( $post_id, '_wpcw_email', $email );
-                            update_post_meta( $post_id, '_wpcw_whatsapp', $whatsapp );
-                            update_post_meta( $post_id, '_wpcw_address_main', $address_main );
-                            update_post_meta( $post_id, '_wpcw_application_status', 'pendiente_revision' );
-                            if ( is_user_logged_in() ) {
-                                update_post_meta( $post_id, '_wpcw_created_user_id', get_current_user_id() );
-                            }
-
-                            // Admin Email Notification (copied from shortcode, should be refactored into a function)
-                            $admin_email = get_option( 'admin_email', 'admin@example.com' );
-                            $subject = sprintf( __( 'Nueva Solicitud de Adhesión: %s', 'wp-cupon-whatsapp' ), $fantasy_name );
-                            $message_body = sprintf( __( 'Se ha recibido una nueva solicitud de adhesión para el programa WP Canje Cupon Whatsapp.', 'wp-cupon-whatsapp' ) ) . "\r\n\r\n";
-                            $message_body .= sprintf( __( 'Nombre de Fantasía: %s', 'wp-cupon-whatsapp' ), $fantasy_name ) . "\r\n";
-                            // ... (rest of the email body fields) ...
-                            $edit_link = get_edit_post_link( $post_id );
-                            if ( $edit_link ) {
-                                $message_body .= sprintf( __( 'Puedes revisar y procesar esta solicitud aquí: %s', 'wp-cupon-whatsapp' ), $edit_link ) . "\r\n";
-                            }
-                            $headers = array( 'Content-Type: text/plain; charset=UTF-8' );
-                            wp_mail( $admin_email, $subject, $message_body, $headers );
-
-                            $form_processed_successfully = true;
-                        } else {
-                            $errors[] = __( 'Hubo un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde.', 'wp-cupon-whatsapp' );
-                        }
+                    if ( empty( $applicant_type ) ) {
+                        $errors[] = __( 'Por favor, selecciona el tipo de solicitante.', 'wp-cupon-whatsapp' );
                     }
+                    if ( empty( $fantasy_name ) ) {
+                        $errors[] = __( 'Por favor, introduce el nombre de fantasía.', 'wp-cupon-whatsapp' );
+                    }
+                    if ( empty( $legal_name ) ) {
+                        $errors[] = __( 'Por favor, introduce el nombre legal.', 'wp-cupon-whatsapp' );
+                    }
+                    if ( empty( $cuit ) ) {
+                        $errors[] = __( 'Por favor, introduce el CUIT.', 'wp-cupon-whatsapp' ); } elseif ( ! preg_match( '/^[0-9]{10,11}$/', $cuit ) ) {
+                        $errors[] = __( 'Por favor, introduce un CUIT válido (solo números, 10 u 11 dígitos).', 'wp-cupon-whatsapp' );}
+                        if ( empty( $contact_person ) ) {
+                            $errors[] = __( 'Por favor, introduce el nombre de la persona de contacto.', 'wp-cupon-whatsapp' );
+                        }
+                        if ( empty( $email ) ) {
+                            $errors[] = __( 'Por favor, introduce un email de contacto.', 'wp-cupon-whatsapp' ); } elseif ( ! is_email( $email ) ) {
+                            $errors[] = __( 'Por favor, introduce un email de contacto válido.', 'wp-cupon-whatsapp' ); }
+                            if ( empty( $whatsapp ) ) {
+                                $errors[] = __( 'Por favor, introduce un número de WhatsApp.', 'wp-cupon-whatsapp' ); } elseif ( ! preg_match( '/^[0-9\s\+\(\)-]+$/', $whatsapp ) ) {
+                                $errors[] = __( 'Por favor, introduce un número de WhatsApp válido.', 'wp-cupon-whatsapp' ); }
+
+                                if ( empty( $errors ) ) {
+                                    $address_main = isset( $_POST['wpcw_address_main'] ) ? sanitize_textarea_field( wp_unslash( $_POST['wpcw_address_main'] ) ) : '';
+                                    $description  = isset( $_POST['wpcw_description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['wpcw_description'] ) ) : '';
+                                    $post_data    = array(
+                                        'post_title'   => $fantasy_name,
+                                        'post_content' => $description,
+                                        'post_type'    => 'wpcw_application',
+                                        'post_status'  => 'publish',
+                                    );
+                                    $post_id      = wp_insert_post( $post_data );
+
+                                    if ( ! is_wp_error( $post_id ) && $post_id > 0 ) {
+                                        update_post_meta( $post_id, '_wpcw_applicant_type', $applicant_type );
+                                        update_post_meta( $post_id, '_wpcw_legal_name', $legal_name );
+                                        update_post_meta( $post_id, '_wpcw_cuit', $cuit );
+                                        update_post_meta( $post_id, '_wpcw_contact_person', $contact_person );
+                                        update_post_meta( $post_id, '_wpcw_email', $email );
+                                        update_post_meta( $post_id, '_wpcw_whatsapp', $whatsapp );
+                                        update_post_meta( $post_id, '_wpcw_address_main', $address_main );
+                                        update_post_meta( $post_id, '_wpcw_application_status', 'pendiente_revision' );
+                                        if ( is_user_logged_in() ) {
+                                            update_post_meta( $post_id, '_wpcw_created_user_id', get_current_user_id() );
+                                        }
+
+                                        // Admin Email Notification (copied from shortcode, should be refactored into a function)
+                                        $admin_email   = get_option( 'admin_email', 'admin@example.com' );
+                                        $subject       = sprintf( __( 'Nueva Solicitud de Adhesión: %s', 'wp-cupon-whatsapp' ), $fantasy_name );
+                                        $message_body  = sprintf( __( 'Se ha recibido una nueva solicitud de adhesión para el programa WP Canje Cupon Whatsapp.', 'wp-cupon-whatsapp' ) ) . "\r\n\r\n";
+                                        $message_body .= sprintf( __( 'Nombre de Fantasía: %s', 'wp-cupon-whatsapp' ), $fantasy_name ) . "\r\n";
+                                        // ... (rest of the email body fields) ...
+                                        $edit_link = get_edit_post_link( $post_id );
+                                        if ( $edit_link ) {
+                                            $message_body .= sprintf( __( 'Puedes revisar y procesar esta solicitud aquí: %s', 'wp-cupon-whatsapp' ), $edit_link ) . "\r\n";
+                                        }
+                                        $headers = array( 'Content-Type: text/plain; charset=UTF-8' );
+                                        wp_mail( $admin_email, $subject, $message_body, $headers );
+
+                                        $form_processed_successfully = true;
+                                    } else {
+                                        $errors[] = __( 'Hubo un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde.', 'wp-cupon-whatsapp' );
+                                    }
+                                }
                 }
             }
         }
@@ -592,44 +632,88 @@ class WPCW_Elementor_Formulario_Adhesion_Widget extends \Elementor\Widget_Base {
                 <legend><?php echo esc_html( $settings['legend_applicant_type'] ); ?></legend>
                 <p>
                     <label>
-                        <input type="radio" name="wpcw_applicant_type" value="comercio" <?php checked( (isset($_POST['wpcw_applicant_type']) && $_POST['wpcw_applicant_type'] === 'comercio'), true, true ); ?><?php echo ( !isset($_POST['wpcw_applicant_type']) ) ? 'checked' : ''; ?>>
+                        <input type="radio" name="wpcw_applicant_type" value="comercio" <?php checked( ( isset( $_POST['wpcw_applicant_type'] ) && $_POST['wpcw_applicant_type'] === 'comercio' ), true, true ); ?><?php echo ( ! isset( $_POST['wpcw_applicant_type'] ) ) ? 'checked' : ''; ?>>
                         <?php echo esc_html( $settings['label_applicant_type_comercio'] ); ?>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input type="radio" name="wpcw_applicant_type" value="institucion" <?php checked( (isset($_POST['wpcw_applicant_type']) && $_POST['wpcw_applicant_type'] === 'institucion'), true, true ); ?>>
+                        <input type="radio" name="wpcw_applicant_type" value="institucion" <?php checked( ( isset( $_POST['wpcw_applicant_type'] ) && $_POST['wpcw_applicant_type'] === 'institucion' ), true, true ); ?>>
                         <?php echo esc_html( $settings['label_applicant_type_institucion'] ); ?>
                     </label>
                 </p>
             </fieldset>
 
             <?php
-            $form_fields = [
-                'wpcw_fantasy_name' => ['type' => 'text', 'required' => true, 'label_key' => 'label_wpcw_fantasy_name'],
-                'wpcw_legal_name'   => ['type' => 'text', 'required' => true, 'label_key' => 'label_wpcw_legal_name'],
-                'wpcw_cuit'         => ['type' => 'text', 'required' => true, 'label_key' => 'label_wpcw_cuit'],
-                'wpcw_contact_person' => ['type' => 'text', 'required' => true, 'label_key' => 'label_wpcw_contact_person'],
-                'wpcw_email'        => ['type' => 'email', 'required' => true, 'label_key' => 'label_wpcw_email'],
-                'wpcw_whatsapp'     => ['type' => 'tel', 'required' => true, 'label_key' => 'label_wpcw_whatsapp'],
-                'wpcw_address_main' => ['type' => 'textarea', 'required' => false, 'rows' => 3, 'label_key' => 'label_wpcw_address_main'],
-                'wpcw_description'  => ['type' => 'textarea', 'required' => false, 'rows' => 5, 'label_key' => 'label_wpcw_description'],
-            ];
+            $form_fields = array(
+                'wpcw_fantasy_name'   => array(
+					'type'      => 'text',
+					'required'  => true,
+					'label_key' => 'label_wpcw_fantasy_name',
+				),
+                'wpcw_legal_name'     => array(
+					'type'      => 'text',
+					'required'  => true,
+					'label_key' => 'label_wpcw_legal_name',
+                ),
+                'wpcw_cuit'           => array(
+					'type'      => 'text',
+					'required'  => true,
+					'label_key' => 'label_wpcw_cuit',
+                ),
+                'wpcw_contact_person' => array(
+					'type'      => 'text',
+					'required'  => true,
+					'label_key' => 'label_wpcw_contact_person',
+                ),
+                'wpcw_email'          => array(
+					'type'      => 'email',
+					'required'  => true,
+					'label_key' => 'label_wpcw_email',
+                ),
+                'wpcw_whatsapp'       => array(
+					'type'      => 'tel',
+					'required'  => true,
+					'label_key' => 'label_wpcw_whatsapp',
+                ),
+                'wpcw_address_main'   => array(
+					'type'      => 'textarea',
+					'required'  => false,
+					'rows'      => 3,
+					'label_key' => 'label_wpcw_address_main',
+                ),
+                'wpcw_description'    => array(
+					'type'      => 'textarea',
+					'required'  => false,
+					'rows'      => 5,
+					'label_key' => 'label_wpcw_description',
+                ),
+            );
 
-            foreach ($form_fields as $name => $field) :
-                $value = isset( $_POST[$name] ) ? sanitize_text_field( wp_unslash( $_POST[$name] ) ) : '';
-                if ($field['type'] === 'textarea') {
-                    $value = isset( $_POST[$name] ) ? sanitize_textarea_field( wp_unslash( $_POST[$name] ) ) : '';
-                } elseif ($field['type'] === 'email') {
-                     $value = isset( $_POST[$name] ) ? sanitize_email( wp_unslash( $_POST[$name] ) ) : '';
+            foreach ( $form_fields as $name => $field ) :
+                $value = isset( $_POST[ $name ] ) ? sanitize_text_field( wp_unslash( $_POST[ $name ] ) ) : '';
+                if ( $field['type'] === 'textarea' ) {
+                    $value = isset( $_POST[ $name ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ $name ] ) ) : '';
+                } elseif ( $field['type'] === 'email' ) {
+                    $value = isset( $_POST[ $name ] ) ? sanitize_email( wp_unslash( $_POST[ $name ] ) ) : '';
                 }
-            ?>
+                ?>
             <p>
-                <label for="<?php echo esc_attr( $name ); ?>_elementor"><?php echo esc_html( $settings[$field['label_key']] ); ?></label><br>
-                <?php if ($field['type'] === 'textarea') : ?>
-                    <textarea id="<?php echo esc_attr( $name ); ?>_elementor" name="<?php echo esc_attr( $name ); ?>" rows="<?php echo esc_attr($field['rows']); ?>" <?php if ($field['required']) echo 'required'; ?>><?php echo esc_textarea( $value ); ?></textarea>
+                <label for="<?php echo esc_attr( $name ); ?>_elementor"><?php echo esc_html( $settings[ $field['label_key'] ] ); ?></label><br>
+                <?php if ( $field['type'] === 'textarea' ) : ?>
+                    <textarea id="<?php echo esc_attr( $name ); ?>_elementor" name="<?php echo esc_attr( $name ); ?>" rows="<?php echo esc_attr( $field['rows'] ); ?>" 
+                    <?php
+                    if ( $field['required'] ) {
+                        echo 'required';}
+                    ?>
+                    ><?php echo esc_textarea( $value ); ?></textarea>
                 <?php else : ?>
-                    <input type="<?php echo esc_attr($field['type']); ?>" id="<?php echo esc_attr( $name ); ?>_elementor" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" <?php if ($field['required']) echo 'required'; ?>>
+                    <input type="<?php echo esc_attr( $field['type'] ); ?>" id="<?php echo esc_attr( $name ); ?>_elementor" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" 
+                    <?php
+                    if ( $field['required'] ) {
+                        echo 'required';}
+                    ?>
+                    >
                 <?php endif; ?>
             </p>
             <?php endforeach; ?>
@@ -637,7 +721,7 @@ class WPCW_Elementor_Formulario_Adhesion_Widget extends \Elementor\Widget_Base {
             <?php wp_nonce_field( 'wpcw_solicitud_adhesion_action_elementor', 'wpcw_solicitud_adhesion_nonce_elementor' ); ?>
 
             <?php
-            if ( function_exists('wpcw_is_recaptcha_enabled') && wpcw_is_recaptcha_enabled() && function_exists('wpcw_display_recaptcha') ) {
+            if ( function_exists( 'wpcw_is_recaptcha_enabled' ) && wpcw_is_recaptcha_enabled() && function_exists( 'wpcw_display_recaptcha' ) ) {
                 wpcw_display_recaptcha(); // This function should output the reCAPTCHA HTML
             }
             ?>
@@ -699,7 +783,7 @@ class WPCW_Elementor_Formulario_Adhesion_Widget extends \Elementor\Widget_Base {
                     // This is tricky because wpcw_is_recaptcha_enabled is PHP.
                     // We assume if the section_content_recaptcha control section was added, it's enabled.
                     // A better way would be to pass a setting or use JS detection if possible.
-                    var siteKey = '<?php echo esc_js(function_exists("wpcw_get_recaptcha_site_key") ? wpcw_get_recaptcha_site_key() : ""); ?>';
+                    var siteKey = '<?php echo esc_js( function_exists( 'wpcw_get_recaptcha_site_key' ) ? wpcw_get_recaptcha_site_key() : '' ); ?>';
                     if (siteKey) {
             #>
                 <div class="g-recaptcha-placeholder" style="height:78px; width: 304px; background: #f0f0f0; border: 1px dashed #ccc; display:flex; align-items:center; justify-content:center; margin-bottom: 15px;">

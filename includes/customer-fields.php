@@ -36,13 +36,15 @@ function wpcw_add_custom_register_fields() {
 
     <?php
     // Institution Field
-    $institutions = get_posts( array(
-        'post_type' => 'wpcw_institution',
-        'post_status' => 'publish',
-        'numberposts' => -1,
-        'orderby' => 'title',
-        'order' => 'ASC',
-    ) );
+    $institutions = get_posts(
+        array(
+			'post_type'   => 'wpcw_institution',
+			'post_status' => 'publish',
+			'numberposts' => -1,
+			'orderby'     => 'title',
+			'order'       => 'ASC',
+        )
+    );
 
     if ( ! empty( $institutions ) ) {
         ?>
@@ -61,10 +63,12 @@ function wpcw_add_custom_register_fields() {
     }
 
     // Favorite Coupon Categories Field
-    $coupon_categories = get_terms( array(
-        'taxonomy' => 'wpcw_coupon_category',
-        'hide_empty' => false,
-    ) );
+    $coupon_categories = get_terms(
+        array(
+			'taxonomy'   => 'wpcw_coupon_category',
+			'hide_empty' => false,
+        )
+    );
 
     if ( ! empty( $coupon_categories ) && ! is_wp_error( $coupon_categories ) ) {
         ?>
@@ -74,11 +78,11 @@ function wpcw_add_custom_register_fields() {
                 <p class="form-row form-row-wide">
                     <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
                         <input type="checkbox"
-                               class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox"
-                               name="wpcw_user_favorite_coupon_categories[]"
-                               id="wpcw_user_favorite_coupon_categories_<?php echo esc_attr( $category->term_id ); ?>"
-                               value="<?php echo esc_attr( $category->term_id ); ?>"
-                               <?php checked( ! empty( $_POST['wpcw_user_favorite_coupon_categories'] ) && is_array( $_POST['wpcw_user_favorite_coupon_categories'] ) && in_array( $category->term_id, array_map('sanitize_text_field', $_POST['wpcw_user_favorite_coupon_categories']) ) ); ?> />
+                                class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox"
+                                name="wpcw_user_favorite_coupon_categories[]"
+                                id="wpcw_user_favorite_coupon_categories_<?php echo esc_attr( $category->term_id ); ?>"
+                                value="<?php echo esc_attr( $category->term_id ); ?>"
+                                <?php checked( ! empty( $_POST['wpcw_user_favorite_coupon_categories'] ) && is_array( $_POST['wpcw_user_favorite_coupon_categories'] ) && in_array( $category->term_id, array_map( 'sanitize_text_field', $_POST['wpcw_user_favorite_coupon_categories'] ) ) ); ?> />
                         <span><?php echo esc_html( $category->name ); ?></span>
                     </label>
                 </p>
@@ -94,53 +98,51 @@ add_action( 'woocommerce_register_form', 'wpcw_add_custom_register_fields' );
 /**
  * Validate the custom registration fields.
  *
- * @param string $username Current username.
- * @param string $email Current email.
+ * @param string   $username Current username.
+ * @param string   $email Current email.
  * @param WP_Error $validation_errors WP_Error object.
  * @return WP_Error
  */
 function wpcw_validate_custom_register_fields( $username, $email, $validation_errors ) {
-    $required_settings = get_option('wpcw_required_fields_settings', array());
+    $required_settings = get_option( 'wpcw_required_fields_settings', array() );
 
     // DNI
-    if ( !empty($required_settings['dni_number']) && $required_settings['dni_number'] === '1' ) {
-        if ( empty($_POST['wpcw_dni_number']) ) {
-            $validation_errors->add('wpcw_dni_error', __('Por favor, introduce tu DNI.', 'wp-cupon-whatsapp'));
+    if ( ! empty( $required_settings['dni_number'] ) && $required_settings['dni_number'] === '1' ) {
+        if ( empty( $_POST['wpcw_dni_number'] ) ) {
+            $validation_errors->add( 'wpcw_dni_error', __( 'Por favor, introduce tu DNI.', 'wp-cupon-whatsapp' ) );
         }
     }
     // DNI format validation (optional, if DNI is provided, even if not required)
-    if ( !empty($_POST['wpcw_dni_number']) && !preg_match('/^[0-9]{7,8}[A-Za-z]?$/', $_POST['wpcw_dni_number']) && !preg_match('/^[0-9]{7,8}$/', $_POST['wpcw_dni_number']) ) {
-         // Example: allows 7-8 digits, or 7-8 digits followed by a letter. Adjust regex as needed.
-         // $validation_errors->add('wpcw_dni_format_error', __('El formato del DNI no es válido.', 'wp-cupon-whatsapp'));
+    if ( ! empty( $_POST['wpcw_dni_number'] ) && ! preg_match( '/^[0-9]{7,8}[A-Za-z]?$/', $_POST['wpcw_dni_number'] ) && ! preg_match( '/^[0-9]{7,8}$/', $_POST['wpcw_dni_number'] ) ) {
+        // Example: allows 7-8 digits, or 7-8 digits followed by a letter. Adjust regex as needed.
+        // $validation_errors->add('wpcw_dni_format_error', __('El formato del DNI no es válido.', 'wp-cupon-whatsapp'));
     }
-
 
     // Fecha de Nacimiento
-    $birth_date_value = isset($_POST['wpcw_birth_date']) ? trim((string)$_POST['wpcw_birth_date']) : '';
-    if ( !empty($required_settings['birth_date']) && $required_settings['birth_date'] === '1' ) {
-        if ( empty($birth_date_value) ) {
-            $validation_errors->add('wpcw_birth_date_error', __('Por favor, introduce tu Fecha de Nacimiento.', 'wp-cupon-whatsapp'));
-        } elseif ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value) || !wp_checkdate((string)substr($birth_date_value, 5, 2), (string)substr($birth_date_value, 8, 2), (string)substr($birth_date_value, 0, 4), $birth_date_value) ) {
-            $validation_errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
+    $birth_date_value = isset( $_POST['wpcw_birth_date'] ) ? trim( (string) $_POST['wpcw_birth_date'] ) : '';
+    if ( ! empty( $required_settings['birth_date'] ) && $required_settings['birth_date'] === '1' ) {
+        if ( empty( $birth_date_value ) ) {
+            $validation_errors->add( 'wpcw_birth_date_error', __( 'Por favor, introduce tu Fecha de Nacimiento.', 'wp-cupon-whatsapp' ) );
+        } elseif ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $birth_date_value ) || ! wp_checkdate( (string) substr( $birth_date_value, 5, 2 ), (string) substr( $birth_date_value, 8, 2 ), (string) substr( $birth_date_value, 0, 4 ), $birth_date_value ) ) {
+            $validation_errors->add( 'wpcw_birth_date_format_error', __( 'El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp' ) );
         }
-    } elseif (!empty($birth_date_value)) { // Validar formato si se ingresa algo, aunque no sea obligatorio
-         if ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value) || !wp_checkdate((string)substr($birth_date_value, 5, 2), (string)substr($birth_date_value, 8, 2), (string)substr($birth_date_value, 0, 4), $birth_date_value) ) {
-            $validation_errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
+    } elseif ( ! empty( $birth_date_value ) ) { // Validar formato si se ingresa algo, aunque no sea obligatorio
+        if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $birth_date_value ) || ! wp_checkdate( (string) substr( $birth_date_value, 5, 2 ), (string) substr( $birth_date_value, 8, 2 ), (string) substr( $birth_date_value, 0, 4 ), $birth_date_value ) ) {
+            $validation_errors->add( 'wpcw_birth_date_format_error', __( 'El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp' ) );
         }
     }
 
-
     // Número de WhatsApp
-    $whatsapp_number_value = isset($_POST['wpcw_whatsapp_number']) ? trim((string)$_POST['wpcw_whatsapp_number']) : '';
-    if ( !empty($required_settings['whatsapp_number']) && $required_settings['whatsapp_number'] === '1' ) {
-        if ( empty($whatsapp_number_value) ) {
-            $validation_errors->add('wpcw_whatsapp_error', __('Por favor, introduce tu Número de WhatsApp.', 'wp-cupon-whatsapp'));
-        } elseif ( !preg_match('/^[\s0-9()+\-]+$/', $whatsapp_number_value) ) {
-            $validation_errors->add('wpcw_whatsapp_format_error', __('El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp'));
+    $whatsapp_number_value = isset( $_POST['wpcw_whatsapp_number'] ) ? trim( (string) $_POST['wpcw_whatsapp_number'] ) : '';
+    if ( ! empty( $required_settings['whatsapp_number'] ) && $required_settings['whatsapp_number'] === '1' ) {
+        if ( empty( $whatsapp_number_value ) ) {
+            $validation_errors->add( 'wpcw_whatsapp_error', __( 'Por favor, introduce tu Número de WhatsApp.', 'wp-cupon-whatsapp' ) );
+        } elseif ( ! preg_match( '/^[\s0-9()+\-]+$/', $whatsapp_number_value ) ) {
+            $validation_errors->add( 'wpcw_whatsapp_format_error', __( 'El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp' ) );
         }
-    } elseif (!empty($whatsapp_number_value)) { // Validar formato si se ingresa algo, aunque no sea obligatorio
-        if ( !preg_match('/^[\s0-9()+\-]+$/', $whatsapp_number_value) ) {
-            $validation_errors->add('wpcw_whatsapp_format_error', __('El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp'));
+    } elseif ( ! empty( $whatsapp_number_value ) ) { // Validar formato si se ingresa algo, aunque no sea obligatorio
+        if ( ! preg_match( '/^[\s0-9()+\-]+$/', $whatsapp_number_value ) ) {
+            $validation_errors->add( 'wpcw_whatsapp_format_error', __( 'El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp' ) );
         }
     }
 
@@ -199,8 +201,8 @@ function wpcw_add_custom_account_fields() {
         return;
     }
 
-    $dni_number = get_user_meta( $user_id, '_wpcw_dni_number', true ) ?: '';
-    $birth_date = get_user_meta( $user_id, '_wpcw_birth_date', true ) ?: '';
+    $dni_number      = get_user_meta( $user_id, '_wpcw_dni_number', true ) ?: '';
+    $birth_date      = get_user_meta( $user_id, '_wpcw_birth_date', true ) ?: '';
     $whatsapp_number = get_user_meta( $user_id, '_wpcw_whatsapp_number', true ) ?: '';
     ?>
     <fieldset>
@@ -224,13 +226,15 @@ function wpcw_add_custom_account_fields() {
         <?php
         // Institution Field
         $user_institution_id = get_user_meta( $user_id, '_wpcw_user_institution_id', true ) ?: '';
-        $institutions = get_posts( array(
-            'post_type' => 'wpcw_institution',
-            'post_status' => 'publish',
-            'numberposts' => -1,
-            'orderby' => 'title',
-            'order' => 'ASC',
-        ) );
+        $institutions        = get_posts(
+            array(
+				'post_type'   => 'wpcw_institution',
+				'post_status' => 'publish',
+				'numberposts' => -1,
+				'orderby'     => 'title',
+				'order'       => 'ASC',
+            )
+        );
 
         if ( ! empty( $institutions ) ) {
             ?>
@@ -253,32 +257,34 @@ function wpcw_add_custom_account_fields() {
         if ( ! is_array( $user_favorite_categories ) ) {
             $user_favorite_categories = array();
         }
-        $coupon_categories = get_terms( array(
-            'taxonomy' => 'wpcw_coupon_category',
-            'hide_empty' => false,
-        ) );
+        $coupon_categories = get_terms(
+            array(
+				'taxonomy'   => 'wpcw_coupon_category',
+				'hide_empty' => false,
+            )
+        );
 
-        if ( ! empty( $coupon_categories ) && ! is_wp_error( $coupon_categories ) ) {
-            ?>
+    if ( ! empty( $coupon_categories ) && ! is_wp_error( $coupon_categories ) ) {
+        ?>
             <fieldset class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                 <legend><?php esc_html_e( 'Categorías de Cupones Favoritas (Opcional)', 'wp-cupon-whatsapp' ); ?></legend>
-                <?php foreach ( $coupon_categories as $category ) : ?>
+            <?php foreach ( $coupon_categories as $category ) : ?>
                     <p class="form-row form-row-wide">
                         <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
                             <input type="checkbox"
-                                   class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox"
-                                   name="wpcw_user_favorite_coupon_categories[]"
-                                   id="wpcw_user_favorite_coupon_categories_<?php echo esc_attr( $category->term_id ); ?>"
-                                   value="<?php echo esc_attr( $category->term_id ); ?>"
-                                   <?php checked( in_array( $category->term_id, $user_favorite_categories ) ); ?> />
+                                    class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox"
+                                    name="wpcw_user_favorite_coupon_categories[]"
+                                    id="wpcw_user_favorite_coupon_categories_<?php echo esc_attr( $category->term_id ); ?>"
+                                    value="<?php echo esc_attr( $category->term_id ); ?>"
+                                    <?php checked( in_array( $category->term_id, $user_favorite_categories ) ); ?> />
                             <span><?php echo esc_html( $category->name ); ?></span>
                         </label>
                     </p>
                 <?php endforeach; ?>
             </fieldset>
             <?php
-        }
-        ?>
+    }
+    ?>
     </fieldset>
     <?php
 }
@@ -291,46 +297,45 @@ add_action( 'woocommerce_edit_account_form', 'wpcw_add_custom_account_fields' );
  * @param WP_User  $user   The current user object.
  */
 function wpcw_validate_custom_account_fields( &$errors, $user ) {
-    $required_settings = get_option('wpcw_required_fields_settings', array());
+    $required_settings = get_option( 'wpcw_required_fields_settings', array() );
     // $user_id = $user->ID; // No se usa directamente aquí, pero disponible.
 
     // DNI
-    if ( !empty($required_settings['dni_number']) && $required_settings['dni_number'] === '1' ) {
-        if ( empty($_POST['wpcw_dni_number']) ) {
-            $errors->add('wpcw_dni_error', __('Por favor, introduce tu DNI.', 'wp-cupon-whatsapp'));
+    if ( ! empty( $required_settings['dni_number'] ) && $required_settings['dni_number'] === '1' ) {
+        if ( empty( $_POST['wpcw_dni_number'] ) ) {
+            $errors->add( 'wpcw_dni_error', __( 'Por favor, introduce tu DNI.', 'wp-cupon-whatsapp' ) );
         }
     }
     // DNI format validation (optional)
-    if ( !empty($_POST['wpcw_dni_number']) && !preg_match('/^[0-9]{7,8}[A-Za-z]?$/', $_POST['wpcw_dni_number']) && !preg_match('/^[0-9]{7,8}$/', $_POST['wpcw_dni_number']) ) {
+    if ( ! empty( $_POST['wpcw_dni_number'] ) && ! preg_match( '/^[0-9]{7,8}[A-Za-z]?$/', $_POST['wpcw_dni_number'] ) && ! preg_match( '/^[0-9]{7,8}$/', $_POST['wpcw_dni_number'] ) ) {
         // $errors->add('wpcw_dni_format_error', __('El formato del DNI no es válido.', 'wp-cupon-whatsapp'));
     }
 
-
     // Fecha de Nacimiento
-    $birth_date_value_acc = isset($_POST['wpcw_birth_date']) ? trim((string)$_POST['wpcw_birth_date']) : '';
-    if ( !empty($required_settings['birth_date']) && $required_settings['birth_date'] === '1' ) {
-        if ( empty($birth_date_value_acc) ) {
-            $errors->add('wpcw_birth_date_error', __('Por favor, introduce tu Fecha de Nacimiento.', 'wp-cupon-whatsapp'));
-        } elseif ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value_acc) || !wp_checkdate((string)substr($birth_date_value_acc, 5, 2), (string)substr($birth_date_value_acc, 8, 2), (string)substr($birth_date_value_acc, 0, 4), $birth_date_value_acc) ) {
-            $errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
+    $birth_date_value_acc = isset( $_POST['wpcw_birth_date'] ) ? trim( (string) $_POST['wpcw_birth_date'] ) : '';
+    if ( ! empty( $required_settings['birth_date'] ) && $required_settings['birth_date'] === '1' ) {
+        if ( empty( $birth_date_value_acc ) ) {
+            $errors->add( 'wpcw_birth_date_error', __( 'Por favor, introduce tu Fecha de Nacimiento.', 'wp-cupon-whatsapp' ) );
+        } elseif ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $birth_date_value_acc ) || ! wp_checkdate( (string) substr( $birth_date_value_acc, 5, 2 ), (string) substr( $birth_date_value_acc, 8, 2 ), (string) substr( $birth_date_value_acc, 0, 4 ), $birth_date_value_acc ) ) {
+            $errors->add( 'wpcw_birth_date_format_error', __( 'El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp' ) );
         }
-    } elseif (!empty($birth_date_value_acc)) { // Validar formato si se ingresa algo, aunque no sea obligatorio
-         if ( !preg_match('/^\d{4}-\d{2}-\d{2}$/', $birth_date_value_acc) || !wp_checkdate((string)substr($birth_date_value_acc, 5, 2), (string)substr($birth_date_value_acc, 8, 2), (string)substr($birth_date_value_acc, 0, 4), $birth_date_value_acc) ) {
-            $errors->add('wpcw_birth_date_format_error', __('El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp'));
+    } elseif ( ! empty( $birth_date_value_acc ) ) { // Validar formato si se ingresa algo, aunque no sea obligatorio
+        if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $birth_date_value_acc ) || ! wp_checkdate( (string) substr( $birth_date_value_acc, 5, 2 ), (string) substr( $birth_date_value_acc, 8, 2 ), (string) substr( $birth_date_value_acc, 0, 4 ), $birth_date_value_acc ) ) {
+            $errors->add( 'wpcw_birth_date_format_error', __( 'El formato de la Fecha de Nacimiento no es válido (YYYY-MM-DD) o la fecha es incorrecta.', 'wp-cupon-whatsapp' ) );
         }
     }
 
     // Número de WhatsApp
-    $whatsapp_number_value_acc = isset($_POST['wpcw_whatsapp_number']) ? trim((string)$_POST['wpcw_whatsapp_number']) : '';
-    if ( !empty($required_settings['whatsapp_number']) && $required_settings['whatsapp_number'] === '1' ) {
-        if ( empty($whatsapp_number_value_acc) ) {
-            $errors->add('wpcw_whatsapp_error', __('Por favor, introduce tu Número de WhatsApp.', 'wp-cupon-whatsapp'));
-        } elseif ( !preg_match('/^[\s0-9()+\-]+$/', $whatsapp_number_value_acc) ) {
-            $errors->add('wpcw_whatsapp_format_error', __('El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp'));
+    $whatsapp_number_value_acc = isset( $_POST['wpcw_whatsapp_number'] ) ? trim( (string) $_POST['wpcw_whatsapp_number'] ) : '';
+    if ( ! empty( $required_settings['whatsapp_number'] ) && $required_settings['whatsapp_number'] === '1' ) {
+        if ( empty( $whatsapp_number_value_acc ) ) {
+            $errors->add( 'wpcw_whatsapp_error', __( 'Por favor, introduce tu Número de WhatsApp.', 'wp-cupon-whatsapp' ) );
+        } elseif ( ! preg_match( '/^[\s0-9()+\-]+$/', $whatsapp_number_value_acc ) ) {
+            $errors->add( 'wpcw_whatsapp_format_error', __( 'El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp' ) );
         }
-    } elseif (!empty($whatsapp_number_value_acc)) { // Validar formato si se ingresa algo, aunque no sea obligatorio
-        if ( !preg_match('/^[\s0-9()+\-]+$/', $whatsapp_number_value_acc) ) {
-            $errors->add('wpcw_whatsapp_format_error', __('El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp'));
+    } elseif ( ! empty( $whatsapp_number_value_acc ) ) { // Validar formato si se ingresa algo, aunque no sea obligatorio
+        if ( ! preg_match( '/^[\s0-9()+\-]+$/', $whatsapp_number_value_acc ) ) {
+            $errors->add( 'wpcw_whatsapp_format_error', __( 'El formato del Número de WhatsApp no es válido.', 'wp-cupon-whatsapp' ) );
         }
     }
 

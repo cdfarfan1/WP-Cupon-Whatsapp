@@ -587,4 +587,208 @@ function wpcw_render_cupones_publicos_page() {
 }
 add_shortcode( 'wpcw_cupones_publicos', 'wpcw_render_cupones_publicos_page' );
 
+/**
+ * Shortcode para mostrar el formulario de canje de cupones
+ *
+ * @param array $atts Atributos del shortcode
+ * @return string HTML del formulario de canje
+ */
+function wpcw_render_canje_cupon_form( $atts ) {
+    // Verificar que el usuario está logueado
+    if ( ! is_user_logged_in() ) {
+        return '<p class="wpcw-login-required">' .
+            sprintf(
+                __( 'Por favor, <a href="%s">inicia sesión</a> para canjear cupones.', 'wp-cupon-whatsapp' ),
+                esc_url( wc_get_page_permalink( 'myaccount' ) )
+            ) .
+            '</p>';
+    }
+
+    // Atributos por defecto
+    $atts = shortcode_atts(
+        array(
+            'coupon_id' => '',
+            'show_title' => 'yes',
+        ),
+        $atts,
+        'wpcw_canje_cupon'
+    );
+
+    ob_start();
+
+    echo '<div class="wpcw-canje-cupon-form">';
+
+    if ( 'yes' === $atts['show_title'] ) {
+        echo '<h2>' . esc_html__( 'Canjear Cupón', 'wp-cupon-whatsapp' ) . '</h2>';
+    }
+
+    // Si se especifica un cupón específico
+    if ( ! empty( $atts['coupon_id'] ) ) {
+        $coupon_id = absint( $atts['coupon_id'] );
+        $coupon = new WC_Coupon( $coupon_id );
+        
+        if ( $coupon && $coupon->get_id() ) {
+            wpcw_render_single_coupon_redemption_form( $coupon_id );
+        } else {
+            echo '<p class="wpcw-error">' . esc_html__( 'Cupón no válido.', 'wp-cupon-whatsapp' ) . '</p>';
+        }
+    } else {
+        // Mostrar lista de cupones disponibles para canjear
+        wpcw_render_available_coupons_for_redemption();
+    }
+
+    echo '</div>';
+
+    return ob_get_clean();
+}
+add_shortcode( 'wpcw_canje_cupon', 'wpcw_render_canje_cupon_form' );
+
+/**
+ * Renderiza el formulario de canje para un cupón específico
+ *
+ * @param int $coupon_id ID del cupón
+ */
+function wpcw_render_single_coupon_redemption_form( $coupon_id ) {
+    $coupon = new WC_Coupon( $coupon_id );
+    $user_id = get_current_user_id();
+
+    // Verificar si el cupón está habilitado para WPCW
+    $enabled_for_wpcw = get_post_meta( $coupon_id, '_wpcw_enabled', true );
+    if ( ! $enabled_for_wpcw ) {
+        echo '<p class="wpcw-error">' . esc_html__( 'Este cupón no está disponible para canje.', 'wp-cupon-whatsapp' ) . '</p>';
+        return;
+    }
+
+    // Verificar si el usuario tiene WhatsApp configurado
+    $whatsapp = get_user_meta( $user_id, '_wpcw_whatsapp_number', true );
+    if ( empty( $whatsapp ) ) {
+        echo '<div class="wpcw-warning">';
+        echo '<p>' . esc_html__( 'Necesitas configurar tu número de WhatsApp para poder canjear cupones.', 'wp-cupon-whatsapp' ) . '</p>';
+        echo '<p><a href="' . esc_url( wc_get_account_endpoint_url( 'edit-account' ) ) . '" class="button">' . esc_html__( 'Configurar WhatsApp', 'wp-cupon-whatsapp' ) . '</a></p>';
+        echo '</div>';
+        return;
+    }
+
+    // Mostrar información del cupón
+    echo '<div class="wpcw-coupon-info">';
+    echo '<h3>' . esc_html( $coupon->get_code() ) . '</h3>';
+    
+    if ( $coupon->get_description() ) {
+        echo '<p class="coupon-description">' . esc_html( $coupon->get_description() ) . '</p>';
+    }
+
+    // Mostrar detalles del descuento
+    if ( $coupon->get_discount_type() === 'percent' ) {
+        echo '<p class="discount-info">' . sprintf( esc_html__( 'Descuento: %s%%', 'wp-cupon-whatsapp' ), $coupon->get_amount() ) . '</p>';
+    } elseif ( $coupon->get_discount_type() === 'fixed_cart' ) {
+        echo '<p class="discount-info">' . sprintf( esc_html__( 'Descuento: $%s', 'wp-cupon-whatsapp' ), $coupon->get_amount() ) . '</p>';
+    }
+
+    // Mostrar fecha de expiración si existe
+    $expiry_date = $coupon->get_date_expires();
+    if ( $expiry_date ) {
+        echo '<p class="expiry-date">' . sprintf( esc_html__( 'Válido hasta: %s', 'wp-cupon-whatsapp' ), $expiry_date->date_i18n( get_option( 'date_format' ) ) ) . '</p>';
+    }
+
+    echo '</div>';
+
+    // Botón de canje
+    echo '<div class="wpcw-redemption-actions">';
+    echo '<button type="button" class="wpcw-canjear-cupon-btn button button-primary" data-coupon-id="' . esc_attr( $coupon_id ) . '">';
+    echo esc_html__( 'Canjear por WhatsApp', 'wp-cupon-whatsapp' );
+    echo '</button>';
+    echo '</div>';
+}
+
+/**
+ * Renderiza la lista de cupones disponibles para canjear
+ */
+function wpcw_render_available_coupons_for_redemption() {
+    $user_id = get_current_user_id();
+
+    // Verificar si el usuario tiene WhatsApp configurado
+    $whatsapp = get_user_meta( $user_id, '_wpcw_whatsapp_number', true );
+    if ( empty( $whatsapp ) ) {
+        echo '<div class="wpcw-warning">';
+        echo '<p>' . esc_html__( 'Necesitas configurar tu número de WhatsApp para poder canjear cupones.', 'wp-cupon-whatsapp' ) . '</p>';
+        echo '<p><a href="' . esc_url( wc_get_account_endpoint_url( 'edit-account' ) ) . '" class="button">' . esc_html__( 'Configurar WhatsApp', 'wp-cupon-whatsapp' ) . '</a></p>';
+        echo '</div>';
+        return;
+    }
+
+    // Obtener cupones disponibles para canje
+    $args = array(
+        'post_type'      => 'shop_coupon',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'meta_query'     => array(
+            'relation' => 'AND',
+            array(
+                'key'     => '_wpcw_enabled',
+                'value'   => 'yes',
+                'compare' => '=',
+            ),
+            array(
+                'relation' => 'OR',
+                array(
+                    'key'     => '_wpcw_is_public_coupon',
+                    'value'   => 'yes',
+                    'compare' => '=',
+                ),
+                array(
+                    'key'     => '_wpcw_is_loyalty_coupon',
+                    'value'   => 'yes',
+                    'compare' => '=',
+                ),
+            ),
+        ),
+    );
+
+    $coupons_query = new WP_Query( $args );
+
+    if ( $coupons_query->have_posts() ) {
+        echo '<div class="wpcw-available-coupons">';
+        echo '<p>' . esc_html__( 'Selecciona un cupón para canjear:', 'wp-cupon-whatsapp' ) . '</p>';
+        echo '<div class="wpcw-coupons-grid">';
+
+        while ( $coupons_query->have_posts() ) {
+            $coupons_query->the_post();
+            $coupon_id = get_the_ID();
+            $coupon = new WC_Coupon( $coupon_id );
+
+            // Verificar si el cupón no ha expirado
+            $expiry_date = $coupon->get_date_expires();
+            if ( $expiry_date && time() > $expiry_date->getTimestamp() ) {
+                continue; // Saltar cupones expirados
+            }
+
+            echo '<div class="wpcw-coupon-card">';
+            echo '<h4>' . esc_html( $coupon->get_code() ) . '</h4>';
+            
+            if ( $coupon->get_description() ) {
+                echo '<p class="description">' . esc_html( wp_trim_words( $coupon->get_description(), 15 ) ) . '</p>';
+            }
+
+            // Mostrar tipo de descuento
+            if ( $coupon->get_discount_type() === 'percent' ) {
+                echo '<p class="discount">' . sprintf( esc_html__( '%s%% de descuento', 'wp-cupon-whatsapp' ), $coupon->get_amount() ) . '</p>';
+            } elseif ( $coupon->get_discount_type() === 'fixed_cart' ) {
+                echo '<p class="discount">' . sprintf( esc_html__( '$%s de descuento', 'wp-cupon-whatsapp' ), $coupon->get_amount() ) . '</p>';
+            }
+
+            echo '<button type="button" class="wpcw-canjear-cupon-btn button" data-coupon-id="' . esc_attr( $coupon_id ) . '">';
+            echo esc_html__( 'Canjear', 'wp-cupon-whatsapp' );
+            echo '</button>';
+            echo '</div>';
+        }
+
+        echo '</div>'; // .wpcw-coupons-grid
+        echo '</div>'; // .wpcw-available-coupons
+        
+        wp_reset_postdata();
+    } else {
+        echo '<p>' . esc_html__( 'No hay cupones disponibles para canjear en este momento.', 'wp-cupon-whatsapp' ) . '</p>';
+    }
+}
+
 ?>

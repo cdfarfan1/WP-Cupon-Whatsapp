@@ -86,11 +86,11 @@
     .wpcw-roles-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .wpcw-users-list td, .wpcw-users-list th {
         padding: 8px;
     }
-    
+
     .wpcw-users-list .column-primary {
         display: block;
     }

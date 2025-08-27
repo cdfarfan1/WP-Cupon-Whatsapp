@@ -1,0 +1,9 @@
+﻿=== VERIFICACI├ôN DE SINTAXIS ===
+Verificando archivo: wp-cupon-whatsapp.php
+
+Resultado de verificaci├│n de sintaxis:
+No syntax errors detected in wp-cupon-whatsapp.php
+
+Ô£à Sintaxis correcta
+
+Intentando cargar el archivo para detectar errores fatales...

@@ -61,7 +61,7 @@ class WPCW_Elementor_Cupones_Lista_Widget extends \Elementor\Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'wpcw-categoria' ];
+		return array( 'wpcw-categoria' );
 	}
 
     /**
@@ -75,7 +75,7 @@ class WPCW_Elementor_Cupones_Lista_Widget extends \Elementor\Widget_Base {
 	 */
     public function get_script_depends() {
         // Depend on the main plugin's canje handler script
-        return [ 'wpcw-canje-handler' ];
+        return array( 'wpcw-canje-handler' );
     }
 
 	/**
@@ -91,702 +91,699 @@ class WPCW_Elementor_Cupones_Lista_Widget extends \Elementor\Widget_Base {
 		// Content Tab
 		$this->start_controls_section(
 			'section_content_source',
-			[
+			array(
 				'label' => esc_html__( 'Fuente de Cupones', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			)
 		);
 
 		$this->add_control(
 			'tipo_cupon',
-			[
-				'label' => esc_html__( 'Tipo de Cupones a Mostrar', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'default' => 'publicos',
-				'options' => [
-					'publicos' => esc_html__( 'Cupones Públicos', 'wp-cupon-whatsapp' ),
+			array(
+				'label'       => esc_html__( 'Tipo de Cupones a Mostrar', 'wp-cupon-whatsapp' ),
+				'type'        => \Elementor\Controls_Manager::SELECT,
+				'default'     => 'publicos',
+				'options'     => array(
+					'publicos'    => esc_html__( 'Cupones Públicos', 'wp-cupon-whatsapp' ),
 					'mis_cupones' => esc_html__( 'Mis Cupones de Lealtad', 'wp-cupon-whatsapp' ),
-				],
+				),
 				'description' => esc_html__( 'Selecciona si mostrar cupones públicos o los cupones de lealtad del usuario actual.', 'wp-cupon-whatsapp' ),
-			]
+			)
 		);
 
 		$this->add_control(
 			'mensaje_no_logueado',
-			[
-				'label' => esc_html__( 'Mensaje (Usuario no logueado)', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::TEXTAREA,
-				'default' => esc_html__( 'Por favor, inicia sesión para ver tus cupones disponibles.', 'wp-cupon-whatsapp' ),
-				'condition' => [
+			array(
+				'label'     => esc_html__( 'Mensaje (Usuario no logueado)', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::TEXTAREA,
+				'default'   => esc_html__( 'Por favor, inicia sesión para ver tus cupones disponibles.', 'wp-cupon-whatsapp' ),
+				'condition' => array(
 					'tipo_cupon' => 'mis_cupones',
-				],
-			]
+				),
+			)
 		);
 
-        $default_my_account_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : wp_login_url();
+        $default_my_account_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : wp_login_url();
 		$this->add_control(
 			'enlace_login',
-			[
-				'label' => esc_html__( 'Enlace a Página de Login/Mi Cuenta', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::URL,
-				'default' => [
-                    'url' => $default_my_account_url,
+			array(
+				'label'     => esc_html__( 'Enlace a Página de Login/Mi Cuenta', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::URL,
+				'default'   => array(
+                    'url'         => $default_my_account_url,
                     'is_external' => false,
-                    'nofollow' => true,
-                ],
-				'condition' => [
+                    'nofollow'    => true,
+                ),
+				'condition' => array(
 					'tipo_cupon' => 'mis_cupones',
-				],
-                'dynamic' => [
+				),
+                'dynamic'   => array(
                     'active' => true,
-                ]
-			]
+                ),
+			)
 		);
 
 		$this->end_controls_section();
 
 		$this->start_controls_section(
 			'section_content_query',
-			[
+			array(
 				'label' => esc_html__( 'Consulta', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			)
 		);
 
 		$this->add_control(
 			'numero_cupones',
-			[
-				'label' => esc_html__( 'Número de Cupones', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::NUMBER,
-				'default' => 12,
-				'min' => -1,
+			array(
+				'label'       => esc_html__( 'Número de Cupones', 'wp-cupon-whatsapp' ),
+				'type'        => \Elementor\Controls_Manager::NUMBER,
+				'default'     => 12,
+				'min'         => -1,
 				'description' => esc_html__( '-1 para mostrar todos los cupones.', 'wp-cupon-whatsapp' ),
-			]
+			)
 		);
 
 		$this->add_control(
 			'ordenar_por',
-			[
-				'label' => esc_html__( 'Ordenar por', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SELECT,
+			array(
+				'label'   => esc_html__( 'Ordenar por', 'wp-cupon-whatsapp' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
 				'default' => 'date',
-				'options' => [
-					'date' => esc_html__( 'Fecha de Publicación', 'wp-cupon-whatsapp' ),
-					'title' => esc_html__( 'Título (Código Cupón)', 'wp-cupon-whatsapp' ),
-					'rand' => esc_html__( 'Aleatorio', 'wp-cupon-whatsapp' ),
+				'options' => array(
+					'date'     => esc_html__( 'Fecha de Publicación', 'wp-cupon-whatsapp' ),
+					'title'    => esc_html__( 'Título (Código Cupón)', 'wp-cupon-whatsapp' ),
+					'rand'     => esc_html__( 'Aleatorio', 'wp-cupon-whatsapp' ),
 					'modified' => esc_html__( 'Última Modificación', 'wp-cupon-whatsapp' ),
-				],
-			]
+				),
+			)
 		);
 
 		$this->add_control(
 			'orden',
-			[
-				'label' => esc_html__( 'Orden', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::CHOOSE,
-				'options' => [
-					'ASC' => [
+			array(
+				'label'   => esc_html__( 'Orden', 'wp-cupon-whatsapp' ),
+				'type'    => \Elementor\Controls_Manager::CHOOSE,
+				'options' => array(
+					'ASC'  => array(
 						'title' => esc_html__( 'Ascendente', 'wp-cupon-whatsapp' ),
-						'icon' => 'eicon-sort-up',
-					],
-					'DESC' => [
+						'icon'  => 'eicon-sort-up',
+					),
+					'DESC' => array(
 						'title' => esc_html__( 'Descendente', 'wp-cupon-whatsapp' ),
-						'icon' => 'eicon-sort-down',
-					],
-				],
+						'icon'  => 'eicon-sort-down',
+					),
+				),
 				'default' => 'DESC',
-				'toggle' => false,
-			]
+				'toggle'  => false,
+			)
 		);
 
 		$this->end_controls_section();
 
         $this->start_controls_section(
 			'section_content_layout',
-			[
+			array(
 				'label' => esc_html__( 'Diseño de Tarjeta', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			)
 		);
 
         $this->add_control(
 			'mostrar_imagen',
-			[
-				'label' => esc_html__( 'Mostrar Imagen del Cupón', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => esc_html__( 'Sí', 'wp-cupon-whatsapp' ),
-				'label_off' => esc_html__( 'No', 'wp-cupon-whatsapp' ),
+			array(
+				'label'        => esc_html__( 'Mostrar Imagen del Cupón', 'wp-cupon-whatsapp' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Sí', 'wp-cupon-whatsapp' ),
+				'label_off'    => esc_html__( 'No', 'wp-cupon-whatsapp' ),
 				'return_value' => 'yes',
-				'default' => 'yes',
-			]
+				'default'      => 'yes',
+			)
 		);
 
         $this->add_control(
 			'mostrar_codigo',
-			[
-				'label' => esc_html__( 'Mostrar Código del Cupón', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => esc_html__( 'Sí', 'wp-cupon-whatsapp' ),
-				'label_off' => esc_html__( 'No', 'wp-cupon-whatsapp' ),
+			array(
+				'label'        => esc_html__( 'Mostrar Código del Cupón', 'wp-cupon-whatsapp' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Sí', 'wp-cupon-whatsapp' ),
+				'label_off'    => esc_html__( 'No', 'wp-cupon-whatsapp' ),
 				'return_value' => 'yes',
-				'default' => 'yes',
-			]
+				'default'      => 'yes',
+			)
 		);
 
         $this->add_control(
 			'mostrar_descripcion',
-			[
-				'label' => esc_html__( 'Mostrar Descripción', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => esc_html__( 'Sí', 'wp-cupon-whatsapp' ),
-				'label_off' => esc_html__( 'No', 'wp-cupon-whatsapp' ),
+			array(
+				'label'        => esc_html__( 'Mostrar Descripción', 'wp-cupon-whatsapp' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Sí', 'wp-cupon-whatsapp' ),
+				'label_off'    => esc_html__( 'No', 'wp-cupon-whatsapp' ),
 				'return_value' => 'yes',
-				'default' => 'yes',
-			]
+				'default'      => 'yes',
+			)
 		);
 
         $this->add_control(
 			'longitud_descripcion',
-			[
-				'label' => esc_html__( 'Longitud de Descripción (palabras)', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::NUMBER,
-				'default' => 20,
-                'min' => 1,
-				'condition' => [
+			array(
+				'label'     => esc_html__( 'Longitud de Descripción (palabras)', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::NUMBER,
+				'default'   => 20,
+                'min'       => 1,
+				'condition' => array(
 					'mostrar_descripcion' => 'yes',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_control(
 			'texto_boton_canje',
-			[
-				'label' => esc_html__( 'Texto del Botón de Canje', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
+			array(
+				'label'   => esc_html__( 'Texto del Botón de Canje', 'wp-cupon-whatsapp' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
 				'default' => esc_html__( 'Canjear Cupón', 'wp-cupon-whatsapp' ),
-                'dynamic' => [
+                'dynamic' => array(
                     'active' => true,
-                ]
-			]
+                ),
+			)
 		);
 
         $this->add_control(
 			'mensaje_no_cupones',
-			[
-				'label' => esc_html__( 'Mensaje (No hay cupones)', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::TEXTAREA,
+			array(
+				'label'   => esc_html__( 'Mensaje (No hay cupones)', 'wp-cupon-whatsapp' ),
+				'type'    => \Elementor\Controls_Manager::TEXTAREA,
 				'default' => esc_html__( 'No hay cupones disponibles en este momento.', 'wp-cupon-whatsapp' ),
-                'dynamic' => [
+                'dynamic' => array(
                     'active' => true,
-                ]
-			]
+                ),
+			)
 		);
-
 
         $this->end_controls_section();
 
         // Style Tab
         $this->start_controls_section(
 			'section_style_grid',
-			[
+			array(
 				'label' => esc_html__( 'Grid de Cupones', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
 		);
 
         $this->add_responsive_control(
             'columnas',
-            [
-                'label' => esc_html__( 'Columnas', 'wp-cupon-whatsapp' ),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => '3',
+            array(
+                'label'          => esc_html__( 'Columnas', 'wp-cupon-whatsapp' ),
+                'type'           => \Elementor\Controls_Manager::SELECT,
+                'default'        => '3',
                 'tablet_default' => '2',
                 'mobile_default' => '1',
-                'options' => [
+                'options'        => array(
                     '1' => '1',
                     '2' => '2',
                     '3' => '3',
                     '4' => '4',
                     '5' => '5',
                     '6' => '6',
-                ],
-                'selectors' => [
+                ),
+                'selectors'      => array(
                     '{{WRAPPER}} .wpcw-coupons-grid' => 'grid-template-columns: repeat({{VALUE}}, 1fr);',
-                ],
-            ]
+                ),
+            )
         );
 
         $this->add_responsive_control(
 			'espaciado_columnas',
-			[
-				'label' => esc_html__( 'Espaciado entre Columnas', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em', 'rem' ],
-				'range' => [
-					'px' => [
+			array(
+				'label'      => esc_html__( 'Espaciado entre Columnas', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px', 'em', 'rem' ),
+				'range'      => array(
+					'px' => array(
 						'min' => 0,
 						'max' => 100,
-					],
-				],
-				'default' => [
+					),
+				),
+				'default'    => array(
 					'unit' => 'px',
 					'size' => 15,
-				],
-				'selectors' => [
+				),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupons-grid' => 'column-gap: {{SIZE}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_responsive_control(
 			'espaciado_filas',
-			[
-				'label' => esc_html__( 'Espaciado entre Filas', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em', 'rem' ],
-				'range' => [
-					'px' => [
+			array(
+				'label'      => esc_html__( 'Espaciado entre Filas', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px', 'em', 'rem' ),
+				'range'      => array(
+					'px' => array(
 						'min' => 0,
 						'max' => 100,
-					],
-				],
-				'default' => [
+					),
+				),
+				'default'    => array(
 					'unit' => 'px',
 					'size' => 15,
-				],
-				'selectors' => [
+				),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupons-grid' => 'row-gap: {{SIZE}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->end_controls_section();
 
         $this->start_controls_section(
 			'section_style_card',
-			[
+			array(
 				'label' => esc_html__( 'Tarjeta de Cupón', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
 		);
 
         $this->add_group_control(
 			\Elementor\Group_Control_Background::get_type(),
-			[
-				'name' => 'card_background',
-				'label' => esc_html__( 'Fondo', 'wp-cupon-whatsapp' ),
-				'types' => [ 'classic', 'gradient' ],
+			array(
+				'name'     => 'card_background',
+				'label'    => esc_html__( 'Fondo', 'wp-cupon-whatsapp' ),
+				'types'    => array( 'classic', 'gradient' ),
 				'selector' => '{{WRAPPER}} .wpcw-coupon-card',
-			]
+			)
 		);
 
         $this->add_group_control(
 			\Elementor\Group_Control_Border::get_type(),
-			[
-				'name' => 'card_border',
+			array(
+				'name'     => 'card_border',
 				'selector' => '{{WRAPPER}} .wpcw-coupon-card',
-			]
+			)
 		);
 
         $this->add_responsive_control(
 			'card_border_radius',
-			[
-				'label' => esc_html__( 'Radio del Borde', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Radio del Borde', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupon-card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_group_control(
 			\Elementor\Group_Control_Box_Shadow::get_type(),
-			[
-				'name' => 'card_box_shadow',
+			array(
+				'name'     => 'card_box_shadow',
 				'selector' => '{{WRAPPER}} .wpcw-coupon-card',
-			]
+			)
 		);
 
         $this->add_responsive_control(
 			'card_padding',
-			[
-				'label' => esc_html__( 'Padding', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Padding', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupon-card' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
         $this->end_controls_section();
 
         $this->start_controls_section(
 			'section_style_image',
-			[
-				'label' => esc_html__( 'Imagen del Cupón', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-                'condition' => [
+			array(
+				'label'     => esc_html__( 'Imagen del Cupón', 'wp-cupon-whatsapp' ),
+				'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
+                'condition' => array(
                     'mostrar_imagen' => 'yes',
-                ]
-			]
+                ),
+			)
 		);
 
         $this->add_responsive_control(
 			'image_border_radius',
-			[
-				'label' => esc_html__( 'Radio del Borde', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Radio del Borde', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupon-image-wrapper img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                     '{{WRAPPER}} .wpcw-coupon-image-placeholder' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_responsive_control(
 			'image_height',
-			[
-				'label' => esc_html__( 'Altura', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'vh' ],
-                'range' => [
-					'px' => [
+			array(
+				'label'      => esc_html__( 'Altura', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px', 'vh' ),
+                'range'      => array(
+					'px' => array(
 						'min' => 50,
 						'max' => 500,
-					],
-				],
-				'selectors' => [
+					),
+				),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupon-image-wrapper img' => 'height: {{SIZE}}{{UNIT}}; object-fit: cover;',
                     '{{WRAPPER}} .wpcw-coupon-image-placeholder' => 'height: {{SIZE}}{{UNIT}}; display: flex; align-items: center; justify-content: center;',
-				],
-			]
+				),
+			)
 		);
 
         $this->end_controls_section();
 
         $this->start_controls_section(
 			'section_style_title',
-			[
+			array(
 				'label' => esc_html__( 'Título del Cupón', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
 		);
 
         $this->add_control(
 			'title_color',
-			[
-				'label' => esc_html__( 'Color', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} .wpcw-coupon-title' => 'color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_group_control(
 			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'title_typography',
+			array(
+				'name'     => 'title_typography',
 				'selector' => '{{WRAPPER}} .wpcw-coupon-title',
-			]
+			)
 		);
 
         $this->add_responsive_control(
 			'title_margin',
-			[
-				'label' => esc_html__( 'Margen', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Margen', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupon-title' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->end_controls_section();
 
         $this->start_controls_section(
 			'section_style_code',
-			[
-				'label' => esc_html__( 'Código del Cupón', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-                'condition' => [
+			array(
+				'label'     => esc_html__( 'Código del Cupón', 'wp-cupon-whatsapp' ),
+				'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
+                'condition' => array(
                     'mostrar_codigo' => 'yes',
-                ]
-			]
+                ),
+			)
 		);
 
         $this->add_control(
 			'code_color',
-			[
-				'label' => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} .wpcw-coupon-code' => 'color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
         $this->add_control(
 			'code_strong_color',
-			[
-				'label' => esc_html__( 'Color del Código (Negrita)', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color del Código (Negrita)', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} .wpcw-coupon-code strong' => 'color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_group_control(
 			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'code_typography',
+			array(
+				'name'     => 'code_typography',
 				'selector' => '{{WRAPPER}} .wpcw-coupon-code',
-			]
+			)
 		);
         $this->add_group_control(
 			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'code_strong_typography',
-                'label' => esc_html__( 'Tipografía del Código (Negrita)', 'wp-cupon-whatsapp' ),
+			array(
+				'name'     => 'code_strong_typography',
+                'label'    => esc_html__( 'Tipografía del Código (Negrita)', 'wp-cupon-whatsapp' ),
 				'selector' => '{{WRAPPER}} .wpcw-coupon-code strong',
-			]
+			)
 		);
 
         $this->add_control(
 			'code_background_color',
-			[
-				'label' => esc_html__( 'Color de Fondo (Solo Código)', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color de Fondo (Solo Código)', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} .wpcw-coupon-code strong' => 'background-color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_responsive_control(
 			'code_padding',
-			[
-				'label' => esc_html__( 'Padding (Solo Código)', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Padding (Solo Código)', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupon-code strong' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_responsive_control(
 			'code_border_radius',
-			[
-				'label' => esc_html__( 'Radio del Borde (Solo Código)', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Radio del Borde (Solo Código)', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupon-code strong' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_responsive_control(
 			'code_margin',
-			[
-				'label' => esc_html__( 'Margen (Bloque de Código)', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Margen (Bloque de Código)', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupon-code' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->end_controls_section();
 
         $this->start_controls_section(
 			'section_style_description',
-			[
-				'label' => esc_html__( 'Descripción del Cupón', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-                'condition' => [
+			array(
+				'label'     => esc_html__( 'Descripción del Cupón', 'wp-cupon-whatsapp' ),
+				'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
+                'condition' => array(
                     'mostrar_descripcion' => 'yes',
-                ]
-			]
+                ),
+			)
 		);
 
         $this->add_control(
 			'description_color',
-			[
-				'label' => esc_html__( 'Color', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} .wpcw-coupon-description' => 'color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_group_control(
 			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'description_typography',
+			array(
+				'name'     => 'description_typography',
 				'selector' => '{{WRAPPER}} .wpcw-coupon-description',
-			]
+			)
 		);
 
         $this->add_responsive_control(
 			'description_margin',
-			[
-				'label' => esc_html__( 'Margen', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Margen', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-coupon-description' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
         $this->end_controls_section();
 
         $this->start_controls_section(
 			'section_style_button',
-			[
+			array(
 				'label' => esc_html__( 'Botón de Canje', 'wp-cupon-whatsapp' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
 		);
 
         $this->add_group_control(
 			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'button_typography',
+			array(
+				'name'     => 'button_typography',
 				'selector' => '{{WRAPPER}} .wpcw-canjear-cupon-btn',
-			]
+			)
 		);
 
         $this->add_responsive_control(
 			'button_padding',
-			[
-				'label' => esc_html__( 'Padding', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Padding', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-canjear-cupon-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
         $this->add_responsive_control(
 			'button_margin',
-			[
-				'label' => esc_html__( 'Margen', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Margen', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', 'em', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-canjear-cupon-btn' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_group_control(
 			\Elementor\Group_Control_Border::get_type(),
-			[
-				'name' => 'button_border',
+			array(
+				'name'     => 'button_border',
 				'selector' => '{{WRAPPER}} .wpcw-canjear-cupon-btn',
-			]
+			)
 		);
 
         $this->add_responsive_control(
 			'button_border_radius',
-			[
-				'label' => esc_html__( 'Radio del Borde', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors' => [
+			array(
+				'label'      => esc_html__( 'Radio del Borde', 'wp-cupon-whatsapp' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%' ),
+				'selectors'  => array(
 					'{{WRAPPER}} .wpcw-canjear-cupon-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->start_controls_tabs( 'button_tabs_style' );
 
 		$this->start_controls_tab(
 			'button_tab_normal',
-			[
+			array(
 				'label' => esc_html__( 'Normal', 'wp-cupon-whatsapp' ),
-			]
+			)
 		);
 
         $this->add_control(
 			'button_color_normal',
-			[
-				'label' => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} .wpcw-canjear-cupon-btn' => 'color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_control(
 			'button_bg_color_normal',
-			[
-				'label' => esc_html__( 'Color de Fondo', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color de Fondo', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} .wpcw-canjear-cupon-btn' => 'background-color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->end_controls_tab();
 
         $this->start_controls_tab(
 			'button_tab_hover',
-			[
+			array(
 				'label' => esc_html__( 'Hover', 'wp-cupon-whatsapp' ),
-			]
+			)
 		);
 
         $this->add_control(
 			'button_color_hover',
-			[
-				'label' => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color del Texto', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} .wpcw-canjear-cupon-btn:hover' => 'color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_control(
 			'button_bg_color_hover',
-			[
-				'label' => esc_html__( 'Color de Fondo', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color de Fondo', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} .wpcw-canjear-cupon-btn:hover' => 'background-color: {{VALUE}};',
-				],
-			]
+				),
+			)
 		);
 
         $this->add_control(
 			'button_border_color_hover',
-			[
-				'label' => esc_html__( 'Color del Borde', 'wp-cupon-whatsapp' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
+			array(
+				'label'     => esc_html__( 'Color del Borde', 'wp-cupon-whatsapp' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
 					'{{WRAPPER}} .wpcw-canjear-cupon-btn:hover' => 'border-color: {{VALUE}};',
-				],
-                'condition' => [
+				),
+                'condition' => array(
                     'button_border_border!' => '', // Only if border type is set
-                ]
-			]
+                ),
+			)
 		);
 
         $this->end_controls_tab();
 		$this->end_controls_tabs();
         $this->end_controls_section();
-
-
 	}
 
 	/**
@@ -812,30 +809,30 @@ class WPCW_Elementor_Cupones_Lista_Widget extends \Elementor\Widget_Base {
             return;
         }
 
-        $query_args = [
+        $query_args = array(
             'post_type'      => 'shop_coupon',
             'post_status'    => 'publish',
             'posts_per_page' => $settings['numero_cupones'],
             'orderby'        => $settings['ordenar_por'],
             'order'          => $settings['orden'],
-            'meta_query'     => [
+            'meta_query'     => array(
                 'relation' => 'AND',
-            ],
-        ];
+            ),
+        );
 
         if ( 'mis_cupones' === $settings['tipo_cupon'] ) {
-            $query_args['meta_query'][] = [
+            $query_args['meta_query'][] = array(
                 'key'     => '_wpcw_is_loyalty_coupon',
                 'value'   => 'yes',
                 'compare' => '=',
-            ];
+            );
             // Aquí podrías añadir más lógica para filtrar cupones de lealtad específicos del usuario si fuera necesario.
         } else { // publicos
-            $query_args['meta_query'][] = [
+            $query_args['meta_query'][] = array(
                 'key'     => '_wpcw_is_public_coupon',
                 'value'   => 'yes',
                 'compare' => '=',
-            ];
+            );
         }
 
         $coupons_query = new \WP_Query( $query_args );
@@ -844,25 +841,25 @@ class WPCW_Elementor_Cupones_Lista_Widget extends \Elementor\Widget_Base {
             echo '<div class="wpcw-coupons-grid-wrapper">'; // Wrapper for potential pagination or messages
             echo '<div class="wpcw-coupons-grid">'; // Grid container
 
-            while ( $coupons_query->have_posts() ) : $coupons_query->the_post();
-                $coupon_id = get_the_ID();
+            while ( $coupons_query->have_posts() ) :
+                $coupons_query->the_post();
+                $coupon_id    = get_the_ID();
                 $coupon_title = get_the_title();
-                $coupon_code = get_the_title(); // WooCommerce coupon code is the post title
+                $coupon_code  = get_the_title(); // WooCommerce coupon code is the post title
 
                 $coupon_description_full = get_the_excerpt();
-                if (empty($coupon_description_full)) {
-                    $coupon_post_content = get_the_content();
+                if ( empty( $coupon_description_full ) ) {
+                    $coupon_post_content     = get_the_content();
                     $coupon_description_full = $coupon_post_content;
                 }
 
                 $coupon_description = '';
-                if ( 'yes' === $settings['mostrar_descripcion'] && !empty($coupon_description_full) ) {
-                     $coupon_description = wp_trim_words( $coupon_description_full, $settings['longitud_descripcion'], '...' );
-                     if (empty($coupon_description) && !empty($coupon_description_full)) {
+                if ( 'yes' === $settings['mostrar_descripcion'] && ! empty( $coupon_description_full ) ) {
+                    $coupon_description = wp_trim_words( $coupon_description_full, $settings['longitud_descripcion'], '...' );
+                    if ( empty( $coupon_description ) && ! empty( $coupon_description_full ) ) {
                         $coupon_description = $coupon_description_full;
-                     }
+                    }
                 }
-
 
                 $coupon_image_url = '';
                 if ( 'yes' === $settings['mostrar_imagen'] ) {
@@ -914,7 +911,7 @@ class WPCW_Elementor_Cupones_Lista_Widget extends \Elementor\Widget_Base {
             endwhile;
 
             echo '</div>'; // End .wpcw-coupons-grid
-             echo '</div>'; // End .wpcw-coupons-grid-wrapper
+            echo '</div>'; // End .wpcw-coupons-grid-wrapper
             wp_reset_postdata();
         else :
             echo '<p class="wpcw-no-coupons-message">' . esc_html( $settings['mensaje_no_cupones'] ) . '</p>';
@@ -964,16 +961,16 @@ class WPCW_Elementor_Cupones_Lista_Widget extends \Elementor\Widget_Base {
                 if ( mockCoupons > 0 ) {
                     for ( var i = 0; i < mockCoupons; i++ ) {
                         var coupon_id = 'mock_id_' + i;
-                        var coupon_title = '<?php esc_html_e( "Título del Cupón de Ejemplo", "wp-cupon-whatsapp" ); ?> ' + (i+1);
-                        var coupon_code = '<?php esc_html_e( "EJEMPLO", "wp-cupon-whatsapp" ); ?>' + (i+1);
-                        var coupon_description_full = '<?php esc_html_e( "Esta es una breve descripción del cupón de ejemplo para mostrar cómo se verá. Puedes personalizar esto.", "wp-cupon-whatsapp" ); ?>';
+                        var coupon_title = '<?php esc_html_e( 'Título del Cupón de Ejemplo', 'wp-cupon-whatsapp' ); ?> ' + (i+1);
+                        var coupon_code = '<?php esc_html_e( 'EJEMPLO', 'wp-cupon-whatsapp' ); ?>' + (i+1);
+                        var coupon_description_full = '<?php esc_html_e( 'Esta es una breve descripción del cupón de ejemplo para mostrar cómo se verá. Puedes personalizar esto.', 'wp-cupon-whatsapp' ); ?>';
                         var coupon_description = '';
                         if ( 'yes' === settings.mostrar_descripcion && coupon_description_full ) {
-                             coupon_description = coupon_description_full.split(' ').slice(0, settings.longitud_descripcion).join(' ') + '...';
+                            coupon_description = coupon_description_full.split(' ').slice(0, settings.longitud_descripcion).join(' ') + '...';
                         }
                         var coupon_image_url = ''; // Placeholder or a default image URL
                         if ( 'yes' === settings.mostrar_imagen ) {
-                             coupon_image_url = '<?php echo \Elementor\Utils::get_placeholder_image_src(); ?>';
+                            coupon_image_url = '<?php echo \Elementor\Utils::get_placeholder_image_src(); ?>';
                         }
                 #>
                 <div class="wpcw-coupon-card" id="wpcw-coupon-{{ coupon_id }}">
@@ -1026,8 +1023,8 @@ class WPCW_Elementor_Cupones_Lista_Widget extends \Elementor\Widget_Base {
      * Add some basic CSS for the grid layout.
      * More advanced styling should be handled by Elementor controls.
      */
-    public function __construct($data = [], $args = null) {
-        parent::__construct($data, $args);
+    public function __construct( $data = array(), $args = null ) {
+        parent::__construct( $data, $args );
         // Register a general style for the grid, if not already done by another instance.
         // This is a simple way, could be refined.
         // wp_register_style( 'wpcw-elementor-grid', false ); // Bogus handle
@@ -1053,4 +1050,6 @@ class WPCW_Elementor_Cupones_Lista_Widget extends \Elementor\Widget_Base {
 }
 
 // The file should not have a closing PHP tag if it's all PHP
-// ?> // Removed closing tag
+//
+?>
+// Removed closing tag

@@ -28,11 +28,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Por ejemplo, si se usa include con variables en el scope, o extract(\$args).
 
 // Define variables if they are not set to avoid warnings, provide defaults
-$coupon_id = isset($coupon_id) ? $coupon_id : uniqid();
-$coupon_title = isset($coupon_title) ? $coupon_title : __('Título del Cupón no disponible', 'wp-cupon-whatsapp');
-$coupon_description = isset($coupon_description) ? $coupon_description : __('Descripción no disponible.', 'wp-cupon-whatsapp');
-$coupon_image_url = isset($coupon_image_url) ? $coupon_image_url : '';
-$coupon_code = isset($coupon_code) ? $coupon_code : '';
+$coupon_id          = isset( $coupon_id ) ? $coupon_id : uniqid();
+$coupon_title       = isset( $coupon_title ) ? $coupon_title : __( 'Título del Cupón no disponible', 'wp-cupon-whatsapp' );
+$coupon_description = isset( $coupon_description ) ? $coupon_description : __( 'Descripción no disponible.', 'wp-cupon-whatsapp' );
+$coupon_image_url   = isset( $coupon_image_url ) ? $coupon_image_url : '';
+$coupon_code        = isset( $coupon_code ) ? $coupon_code : '';
 // $canje_url is not used in this template yet, but defined in comments.
 
 ?>
@@ -58,16 +58,18 @@ $coupon_code = isset($coupon_code) ? $coupon_code : '';
         <?php endif; ?>
 
         <div class="wpcw-coupon-description">
-            <?php // Usar wp_kses_post para permitir algo de HTML si la descripción viene del editor de WC.
-                  // Usar wpautop para convertir saltos de línea en párrafos.
-                  echo wp_kses_post( wpautop( $coupon_description ) );
+            <?php
+            // Usar wp_kses_post para permitir algo de HTML si la descripción viene del editor de WC.
+                    // Usar wpautop para convertir saltos de línea en párrafos.
+                    echo wp_kses_post( wpautop( $coupon_description ) );
             ?>
         </div>
     </div>
 
     <div class="wpcw-coupon-actions">
-        <?php // El botón de canje se manejará más adelante, posiblemente con un form y AJAX.
-              // Por ahora, un placeholder.
+        <?php
+        // El botón de canje se manejará más adelante, posiblemente con un form y AJAX.
+                // Por ahora, un placeholder.
         ?>
         <button type="button" class="wpcw-canjear-cupon-btn" data-coupon-id="<?php echo esc_attr( $coupon_id ); ?>">
             <?php esc_html_e( 'Canjear Cupón', 'wp-cupon-whatsapp' ); ?>

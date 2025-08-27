@@ -13,28 +13,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Renders the main settings page for the plugin.
  */
 function wpcw_mongodb_section_callback() {
-    echo '<p>' . esc_html__('Configura la integración con MongoDB para sincronización y respaldo de datos.', 'wp-cupon-whatsapp') . '</p>';
-    
+    echo '<p>' . esc_html__( 'Configura la integración con MongoDB para sincronización y respaldo de datos.', 'wp-cupon-whatsapp' ) . '</p>';
+
     // Mostrar estado de la conexión si MongoDB está habilitado
-    if (get_option('wpcw_mongodb_enabled', false)) {
+    if ( get_option( 'wpcw_mongodb_enabled', false ) ) {
         $mongo = WPCW_MongoDB::get_instance();
-        if ($mongo->test_connection()) {
-            echo '<div class="notice notice-success inline"><p>' . 
-                 esc_html__('Conexión a MongoDB establecida correctamente.', 'wp-cupon-whatsapp') . 
-                 '</p></div>';
-            
+        if ( $mongo->test_connection() ) {
+            echo '<div class="notice notice-success inline"><p>' .
+                esc_html__( 'Conexión a MongoDB establecida correctamente.', 'wp-cupon-whatsapp' ) .
+                '</p></div>';
+
             // Mostrar última sincronización
-            $last_sync = get_option('wpcw_last_mongo_sync', '');
-            if ($last_sync) {
+            $last_sync = get_option( 'wpcw_last_mongo_sync', '' );
+            if ( $last_sync ) {
                 echo '<p>' . sprintf(
-                    esc_html__('Última sincronización: %s', 'wp-cupon-whatsapp'),
-                    date_i18n(get_option('date_format', 'Y-m-d') . ' ' . get_option('time_format', 'H:i:s'), strtotime($last_sync))
+                    esc_html__( 'Última sincronización: %s', 'wp-cupon-whatsapp' ),
+                    date_i18n( get_option( 'date_format', 'Y-m-d' ) . ' ' . get_option( 'time_format', 'H:i:s' ), strtotime( $last_sync ) )
                 ) . '</p>';
             }
         } else {
-            echo '<div class="notice notice-error inline"><p>' . 
-                 esc_html__('Error al conectar con MongoDB. Verifica la configuración.', 'wp-cupon-whatsapp') . 
-                 '</p></div>';
+            echo '<div class="notice notice-error inline"><p>' .
+                esc_html__( 'Error al conectar con MongoDB. Verifica la configuración.', 'wp-cupon-whatsapp' ) .
+                '</p></div>';
         }
     }
 }
@@ -43,11 +43,11 @@ function wpcw_mongodb_section_callback() {
  * Callback para la descripción de la sección de reCAPTCHA.
  */
 function wpcw_recaptcha_section_callback() {
-    echo '<p>' . esc_html__('Configura las claves de Google reCAPTCHA v2 para proteger los formularios.', 'wp-cupon-whatsapp') . '</p>';
+    echo '<p>' . esc_html__( 'Configura las claves de Google reCAPTCHA v2 para proteger los formularios.', 'wp-cupon-whatsapp' ) . '</p>';
 }
 
 function wpcw_approval_section_callback() {
-    echo '<p>' . esc_html__('Configura cómo se manejan los nuevos registros de comercios e instituciones.', 'wp-cupon-whatsapp') . '</p>';
+    echo '<p>' . esc_html__( 'Configura cómo se manejan los nuevos registros de comercios e instituciones.', 'wp-cupon-whatsapp' ) . '</p>';
 }
 
 function wpcw_render_plugin_settings_page() {
@@ -74,7 +74,7 @@ function wpcw_render_plugin_settings_page() {
  * Initializes the WordPress Settings API for WPCW plugin.
  */
 function wpcw_settings_api_init() {
-    $page_slug = 'wpcw_plugin_settings_page_slug';
+    $page_slug    = 'wpcw_plugin_settings_page_slug';
     $option_group = 'wpcw_options_group';
 
     // Email Verification Settings
@@ -82,9 +82,9 @@ function wpcw_settings_api_init() {
         $option_group,
         'wpcw_email_verification_enabled',
         array(
-            'type' => 'boolean',
+            'type'              => 'boolean',
             'sanitize_callback' => 'rest_sanitize_boolean',
-            'default' => true
+            'default'           => true,
         )
     );
 
@@ -92,9 +92,9 @@ function wpcw_settings_api_init() {
         $option_group,
         'wpcw_email_verification_expiry',
         array(
-            'type' => 'number',
+            'type'              => 'number',
             'sanitize_callback' => 'absint',
-            'default' => 24 // horas
+            'default'           => 24, // horas
         )
     );
 
@@ -103,9 +103,9 @@ function wpcw_settings_api_init() {
         $option_group,
         'wpcw_mongodb_enabled',
         array(
-            'type' => 'boolean',
+            'type'              => 'boolean',
             'sanitize_callback' => 'rest_sanitize_boolean',
-            'default' => false
+            'default'           => false,
         )
     );
 
@@ -114,9 +114,9 @@ function wpcw_settings_api_init() {
         $option_group,
         'wpcw_auto_approve_businesses',
         array(
-            'type' => 'boolean',
+            'type'              => 'boolean',
             'sanitize_callback' => 'rest_sanitize_boolean',
-            'default' => false
+            'default'           => false,
         )
     );
 
@@ -124,9 +124,9 @@ function wpcw_settings_api_init() {
         $option_group,
         'wpcw_mongodb_uri',
         array(
-            'type' => 'string',
+            'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default' => ''
+            'default'           => '',
         )
     );
 
@@ -134,9 +134,9 @@ function wpcw_settings_api_init() {
         $option_group,
         'wpcw_mongodb_database',
         array(
-            'type' => 'string',
+            'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default' => ''
+            'default'           => '',
         )
     );
 
@@ -144,9 +144,9 @@ function wpcw_settings_api_init() {
         $option_group,
         'wpcw_mongodb_auto_sync',
         array(
-            'type' => 'boolean',
+            'type'              => 'boolean',
             'sanitize_callback' => 'rest_sanitize_boolean',
-            'default' => false
+            'default'           => false,
         )
     );
 
@@ -157,7 +157,7 @@ function wpcw_settings_api_init() {
         array(
             'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default'           => ''
+            'default'           => '',
         )
     );
     register_setting(
@@ -166,121 +166,121 @@ function wpcw_settings_api_init() {
         array(
             'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
-            'default'           => ''
+            'default'           => '',
         )
     );
 
     // Sección de Aprobación de Comercios/Instituciones
     add_settings_section(
         'wpcw_approval_section',
-        __('Aprobación de Comercios e Instituciones', 'wp-cupon-whatsapp'),
+        __( 'Aprobación de Comercios e Instituciones', 'wp-cupon-whatsapp' ),
         'wpcw_approval_section_callback',
         $page_slug
     );
 
     add_settings_field(
         'wpcw_auto_approve_businesses',
-        __('Aprobación Automática', 'wp-cupon-whatsapp'),
+        __( 'Aprobación Automática', 'wp-cupon-whatsapp' ),
         'wpcw_render_settings_checkbox_field',
         $page_slug,
         'wpcw_approval_section',
         array(
             'option_name' => 'wpcw_auto_approve_businesses',
-            'label' => __('Aprobar automáticamente los nuevos registros de comercios e instituciones', 'wp-cupon-whatsapp'),
-            'description' => __('Si está desactivado, los registros requerirán aprobación manual por un administrador.', 'wp-cupon-whatsapp')
+            'label'       => __( 'Aprobar automáticamente los nuevos registros de comercios e instituciones', 'wp-cupon-whatsapp' ),
+            'description' => __( 'Si está desactivado, los registros requerirán aprobación manual por un administrador.', 'wp-cupon-whatsapp' ),
         )
     );
 
     // Email Verification Section
     add_settings_section(
         'wpcw_email_verification_section',
-        __('Verificación por Email', 'wp-cupon-whatsapp'),
+        __( 'Verificación por Email', 'wp-cupon-whatsapp' ),
         'wpcw_email_verification_section_callback',
         $page_slug
     );
 
     add_settings_field(
         'wpcw_email_verification_enabled',
-        __('Habilitar Verificación', 'wp-cupon-whatsapp'),
+        __( 'Habilitar Verificación', 'wp-cupon-whatsapp' ),
         'wpcw_render_settings_checkbox_field',
         $page_slug,
         'wpcw_email_verification_section',
         array(
             'option_name' => 'wpcw_email_verification_enabled',
-            'field_key' => 'enabled',
-            'label' => __('Requerir verificación de email para nuevos usuarios', 'wp-cupon-whatsapp'),
-            'description' => __('Los usuarios deberán verificar su email antes de poder canjear cupones o acceder a funciones del plugin.', 'wp-cupon-whatsapp')
+            'field_key'   => 'enabled',
+            'label'       => __( 'Requerir verificación de email para nuevos usuarios', 'wp-cupon-whatsapp' ),
+            'description' => __( 'Los usuarios deberán verificar su email antes de poder canjear cupones o acceder a funciones del plugin.', 'wp-cupon-whatsapp' ),
         )
     );
 
     add_settings_field(
         'wpcw_email_verification_expiry',
-        __('Tiempo de Expiración', 'wp-cupon-whatsapp'),
+        __( 'Tiempo de Expiración', 'wp-cupon-whatsapp' ),
         'wpcw_render_number_input_field',
         $page_slug,
         'wpcw_email_verification_section',
         array(
             'option_name' => 'wpcw_email_verification_expiry',
-            'label_for' => 'wpcw_email_verification_expiry',
-            'description' => __('Horas de validez del enlace de verificación', 'wp-cupon-whatsapp'),
-            'min' => 1,
-            'max' => 72,
-            'step' => 1
+            'label_for'   => 'wpcw_email_verification_expiry',
+            'description' => __( 'Horas de validez del enlace de verificación', 'wp-cupon-whatsapp' ),
+            'min'         => 1,
+            'max'         => 72,
+            'step'        => 1,
         )
     );
 
     add_settings_section(
         'wpcw_mongodb_section',
-        __('Configuración de MongoDB', 'wp-cupon-whatsapp'),
+        __( 'Configuración de MongoDB', 'wp-cupon-whatsapp' ),
         'wpcw_mongodb_section_callback',
         $page_slug
     );
 
     add_settings_field(
         'wpcw_mongodb_enabled',
-        __('Habilitar MongoDB', 'wp-cupon-whatsapp'),
+        __( 'Habilitar MongoDB', 'wp-cupon-whatsapp' ),
         'wpcw_render_settings_checkbox_field',
         $page_slug,
         'wpcw_mongodb_section',
         array(
-            'label_for' => 'wpcw_mongodb_enabled',
-            'description' => __('Activar la integración con MongoDB', 'wp-cupon-whatsapp')
+            'label_for'   => 'wpcw_mongodb_enabled',
+            'description' => __( 'Activar la integración con MongoDB', 'wp-cupon-whatsapp' ),
         )
     );
 
     add_settings_field(
         'wpcw_mongodb_uri',
-        __('URI de MongoDB', 'wp-cupon-whatsapp'),
+        __( 'URI de MongoDB', 'wp-cupon-whatsapp' ),
         'wpcw_render_text_input_field',
         $page_slug,
         'wpcw_mongodb_section',
         array(
-            'label_for' => 'wpcw_mongodb_uri',
-            'description' => __('URI de conexión a MongoDB (ej: mongodb://localhost:27017)', 'wp-cupon-whatsapp')
+            'label_for'   => 'wpcw_mongodb_uri',
+            'description' => __( 'URI de conexión a MongoDB (ej: mongodb://localhost:27017)', 'wp-cupon-whatsapp' ),
         )
     );
 
     add_settings_field(
         'wpcw_mongodb_database',
-        __('Base de datos MongoDB', 'wp-cupon-whatsapp'),
+        __( 'Base de datos MongoDB', 'wp-cupon-whatsapp' ),
         'wpcw_render_text_input_field',
         $page_slug,
         'wpcw_mongodb_section',
         array(
-            'label_for' => 'wpcw_mongodb_database',
-            'description' => __('Nombre de la base de datos en MongoDB', 'wp-cupon-whatsapp')
+            'label_for'   => 'wpcw_mongodb_database',
+            'description' => __( 'Nombre de la base de datos en MongoDB', 'wp-cupon-whatsapp' ),
         )
     );
 
     add_settings_field(
         'wpcw_mongodb_auto_sync',
-        __('Sincronización automática', 'wp-cupon-whatsapp'),
+        __( 'Sincronización automática', 'wp-cupon-whatsapp' ),
         'wpcw_render_settings_checkbox_field',
         $page_slug,
         'wpcw_mongodb_section',
         array(
-            'label_for' => 'wpcw_mongodb_auto_sync',
-            'description' => __('Sincronizar automáticamente los cambios con MongoDB', 'wp-cupon-whatsapp')
+            'label_for'   => 'wpcw_mongodb_auto_sync',
+            'description' => __( 'Sincronizar automáticamente los cambios con MongoDB', 'wp-cupon-whatsapp' ),
         )
     );
 
@@ -301,7 +301,7 @@ function wpcw_settings_api_init() {
             'option_name' => 'wpcw_recaptcha_site_key',
             'id'          => 'wpcw_recaptcha_site_key',
             'label_for'   => 'wpcw_recaptcha_site_key',
-            'description' => __('Introduce tu Google reCAPTCHA v2 Site Key.', 'wp-cupon-whatsapp')
+            'description' => __( 'Introduce tu Google reCAPTCHA v2 Site Key.', 'wp-cupon-whatsapp' ),
         )
     );
     add_settings_field(
@@ -314,7 +314,7 @@ function wpcw_settings_api_init() {
             'option_name' => 'wpcw_recaptcha_secret_key',
             'id'          => 'wpcw_recaptcha_secret_key',
             'label_for'   => 'wpcw_recaptcha_secret_key',
-            'description' => __('Introduce tu Google reCAPTCHA v2 Secret Key.', 'wp-cupon-whatsapp')
+            'description' => __( 'Introduce tu Google reCAPTCHA v2 Secret Key.', 'wp-cupon-whatsapp' ),
         )
     );
 
@@ -336,10 +336,10 @@ function wpcw_settings_api_init() {
     );
 
     $option_name_required = 'wpcw_required_fields_settings';
-    $configurable_fields = array(
-        'dni_number' => __('DNI', 'wp-cupon-whatsapp'),
-        'birth_date' => __('Fecha de Nacimiento', 'wp-cupon-whatsapp'),
-        'whatsapp_number' => __('Número de WhatsApp', 'wp-cupon-whatsapp'),
+    $configurable_fields  = array(
+        'dni_number'      => __( 'DNI', 'wp-cupon-whatsapp' ),
+        'birth_date'      => __( 'Fecha de Nacimiento', 'wp-cupon-whatsapp' ),
+        'whatsapp_number' => __( 'Número de WhatsApp', 'wp-cupon-whatsapp' ),
     );
 
     foreach ( $configurable_fields as $key => $label ) {
@@ -353,7 +353,7 @@ function wpcw_settings_api_init() {
                 'option_name' => $option_name_required,
                 'field_key'   => $key,
                 'id'          => 'wpcw_req_' . $key,
-                'label'       => sprintf( __('Hacer obligatorio el campo "%s"', 'wp-cupon-whatsapp'), $label ),
+                'label'       => sprintf( __( 'Hacer obligatorio el campo "%s"', 'wp-cupon-whatsapp' ), $label ),
             )
         );
     }
@@ -384,35 +384,35 @@ function wpcw_settings_api_init() {
     );
 
     $export_buttons = array(
-        'comercios' => array(
-            'label' => __('Exportar Comercios', 'wp-cupon-whatsapp'),
-            'action_name' => 'wpcw_export_comercios_action', // Este será el 'name' del botón submit
+        'comercios'     => array(
+            'label'        => __( 'Exportar Comercios', 'wp-cupon-whatsapp' ),
+            'action_name'  => 'wpcw_export_comercios_action', // Este será el 'name' del botón submit
             'nonce_action' => 'wpcw_export_comercios_nonce', // Para wp_nonce_field y check_admin_referer
-            'description' => __('Descarga un archivo CSV con todos los datos de los comercios registrados.', 'wp-cupon-whatsapp')
+            'description'  => __( 'Descarga un archivo CSV con todos los datos de los comercios registrados.', 'wp-cupon-whatsapp' ),
         ),
         'instituciones' => array(
-            'label' => __('Exportar Instituciones', 'wp-cupon-whatsapp'),
-            'action_name' => 'wpcw_export_instituciones_action',
+            'label'        => __( 'Exportar Instituciones', 'wp-cupon-whatsapp' ),
+            'action_name'  => 'wpcw_export_instituciones_action',
             'nonce_action' => 'wpcw_export_instituciones_nonce',
-            'description' => __('Descarga un archivo CSV con todos los datos de las instituciones registradas.', 'wp-cupon-whatsapp')
+            'description'  => __( 'Descarga un archivo CSV con todos los datos de las instituciones registradas.', 'wp-cupon-whatsapp' ),
         ),
-        'clientes' => array(
-            'label' => __('Exportar Clientes (WPCW)', 'wp-cupon-whatsapp'),
-            'action_name' => 'wpcw_export_clientes_action',
+        'clientes'      => array(
+            'label'        => __( 'Exportar Clientes (WPCW)', 'wp-cupon-whatsapp' ),
+            'action_name'  => 'wpcw_export_clientes_action',
             'nonce_action' => 'wpcw_export_clientes_nonce',
-            'description' => __('Descarga un archivo CSV con los datos de los clientes (rol "customer") y sus campos WPCW asociados.', 'wp-cupon-whatsapp')
+            'description'  => __( 'Descarga un archivo CSV con los datos de los clientes (rol "customer") y sus campos WPCW asociados.', 'wp-cupon-whatsapp' ),
         ),
-        'cupones' => array(
-            'label' => __('Exportar Cupones (WPCW)', 'wp-cupon-whatsapp'),
-            'action_name' => 'wpcw_export_cupones_action',
+        'cupones'       => array(
+            'label'        => __( 'Exportar Cupones (WPCW)', 'wp-cupon-whatsapp' ),
+            'action_name'  => 'wpcw_export_cupones_action',
             'nonce_action' => 'wpcw_export_cupones_nonce',
-            'description' => __('Descarga un archivo CSV con los cupones de WooCommerce y sus campos WPCW asociados.', 'wp-cupon-whatsapp')
+            'description'  => __( 'Descarga un archivo CSV con los cupones de WooCommerce y sus campos WPCW asociados.', 'wp-cupon-whatsapp' ),
         ),
-        'canjes' => array(
-            'label' => __('Exportar Historial de Canjes', 'wp-cupon-whatsapp'),
-            'action_name' => 'wpcw_export_canjes_action',
+        'canjes'        => array(
+            'label'        => __( 'Exportar Historial de Canjes', 'wp-cupon-whatsapp' ),
+            'action_name'  => 'wpcw_export_canjes_action',
             'nonce_action' => 'wpcw_export_canjes_nonce',
-            'description' => __('Descarga un archivo CSV con todos los registros de la tabla de canjes.', 'wp-cupon-whatsapp')
+            'description'  => __( 'Descarga un archivo CSV con todos los registros de la tabla de canjes.', 'wp-cupon-whatsapp' ),
         ),
     );
 
@@ -444,12 +444,12 @@ function wpcw_export_data_section_callback() {
  *                    'description' es opcional para mostrar junto al botón.
  */
 function wpcw_render_export_button_field( $args ) {
-    $action_name = isset($args['action_name']) ? $args['action_name'] : 'wpcw_export_default_action';
-    $button_label = isset($args['label']) ? $args['label'] : __('Exportar Datos', 'wp-cupon-whatsapp');
+    $action_name  = isset( $args['action_name'] ) ? $args['action_name'] : 'wpcw_export_default_action';
+    $button_label = isset( $args['label'] ) ? $args['label'] : __( 'Exportar Datos', 'wp-cupon-whatsapp' );
     // El nonce_action es el 'action' para wp_nonce_field, y el 'name' del campo nonce será $args['nonce_action'] . '_field'
-    $nonce_action_string = isset($args['nonce_action']) ? $args['nonce_action'] : 'wpcw_export_default_nonce';
-    $nonce_field_name = $nonce_action_string . '_nonce_name'; // Nombre único para el campo nonce en POST
-    $description = isset($args['description']) ? $args['description'] : '';
+    $nonce_action_string = isset( $args['nonce_action'] ) ? $args['nonce_action'] : 'wpcw_export_default_nonce';
+    $nonce_field_name    = $nonce_action_string . '_nonce_name'; // Nombre único para el campo nonce en POST
+    $description         = isset( $args['description'] ) ? $args['description'] : '';
 
     // Nonce para la acción específica de exportación.
     wp_nonce_field( $nonce_action_string, $nonce_field_name );
@@ -462,7 +462,7 @@ function wpcw_render_export_button_field( $args ) {
         null         // otros atributos
     );
 
-    if ( !empty($description) ) {
+    if ( ! empty( $description ) ) {
         echo '<p class="description" style="margin-top:0;">' . esc_html( $description ) . '</p>';
     }
 }
@@ -472,11 +472,11 @@ function wpcw_render_export_button_field( $args ) {
  * Renderiza un campo de input de texto genérico para la Settings API.
  */
 function wpcw_render_text_input_field( $args ) {
-    $option_name = $args['option_name'];
+    $option_name  = $args['option_name'];
     $option_value = get_option( $option_name, '' );
-    if ( $option_value === false && isset($args['default']) ) {
+    if ( $option_value === false && isset( $args['default'] ) ) {
         $option_value = $args['default'];
-    } elseif ($option_value === false) {
+    } elseif ( $option_value === false ) {
         $option_value = '';
     }
     $id = isset( $args['id'] ) ? $args['id'] : $option_name;
@@ -497,17 +497,17 @@ function wpcw_required_fields_section_callback() {
  * Sanitiza el array de ajustes para los campos obligatorios.
  */
 function wpcw_sanitize_required_fields_array( $input ) {
-    $sanitized_input = array();
+    $sanitized_input    = array();
     $allowed_field_keys = array(
         'dni_number',
         'birth_date',
         'whatsapp_number',
         'user_institution_id',
-        'user_favorite_coupon_categories'
+        'user_favorite_coupon_categories',
     );
     if ( is_array( $input ) ) {
         foreach ( $allowed_field_keys as $key ) {
-            $sanitized_input[$key] = ( isset( $input[$key] ) && $input[$key] == '1' ) ? '1' : '0';
+            $sanitized_input[ $key ] = ( isset( $input[ $key ] ) && $input[ $key ] == '1' ) ? '1' : '0';
         }
     }
     return $sanitized_input;
@@ -518,11 +518,11 @@ function wpcw_sanitize_required_fields_array( $input ) {
  */
 function wpcw_render_settings_checkbox_field( $args ) {
     $option_name = $args['option_name'];
-    $field_key = $args['field_key'];
-    $id = isset( $args['id'] ) ? $args['id'] : $option_name . '_' . $field_key;
-    $label = isset( $args['label'] ) ? $args['label'] : '';
-    $options = get_option( $option_name, array() );
-    $is_checked = isset( $options[$field_key] ) && $options[$field_key] === '1';
+    $field_key   = $args['field_key'];
+    $id          = isset( $args['id'] ) ? $args['id'] : $option_name . '_' . $field_key;
+    $label       = isset( $args['label'] ) ? $args['label'] : '';
+    $options     = get_option( $option_name, array() );
+    $is_checked  = isset( $options[ $field_key ] ) && $options[ $field_key ] === '1';
     echo '<label for="' . esc_attr( $id ) . '">';
     echo '<input type="checkbox" id="' . esc_attr( $id ) . '" name="' . esc_attr( $option_name . '[' . $field_key . ']' ) . '" value="1" ' . checked( $is_checked, true, false ) . ' /> ';
     echo esc_html( $label );
@@ -551,7 +551,7 @@ function wpcw_render_create_pages_button_field() {
         true,
         null
     );
-    echo '<p class="description">' . esc_html__('Haz clic aquí para crear automáticamente las páginas necesarias para los shortcodes del plugin (ej. Mis Cupones, Cupones Públicos, Solicitud de Adhesión). Las páginas no se duplicarán si ya existen y contienen el shortcode correcto o si ya fueron creadas por esta utilidad.', 'wp-cupon-whatsapp') . '</p>';
+    echo '<p class="description">' . esc_html__( 'Haz clic aquí para crear automáticamente las páginas necesarias para los shortcodes del plugin (ej. Mis Cupones, Cupones Públicos, Solicitud de Adhesión). Las páginas no se duplicarán si ya existen y contienen el shortcode correcto o si ya fueron creadas por esta utilidad.', 'wp-cupon-whatsapp' ) . '</p>';
 }
 
 /**
@@ -569,15 +569,15 @@ function wpcw_handle_admin_actions() {
         $results = WPCW_Installer::create_pages();
 
         // Mostrar mensajes según los resultados
-        if (!empty($results['created'])) {
+        if ( ! empty( $results['created'] ) ) {
             $message = sprintf(
                 _n(
                     'Se ha creado la página: %s',
                     'Se han creado las siguientes páginas: %s',
-                    count($results['created']),
+                    count( $results['created'] ),
                     'wp-cupon-whatsapp'
                 ),
-                implode(', ', $results['created'])
+                implode( ', ', $results['created'] )
             );
             add_settings_error(
                 'wpcw_options_group',
@@ -587,15 +587,15 @@ function wpcw_handle_admin_actions() {
             );
         }
 
-        if (!empty($results['existing'])) {
+        if ( ! empty( $results['existing'] ) ) {
             $message = sprintf(
                 _n(
                     'La siguiente página ya existe: %s',
                     'Las siguientes páginas ya existen: %s',
-                    count($results['existing']),
+                    count( $results['existing'] ),
                     'wp-cupon-whatsapp'
                 ),
-                implode(', ', $results['existing'])
+                implode( ', ', $results['existing'] )
             );
             add_settings_error(
                 'wpcw_options_group',
@@ -605,10 +605,10 @@ function wpcw_handle_admin_actions() {
             );
         }
 
-        if (!empty($results['failed'])) {
-            foreach ($results['failed'] as $failed) {
+        if ( ! empty( $results['failed'] ) ) {
+            foreach ( $results['failed'] as $failed ) {
                 $message = sprintf(
-                    __('Error al crear la página "%s": %s', 'wp-cupon-whatsapp'),
+                    __( 'Error al crear la página "%1$s": %2$s', 'wp-cupon-whatsapp' ),
                     $failed['title'],
                     $failed['error']
                 );
@@ -622,44 +622,44 @@ function wpcw_handle_admin_actions() {
         }
 
         // Redirigir para evitar reenvío del formulario
-        $referer = wp_get_referer();
-        $redirect_url = $referer ? add_query_arg('settings-updated', 'true', $referer) : admin_url('admin.php?page=wpcw-settings&settings-updated=true');
-        wp_redirect($redirect_url);
+        $referer      = wp_get_referer();
+        $redirect_url = $referer ? add_query_arg( 'settings-updated', 'true', $referer ) : admin_url( 'admin.php?page=wpcw-settings&settings-updated=true' );
+        wp_redirect( $redirect_url );
         exit;
     }
 
     // Definir las acciones de exportación y sus detalles
     $export_actions = array(
-        'wpcw_export_comercios_action' => array(
+        'wpcw_export_comercios_action'     => array(
             'nonce_field_name' => 'wpcw_export_comercios_nonce_nonce_name', // Concatenado como en el render
             'nonce_action'     => 'wpcw_export_comercios_nonce',     // Acción del nonce usado en wp_nonce_field
-            'export_type'      => 'comercios'
+            'export_type'      => 'comercios',
         ),
         'wpcw_export_instituciones_action' => array(
             'nonce_field_name' => 'wpcw_export_instituciones_nonce_nonce_name',
             'nonce_action'     => 'wpcw_export_instituciones_nonce',
-            'export_type'      => 'instituciones'
+            'export_type'      => 'instituciones',
         ),
-        'wpcw_export_clientes_action' => array(
+        'wpcw_export_clientes_action'      => array(
             'nonce_field_name' => 'wpcw_export_clientes_nonce_nonce_name',
             'nonce_action'     => 'wpcw_export_clientes_nonce',
-            'export_type'      => 'clientes'
+            'export_type'      => 'clientes',
         ),
-        'wpcw_export_cupones_action' => array(
+        'wpcw_export_cupones_action'       => array(
             'nonce_field_name' => 'wpcw_export_cupones_nonce_nonce_name',
             'nonce_action'     => 'wpcw_export_cupones_nonce',
-            'export_type'      => 'cupones'
+            'export_type'      => 'cupones',
         ),
-        'wpcw_export_canjes_action' => array(
+        'wpcw_export_canjes_action'        => array(
             'nonce_field_name' => 'wpcw_export_canjes_nonce_nonce_name',
             'nonce_action'     => 'wpcw_export_canjes_nonce',
-            'export_type'      => 'canjes'
+            'export_type'      => 'canjes',
         ),
     );
 
     // Iterar sobre las acciones de exportación definidas
     foreach ( $export_actions as $action_name => $config ) {
-        if ( isset( $_POST[$action_name] ) ) {
+        if ( isset( $_POST[ $action_name ] ) ) {
             // Verificar Nonce específico para esta acción de exportación
             // El segundo argumento de check_admin_referer es el 'name' del campo nonce que se envió.
             // En wpcw_render_export_button_field, el nombre del campo nonce es $args['nonce_action'] . '_nonce_name'.
@@ -672,7 +672,7 @@ function wpcw_handle_admin_actions() {
 
             // Llamar a la función que genera el CSV y fuerza la descarga
             // Esta función (a implementar en includes/export-functions.php) debe manejar el exit()
-            if ( function_exists('wpcw_generate_and_download_csv') ) {
+            if ( function_exists( 'wpcw_generate_and_download_csv' ) ) {
                 wpcw_generate_and_download_csv( $config['export_type'] );
                 // La función de exportación debe llamar a exit() después de enviar el archivo.
                 // Si no lo hace, podemos añadir exit aquí para estar seguros.
@@ -682,7 +682,7 @@ function wpcw_handle_admin_actions() {
                 add_settings_error(
                     'wpcw_options_group',
                     'export_function_missing',
-                    sprintf( __('Error: La función de exportación para "%s" no está disponible.', 'wp-cupon-whatsapp'), $config['export_type'] ),
+                    sprintf( __( 'Error: La función de exportación para "%s" no está disponible.', 'wp-cupon-whatsapp' ), $config['export_type'] ),
                     'error'
                 );
                 // No hacer exit aquí para que el error se muestre en la página de ajustes
@@ -704,40 +704,40 @@ if ( ! function_exists( 'wpcw_do_create_plugin_pages' ) ) {
                 'option_name' => 'wpcw_page_id_mis_cupones',
                 'title'       => __( 'Mis Cupones Disponibles', 'wp-cupon-whatsapp' ),
                 'shortcode'   => '[wpcw_mis_cupones]',
-                'slug'        => 'mis-cupones-wpcw'
+                'slug'        => 'mis-cupones-wpcw',
             ),
             array(
                 'option_name' => 'wpcw_page_id_cupones_publicos',
                 'title'       => __( 'Cupones Públicos', 'wp-cupon-whatsapp' ),
                 'shortcode'   => '[wpcw_cupones_publicos]',
-                'slug'        => 'cupones-publicos-wpcw'
+                'slug'        => 'cupones-publicos-wpcw',
             ),
             array(
                 'option_name' => 'wpcw_page_id_solicitud_adhesion',
                 'title'       => __( 'Solicitud de Adhesión', 'wp-cupon-whatsapp' ),
                 'shortcode'   => '[wpcw_solicitud_adhesion_form]',
-                'slug'        => 'solicitud-adhesion-wpcw'
+                'slug'        => 'solicitud-adhesion-wpcw',
             ),
         );
 
-        $created_pages_count = 0;
+        $created_pages_count  = 0;
         $existing_pages_count = 0;
-        $error_pages_count = 0;
+        $error_pages_count    = 0;
 
         foreach ( $pages_to_create as $page_config ) {
-            $page_id = get_option( $page_config['option_name'], 0 );
+            $page_id           = get_option( $page_config['option_name'], 0 );
             $page_exists_valid = false;
 
             if ( $page_id ) {
                 $existing_post = get_post( $page_id );
                 if ( $existing_post && 'page' === $existing_post->post_type && 'trash' !== $existing_post->post_status ) {
-                    if ( has_shortcode( $existing_post->post_content, str_replace(array('[', ']'), '', (string) $page_config['shortcode']) ) ) {
+                    if ( has_shortcode( $existing_post->post_content, str_replace( array( '[', ']' ), '', (string) $page_config['shortcode'] ) ) ) {
                         $page_exists_valid = true;
                     } else {
-                         add_settings_error(
+                        add_settings_error(
                             'wpcw_options_group',
-                            'page_content_mismatch_' . sanitize_key($page_config['slug']),
-                            sprintf( __('La página "%s" existe (ID: %d) pero su contenido no coincide con el shortcode esperado (%s). Considera revisarla manualmente o eliminarla para que se recree.', 'wp-cupon-whatsapp'), $page_config['title'], $page_id, $page_config['shortcode'] ),
+                            'page_content_mismatch_' . sanitize_key( $page_config['slug'] ),
+                            sprintf( __( 'La página "%1$s" existe (ID: %2$d) pero su contenido no coincide con el shortcode esperado (%3$s). Considera revisarla manualmente o eliminarla para que se recree.', 'wp-cupon-whatsapp' ), $page_config['title'], $page_id, $page_config['shortcode'] ),
                             'warning'
                         );
                         $page_exists_valid = true; // Still count as existing to avoid auto-recreation for now
@@ -746,9 +746,9 @@ if ( ! function_exists( 'wpcw_do_create_plugin_pages' ) ) {
             }
 
             if ( $page_exists_valid ) {
-                $existing_pages_count++;
+                ++$existing_pages_count;
             } else {
-                $page_data = array(
+                $page_data   = array(
                     'post_title'     => $page_config['title'],
                     'post_content'   => $page_config['shortcode'],
                     'post_status'    => 'publish',
@@ -760,34 +760,34 @@ if ( ! function_exists( 'wpcw_do_create_plugin_pages' ) ) {
                 $new_page_id = wp_insert_post( $page_data, true );
 
                 if ( is_wp_error( $new_page_id ) ) {
-                    $error_pages_count++;
+                    ++$error_pages_count;
                     add_settings_error(
                         'wpcw_options_group',
-                        'page_creation_error_' . sanitize_key($page_config['slug']),
-                        sprintf( __('Error al crear la página "%s": %s', 'wp-cupon-whatsapp'), $page_config['title'], $new_page_id->get_error_message() ),
+                        'page_creation_error_' . sanitize_key( $page_config['slug'] ),
+                        sprintf( __( 'Error al crear la página "%1$s": %2$s', 'wp-cupon-whatsapp' ), $page_config['title'], $new_page_id->get_error_message() ),
                         'error'
                     );
                 } else {
-                    $created_pages_count++;
+                    ++$created_pages_count;
                     update_option( $page_config['option_name'], $new_page_id );
                     add_settings_error(
                         'wpcw_options_group',
-                        'page_created_' . sanitize_key($page_config['slug']),
-                        sprintf( __('Página "%s" creada exitosamente.', 'wp-cupon-whatsapp'), $page_config['title'] ),
+                        'page_created_' . sanitize_key( $page_config['slug'] ),
+                        sprintf( __( 'Página "%s" creada exitosamente.', 'wp-cupon-whatsapp' ), $page_config['title'] ),
                         'success'
                     );
                 }
             }
         }
 
-        if ($created_pages_count > 0 && $error_pages_count === 0) {
-             add_settings_error('wpcw_options_group', 'some_pages_created', sprintf(_n('%d página del plugin fue creada exitosamente.', '%d páginas del plugin fueron creadas exitosamente.', $created_pages_count, 'wp-cupon-whatsapp'), $created_pages_count), 'success');
-        } elseif ($created_pages_count === 0 && $error_pages_count === 0 && $existing_pages_count === count($pages_to_create)) {
-             add_settings_error('wpcw_options_group', 'all_pages_exist', __('Todas las páginas del plugin necesarias ya existían y parecen estar configuradas correctamente.', 'wp-cupon-whatsapp'), 'info');
-        } elseif ($error_pages_count > 0) {
-            add_settings_error('wpcw_options_group', 'pages_creation_errors', __('Algunas páginas no pudieron ser creadas. Revisa los mensajes de error individuales.', 'wp-cupon-whatsapp'), 'error');
-        } elseif ($created_pages_count > 0 && $error_pages_count === 0 && $existing_pages_count > 0 && ($created_pages_count + $existing_pages_count === count($pages_to_create)) ){
-            add_settings_error('wpcw_options_group', 'pages_creation_mixed_created', sprintf(_n('%d página del plugin fue creada exitosamente. Las demás ya existían.', '%d páginas del plugin fueron creadas exitosamente. Las demás ya existían.', $created_pages_count, 'wp-cupon-whatsapp'), $created_pages_count), 'success');
+        if ( $created_pages_count > 0 && $error_pages_count === 0 ) {
+            add_settings_error( 'wpcw_options_group', 'some_pages_created', sprintf( _n( '%d página del plugin fue creada exitosamente.', '%d páginas del plugin fueron creadas exitosamente.', $created_pages_count, 'wp-cupon-whatsapp' ), $created_pages_count ), 'success' );
+        } elseif ( $created_pages_count === 0 && $error_pages_count === 0 && $existing_pages_count === count( $pages_to_create ) ) {
+            add_settings_error( 'wpcw_options_group', 'all_pages_exist', __( 'Todas las páginas del plugin necesarias ya existían y parecen estar configuradas correctamente.', 'wp-cupon-whatsapp' ), 'info' );
+        } elseif ( $error_pages_count > 0 ) {
+            add_settings_error( 'wpcw_options_group', 'pages_creation_errors', __( 'Algunas páginas no pudieron ser creadas. Revisa los mensajes de error individuales.', 'wp-cupon-whatsapp' ), 'error' );
+        } elseif ( $created_pages_count > 0 && $error_pages_count === 0 && $existing_pages_count > 0 && ( $created_pages_count + $existing_pages_count === count( $pages_to_create ) ) ) {
+            add_settings_error( 'wpcw_options_group', 'pages_creation_mixed_created', sprintf( _n( '%d página del plugin fue creada exitosamente. Las demás ya existían.', '%d páginas del plugin fueron creadas exitosamente. Las demás ya existían.', $created_pages_count, 'wp-cupon-whatsapp' ), $created_pages_count ), 'success' );
         }
     }
 }

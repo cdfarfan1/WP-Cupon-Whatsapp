@@ -274,12 +274,12 @@
         width: 100%;
         padding: 10px 0;
     }
-    
+
     .wpcw-form-table th {
         border-bottom: none;
         margin-bottom: 5px;
     }
-    
+
     .wpcw-interactive-form input[type="text"],
     .wpcw-interactive-form input[type="email"],
     .wpcw-interactive-form input[type="url"],
@@ -289,17 +289,17 @@
     .wpcw-interactive-form textarea {
         max-width: 100%;
     }
-    
+
     .wpcw-form-actions {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .wpcw-form-actions .button {
         text-align: center;
         margin-bottom: 10px;
     }
-    
+
     .wpcw-form-status {
         margin-left: 0;
         text-align: center;
@@ -313,16 +313,16 @@
         border-color: #3c3c3c;
         color: #e0e0e0;
     }
-    
+
     .wpcw-form-table th {
         color: #e0e0e0;
         border-bottom-color: #3c3c3c;
     }
-    
+
     .wpcw-form-table td {
         border-bottom-color: #3c3c3c;
     }
-    
+
     .wpcw-interactive-form input[type="text"],
     .wpcw-interactive-form input[type="email"],
     .wpcw-interactive-form input[type="url"],
@@ -334,7 +334,7 @@
         border-color: #4c4c4c;
         color: #e0e0e0;
     }
-    
+
     .wpcw-interactive-form input:disabled,
     .wpcw-interactive-form select:disabled,
     .wpcw-interactive-form textarea:disabled,
@@ -344,7 +344,7 @@
         color: #888;
         border-color: #3c3c3c;
     }
-    
+
     .wpcw-interactive-form .description {
         color: #aaa;
     }
@@ -355,7 +355,7 @@
     .wpcw-interactive-form {
         border-width: 2px;
     }
-    
+
     .wpcw-interactive-form input[type="text"],
     .wpcw-interactive-form input[type="email"],
     .wpcw-interactive-form input[type="url"],
@@ -365,11 +365,11 @@
     .wpcw-interactive-form textarea {
         border-width: 2px;
     }
-    
+
     .wpcw-interactive-form .wpcw-validate.wpcw-valid {
         border-width: 3px;
     }
-    
+
     .wpcw-interactive-form .wpcw-validate.wpcw-invalid {
         border-width: 3px;
     }
@@ -380,12 +380,12 @@
     .wpcw-form-actions {
         display: none;
     }
-    
+
     .wpcw-interactive-form {
         box-shadow: none;
         border: 1px solid #000;
     }
-    
+
     .wpcw-interactive-form input[type="text"],
     .wpcw-interactive-form input[type="email"],
     .wpcw-interactive-form input[type="url"],

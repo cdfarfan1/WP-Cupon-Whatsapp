@@ -17,22 +17,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function wpcw_stats_get_total_canjes( $filters = array() ) {
     global $wpdb;
-    $tabla_canjes = WPCW_CANJES_TABLE_NAME; // Make sure this constant is defined
-    $sql = "SELECT COUNT(*) FROM {$tabla_canjes}";
+    $tabla_canjes  = WPCW_CANJES_TABLE_NAME; // Make sure this constant is defined
+    $sql           = "SELECT COUNT(*) FROM {$tabla_canjes}";
     $where_clauses = array();
-    $params = array();
+    $params        = array();
 
     if ( ! empty( $filters['status'] ) ) {
-        $where_clauses[] = "estado_canje = %s";
-        $params[] = sanitize_text_field( $filters['status'] );
+        $where_clauses[] = 'estado_canje = %s';
+        $params[]        = sanitize_text_field( $filters['status'] );
     }
     // TODO: Add date filters (date_start, date_end) for fecha_solicitud_canje
 
     if ( ! empty( $where_clauses ) ) {
-        $sql .= " WHERE " . implode( " AND ", $where_clauses );
+        $sql .= ' WHERE ' . implode( ' AND ', $where_clauses );
     }
 
-    if ( empty($params) ) {
+    if ( empty( $params ) ) {
         return (int) $wpdb->get_var( $sql );
     } else {
         return (int) $wpdb->get_var( $wpdb->prepare( $sql, $params ) );
@@ -72,7 +72,7 @@ function wpcw_stats_get_total_cpt_count( $post_type, $meta_query_args = array() 
 function wpcw_stats_get_top_coupons_redeemed( $limit = 5, $filters = array() ) {
     global $wpdb;
     $tabla_canjes = WPCW_CANJES_TABLE_NAME;
-    $limit = absint( $limit );
+    $limit        = absint( $limit );
 
     // For now, only count 'confirmado_por_negocio' or 'utilizado_en_pedido_wc' as "redeemed"
     $redeemed_statuses = "'confirmado_por_negocio', 'utilizado_en_pedido_wc'";
@@ -90,16 +90,16 @@ function wpcw_stats_get_top_coupons_redeemed( $limit = 5, $filters = array() ) {
         $limit
     );
 
-    $results = $wpdb->get_results( $sql );
+    $results     = $wpdb->get_results( $sql );
     $top_coupons = array();
 
     if ( $results ) {
         foreach ( $results as $result ) {
-            $coupon_title = get_the_title( $result->cupon_id );
+            $coupon_title  = get_the_title( $result->cupon_id );
             $top_coupons[] = (object) array(
-                'cupon_id'       => (int) $result->cupon_id,
-                'coupon_title'   => $coupon_title ? $coupon_title : __('Cupón Desconocido', 'wp-cupon-whatsapp'),
-                'count'          => (int) $result->redemption_count,
+                'cupon_id'     => (int) $result->cupon_id,
+                'coupon_title' => $coupon_title ? $coupon_title : __( 'Cupón Desconocido', 'wp-cupon-whatsapp' ),
+                'count'        => (int) $result->redemption_count,
             );
         }
     }
@@ -116,7 +116,7 @@ function wpcw_stats_get_top_coupons_redeemed( $limit = 5, $filters = array() ) {
 function wpcw_stats_get_top_businesses_by_redemptions( $limit = 5, $filters = array() ) {
     global $wpdb;
     $tabla_canjes = WPCW_CANJES_TABLE_NAME;
-    $limit = absint( $limit );
+    $limit        = absint( $limit );
 
     $redeemed_statuses = "'confirmado_por_negocio', 'utilizado_en_pedido_wc'";
 
@@ -130,15 +130,15 @@ function wpcw_stats_get_top_businesses_by_redemptions( $limit = 5, $filters = ar
         $limit
     );
 
-    $results = $wpdb->get_results( $sql );
+    $results        = $wpdb->get_results( $sql );
     $top_businesses = array();
 
     if ( $results ) {
         foreach ( $results as $result ) {
-            $business_name = get_the_title( $result->comercio_id );
+            $business_name    = get_the_title( $result->comercio_id );
             $top_businesses[] = (object) array(
                 'comercio_id'   => (int) $result->comercio_id,
-                'business_name' => $business_name ? $business_name : __('Comercio Desconocido', 'wp-cupon-whatsapp'),
+                'business_name' => $business_name ? $business_name : __( 'Comercio Desconocido', 'wp-cupon-whatsapp' ),
                 'count'         => (int) $result->redemption_count,
             );
         }
@@ -156,25 +156,25 @@ function wpcw_stats_get_top_businesses_by_redemptions( $limit = 5, $filters = ar
  */
 function wpcw_stats_get_canjes_count_for_business( $business_cpt_id, $filters = array() ) {
     global $wpdb;
-    $tabla_canjes = WPCW_CANJES_TABLE_NAME;
+    $tabla_canjes    = WPCW_CANJES_TABLE_NAME;
     $business_cpt_id = absint( $business_cpt_id );
 
     if ( $business_cpt_id <= 0 ) {
         return 0;
     }
 
-    $sql = "SELECT COUNT(*) FROM {$tabla_canjes}";
-    $where_clauses = array("comercio_id = %d");
-    $params = array( $business_cpt_id );
+    $sql           = "SELECT COUNT(*) FROM {$tabla_canjes}";
+    $where_clauses = array( 'comercio_id = %d' );
+    $params        = array( $business_cpt_id );
 
     if ( ! empty( $filters['status'] ) ) {
-        $where_clauses[] = "estado_canje = %s";
-        $params[] = sanitize_text_field( $filters['status'] );
+        $where_clauses[] = 'estado_canje = %s';
+        $params[]        = sanitize_text_field( $filters['status'] );
     }
     // TODO: Add date filters
 
     if ( ! empty( $where_clauses ) ) {
-        $sql .= " WHERE " . implode( " AND ", $where_clauses );
+        $sql .= ' WHERE ' . implode( ' AND ', $where_clauses );
     }
 
     return (int) $wpdb->get_var( $wpdb->prepare( $sql, $params ) );
@@ -195,36 +195,36 @@ function wpcw_stats_get_coupons_count_for_business( $business_user_id, $filters 
 
     // Primero, obtener el ID del CPT wpcw_business asociado a este business_user_id
     // Asumiendo que el user_id del dueño se guarda en el meta '_wpcw_owner_user_id' del CPT wpcw_business
-    $business_cpt_args = array(
-        'post_type'  => 'wpcw_business',
-        'post_status' => 'publish', // Considerar solo negocios activos/publicados
-        'meta_key'   => '_wpcw_owner_user_id',
-        'meta_value' => $business_user_id,
+    $business_cpt_args  = array(
+        'post_type'      => 'wpcw_business',
+        'post_status'    => 'publish', // Considerar solo negocios activos/publicados
+        'meta_key'       => '_wpcw_owner_user_id',
+        'meta_value'     => $business_user_id,
         'posts_per_page' => 1, // Solo debería haber uno, o el primero encontrado
-        'fields'     => 'ids',
+        'fields'         => 'ids',
     );
     $business_cpt_query = new WP_Query( $business_cpt_args );
-    $business_cpt_id = !empty( $business_cpt_query->posts ) ? $business_cpt_query->posts[0] : 0;
+    $business_cpt_id    = ! empty( $business_cpt_query->posts ) ? $business_cpt_query->posts[0] : 0;
 
     $query1_ids = array();
     if ( $business_cpt_id > 0 ) {
         $args1 = array(
-            'post_type' => 'shop_coupon',
-            'post_status' => 'publish',
+            'post_type'      => 'shop_coupon',
+            'post_status'    => 'publish',
             'posts_per_page' => -1,
-            'fields' => 'ids',
-            'meta_query' => array(
+            'fields'         => 'ids',
+            'meta_query'     => array(
                 array(
-                    'key' => '_wpcw_associated_business_id',
-                    'value' => $business_cpt_id,
+                    'key'     => '_wpcw_associated_business_id',
+                    'value'   => $business_cpt_id,
                     'compare' => '=',
-                    'type' => 'NUMERIC'
-                )
-            )
+                    'type'    => 'NUMERIC',
+                ),
+            ),
         );
         // Aplicar filtros adicionales si existen en $filters
         // Ejemplo: if (isset($filters['coupon_type'])) { ... }
-        $q1 = new WP_Query($args1);
+        $q1         = new WP_Query( $args1 );
         $query1_ids = $q1->posts;
     }
 
@@ -232,14 +232,14 @@ function wpcw_stats_get_coupons_count_for_business( $business_user_id, $filters 
     // Esto es relevante si el rol wpcw_business_owner tiene capacidad 'edit_shop_coupons'
     // y WordPress asigna correctamente el post_author.
     $args2 = array(
-        'post_type' => 'shop_coupon',
-        'post_status' => 'publish',
+        'post_type'      => 'shop_coupon',
+        'post_status'    => 'publish',
         'posts_per_page' => -1,
-        'fields' => 'ids',
-        'author' => $business_user_id,
+        'fields'         => 'ids',
+        'author'         => $business_user_id,
     );
     // Aplicar filtros adicionales si existen en $filters
-    $q2 = new WP_Query($args2);
+    $q2         = new WP_Query( $args2 );
     $query2_ids = $q2->posts;
 
     // Combinar y obtener IDs únicos
@@ -271,7 +271,7 @@ function wpcw_stats_get_coupons_count_for_institution( $institution_user_id, $fi
 
     // TODO: Añadir $filters si es necesario (ej. meta_query para tipo de cupón específico de WPCW si se añade)
     // if ( ! empty( $filters['meta_query'] ) ) {
-    //     $coupon_args['meta_query'] = $filters['meta_query'];
+    // $coupon_args['meta_query'] = $filters['meta_query'];
     // }
 
     $query = new WP_Query( $coupon_args );
@@ -293,7 +293,7 @@ function wpcw_stats_get_canjes_count_for_institution_coupons( $institution_user_
     }
 
     // Paso A: Obtener IDs de los cupones creados por esta institución
-    $coupon_ids_args = array(
+    $coupon_ids_args  = array(
         'post_type'      => 'shop_coupon',
         'post_status'    => 'publish', // Considerar todos los estados si un cupón no publicado aún puede tener canjes (poco probable)
         'author'         => $institution_user_id,
@@ -301,7 +301,7 @@ function wpcw_stats_get_canjes_count_for_institution_coupons( $institution_user_
         'fields'         => 'ids', // Solo obtener IDs
     );
     $coupon_ids_query = new WP_Query( $coupon_ids_args );
-    $coupon_ids = $coupon_ids_query->posts;
+    $coupon_ids       = $coupon_ids_query->posts;
 
     if ( empty( $coupon_ids ) ) {
         return 0; // La institución no tiene cupones, por lo tanto, no hay canjes de sus cupones.
@@ -313,20 +313,20 @@ function wpcw_stats_get_canjes_count_for_institution_coupons( $institution_user_
     // Crear placeholders para la cláusula IN
     $ids_placeholders = implode( ', ', array_fill( 0, count( $coupon_ids ), '%d' ) );
 
-    $sql = "SELECT COUNT(*) FROM {$tabla_canjes} WHERE cupon_id IN ( " . $ids_placeholders . " )";
+    $sql = "SELECT COUNT(*) FROM {$tabla_canjes} WHERE cupon_id IN ( " . $ids_placeholders . ' )';
 
     $params = $coupon_ids; // Los IDs de cupón son los primeros parámetros
 
     $where_clauses_canjes = array(); // Renamed to avoid conflict with $where_clauses in other functions
     if ( ! empty( $filters['status'] ) ) {
-        $where_clauses_canjes[] = "estado_canje = %s";
-        $params[] = sanitize_text_field( $filters['status'] );
+        $where_clauses_canjes[] = 'estado_canje = %s';
+        $params[]               = sanitize_text_field( $filters['status'] );
     }
     // TODO: Add date filters for canjes
 
     if ( ! empty( $where_clauses_canjes ) ) {
         // Añadir AND si ya hay una cláusula WHERE (la de cupon_id IN (...))
-        $sql .= " AND " . implode( " AND ", $where_clauses_canjes );
+        $sql .= ' AND ' . implode( ' AND ', $where_clauses_canjes );
     }
 
     return (int) $wpdb->get_var( $wpdb->prepare( $sql, $params ) );
@@ -342,9 +342,9 @@ function wpcw_stats_get_canjes_count_for_institution_coupons( $institution_user_
  */
 function wpcw_stats_get_top_redeemed_coupons_for_business( $business_cpt_id, $limit = 5, $filters = array() ) {
     global $wpdb;
-    $tabla_canjes = WPCW_CANJES_TABLE_NAME;
+    $tabla_canjes    = WPCW_CANJES_TABLE_NAME;
     $business_cpt_id = absint( $business_cpt_id );
-    $limit = absint( $limit );
+    $limit           = absint( $limit );
 
     if ( $business_cpt_id <= 0 ) {
         return array();
@@ -363,16 +363,16 @@ function wpcw_stats_get_top_redeemed_coupons_for_business( $business_cpt_id, $li
         $limit
     );
 
-    $results = $wpdb->get_results( $sql );
+    $results     = $wpdb->get_results( $sql );
     $top_coupons = array();
 
     if ( $results ) {
         foreach ( $results as $result ) {
-            $coupon_title = get_the_title( $result->cupon_id );
+            $coupon_title  = get_the_title( $result->cupon_id );
             $top_coupons[] = (object) array(
-                'cupon_id'       => (int) $result->cupon_id,
-                'coupon_title'   => $coupon_title ? $coupon_title : __('Cupón Desconocido', 'wp-cupon-whatsapp'),
-                'count'          => (int) $result->redemption_count,
+                'cupon_id'     => (int) $result->cupon_id,
+                'coupon_title' => $coupon_title ? $coupon_title : __( 'Cupón Desconocido', 'wp-cupon-whatsapp' ),
+                'count'        => (int) $result->redemption_count,
             );
         }
     }
@@ -390,14 +390,14 @@ function wpcw_stats_get_top_redeemed_coupons_for_business( $business_cpt_id, $li
 function wpcw_stats_get_top_redeemed_coupons_for_institution_user( $institution_user_id, $limit = 5, $filters = array() ) {
     global $wpdb;
     $institution_user_id = absint( $institution_user_id );
-    $limit = absint( $limit );
+    $limit               = absint( $limit );
 
     if ( $institution_user_id <= 0 ) {
         return array();
     }
 
     // Paso A: Obtener IDs de los cupones creados por esta institución
-    $coupon_ids_args = array(
+    $coupon_ids_args  = array(
         'post_type'      => 'shop_coupon',
         'post_status'    => 'publish', // Considerar 'any' si cupones no publicados pueden tener canjes (improbable pero posible)
         'author'         => $institution_user_id,
@@ -405,15 +405,15 @@ function wpcw_stats_get_top_redeemed_coupons_for_institution_user( $institution_
         'fields'         => 'ids',
     );
     $coupon_ids_query = new WP_Query( $coupon_ids_args );
-    $coupon_ids = $coupon_ids_query->posts;
+    $coupon_ids       = $coupon_ids_query->posts;
 
     if ( empty( $coupon_ids ) ) {
         return array(); // La institución no tiene cupones, por lo tanto, no hay canjes de sus cupones.
     }
 
     // Paso B: Contar canjes para esos cupones
-    $tabla_canjes = WPCW_CANJES_TABLE_NAME;
-    $ids_placeholders = implode( ', ', array_fill( 0, count( $coupon_ids ), '%d' ) );
+    $tabla_canjes      = WPCW_CANJES_TABLE_NAME;
+    $ids_placeholders  = implode( ', ', array_fill( 0, count( $coupon_ids ), '%d' ) );
     $redeemed_statuses = "'confirmado_por_negocio', 'utilizado_en_pedido_wc'";
 
     // Construir la parte principal de la consulta SQL
@@ -432,22 +432,21 @@ function wpcw_stats_get_top_redeemed_coupons_for_institution_user( $institution_
     // $sql .= " AND fecha_solicitud_canje <= %s"; $params[] = $filters['date_end'];
     // }
 
-    $sql .= " GROUP BY cupon_id ORDER BY redemption_count DESC LIMIT %d";
+    $sql     .= ' GROUP BY cupon_id ORDER BY redemption_count DESC LIMIT %d';
     $params[] = $limit; // Añadir el límite a los parámetros
 
-    $results = $wpdb->get_results( $wpdb->prepare( $sql, $params ) );
+    $results     = $wpdb->get_results( $wpdb->prepare( $sql, $params ) );
     $top_coupons = array();
 
     if ( $results ) {
         foreach ( $results as $result ) {
-            $coupon_title = get_the_title( $result->cupon_id );
+            $coupon_title  = get_the_title( $result->cupon_id );
             $top_coupons[] = (object) array(
-                'cupon_id'       => (int) $result->cupon_id,
-                'coupon_title'   => $coupon_title ? $coupon_title : __('Cupón Desconocido', 'wp-cupon-whatsapp'),
-                'count'          => (int) $result->redemption_count,
+                'cupon_id'     => (int) $result->cupon_id,
+                'coupon_title' => $coupon_title ? $coupon_title : __( 'Cupón Desconocido', 'wp-cupon-whatsapp' ),
+                'count'        => (int) $result->redemption_count,
             );
         }
     }
     return $top_coupons;
 }
-?>

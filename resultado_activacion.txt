@@ -1,0 +1,3 @@
+﻿=== BUSCADOR DE ERRORES DE ACTIVACI├ôN ===
+
+[PASO 1] Cargando clase WPCW_Installer...

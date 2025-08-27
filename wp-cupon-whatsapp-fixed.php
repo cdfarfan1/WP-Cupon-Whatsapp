@@ -48,17 +48,17 @@ if ( ! defined( 'WPCW_CANJES_TABLE_NAME' ) ) {
  */
 function wpcw_init() {
     // Register post types
-    if (function_exists('wpcw_register_post_types')) {
+    if ( function_exists( 'wpcw_register_post_types' ) ) {
         wpcw_register_post_types();
     }
-    
+
     // Register taxonomies
-    if (function_exists('wpcw_register_taxonomies')) {
+    if ( function_exists( 'wpcw_register_taxonomies' ) ) {
         wpcw_register_taxonomies();
     }
-    
+
     // Initialize roles
-    if (function_exists('wpcw_add_roles')) {
+    if ( function_exists( 'wpcw_add_roles' ) ) {
         wpcw_add_roles();
     }
 }
@@ -68,7 +68,7 @@ add_action( 'init', 'wpcw_init' );
  * Initialize taxonomies
  */
 function wpcw_init_taxonomies() {
-    if (function_exists('wpcw_register_taxonomies')) {
+    if ( function_exists( 'wpcw_register_taxonomies' ) ) {
         wpcw_register_taxonomies();
     }
 }
@@ -78,7 +78,7 @@ add_action( 'init', 'wpcw_init_taxonomies', 5 );
  * Initialize roles
  */
 function wpcw_init_roles() {
-    if (function_exists('wpcw_add_roles')) {
+    if ( function_exists( 'wpcw_add_roles' ) ) {
         wpcw_add_roles();
     }
 }
@@ -97,7 +97,7 @@ add_action( 'plugins_loaded', 'wpcw_load_textdomain' );
  */
 function wpcw_check_dependencies() {
     $errors = array();
-    
+
     // Check PHP version
     if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
         $errors[] = sprintf(
@@ -105,7 +105,7 @@ function wpcw_check_dependencies() {
             PHP_VERSION
         );
     }
-    
+
     // Check if WooCommerce is active
     if ( ! class_exists( 'WooCommerce' ) ) {
         $errors[] = __( 'WP Cupón WhatsApp requiere WooCommerce para funcionar correctamente.', 'wp-cupon-whatsapp' );
@@ -115,7 +115,7 @@ function wpcw_check_dependencies() {
             WC_VERSION
         );
     }
-    
+
     // Check if Elementor is active (optional but recommended)
     if ( ! did_action( 'elementor/loaded' ) ) {
         $errors[] = __( 'Se recomienda tener Elementor instalado para aprovechar todas las funcionalidades.', 'wp-cupon-whatsapp' );
@@ -125,7 +125,7 @@ function wpcw_check_dependencies() {
             ELEMENTOR_VERSION
         );
     }
-    
+
     return $errors;
 }
 
@@ -134,7 +134,7 @@ function wpcw_check_dependencies() {
  */
 function wpcw_admin_notices() {
     $errors = wpcw_check_dependencies();
-    
+
     if ( ! empty( $errors ) ) {
         foreach ( $errors as $error ) {
             echo '<div class="error is-dismissible"><p>' . esc_html( $error ) . '</p></div>';
@@ -148,20 +148,23 @@ add_action( 'admin_notices', 'wpcw_admin_notices' );
  */
 function wpcw_load_core_files() {
     $dependency_errors = wpcw_check_dependencies();
-    
+
     // Allow partial loading even with dependency errors to show admin notices
     if ( ! empty( $dependency_errors ) && ! is_admin() ) {
         return;
     }
-    
+
     // Check WordPress version
     if ( version_compare( get_bloginfo( 'version' ), '5.0', '<' ) ) {
-        add_action( 'admin_notices', function() {
-            echo '<div class="error"><p>' . esc_html__( 'WP Cupón WhatsApp requiere WordPress 5.0 o superior.', 'wp-cupon-whatsapp' ) . '</p></div>';
-        });
+        add_action(
+            'admin_notices',
+            function () {
+                echo '<div class="error"><p>' . esc_html__( 'WP Cupón WhatsApp requiere WordPress 5.0 o superior.', 'wp-cupon-whatsapp' ) . '</p></div>';
+            }
+        );
         return;
     }
-    
+
     // Load core files
     $core_files = array(
         'includes/class-wpcw-installer.php',
@@ -174,8 +177,15 @@ function wpcw_load_core_files() {
         'includes/email-verification.php',
         'includes/redemption-handler.php',
         'includes/validation-enhanced.php',
+        'includes/class-wpcw-auto-config.php',
+        'includes/class-wpcw-regional-detector.php',
+        'includes/class-wpcw-migration-tools.php',
+        'includes/class-wpcw-centralized-logger.php',
+        'includes/class-wpcw-auto-installer.php',
+        'includes/class-wpcw-performance-optimizer.php',
+        'includes/class-wpcw-cli-commands.php',
     );
-    
+
     foreach ( $core_files as $file ) {
         $file_path = WPCW_PLUGIN_DIR . $file;
         if ( file_exists( $file_path ) ) {
@@ -193,18 +203,22 @@ function wpcw_enqueue_admin_scripts( $hook ) {
     if ( strpos( $hook, 'wpcw' ) === false && ! in_array( $hook, array( 'post.php', 'post-new.php' ) ) ) {
         return;
     }
-    
+
     wp_enqueue_style( 'wpcw-admin', WPCW_PLUGIN_URL . 'admin/css/admin.css', array(), WPCW_VERSION );
     wp_enqueue_script( 'wpcw-admin', WPCW_PLUGIN_URL . 'admin/js/admin.js', array( 'jquery' ), WPCW_VERSION, true );
-    
-    wp_localize_script( 'wpcw-admin', 'wpcw_admin', array(
-        'ajax_url' => admin_url( 'admin-ajax.php' ),
-        'nonce' => wp_create_nonce( 'wpcw_admin_nonce' ),
-        'strings' => array(
-            'confirm_delete' => __( '¿Estás seguro de que quieres eliminar este elemento?', 'wp-cupon-whatsapp' ),
-            'processing' => __( 'Procesando...', 'wp-cupon-whatsapp' ),
+
+    wp_localize_script(
+        'wpcw-admin',
+        'wpcw_admin',
+        array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'wpcw_admin_nonce' ),
+			'strings'  => array(
+				'confirm_delete' => __( '¿Estás seguro de que quieres eliminar este elemento?', 'wp-cupon-whatsapp' ),
+				'processing'     => __( 'Procesando...', 'wp-cupon-whatsapp' ),
+			),
         )
-    ));
+    );
 }
 add_action( 'admin_enqueue_scripts', 'wpcw_enqueue_admin_scripts' );
 
@@ -215,7 +229,7 @@ function wpcw_load_admin() {
     if ( ! is_admin() ) {
         return;
     }
-    
+
     $admin_files = array(
         'admin/admin-menu.php',
         'admin/settings-page.php',
@@ -224,7 +238,7 @@ function wpcw_load_admin() {
         'admin/roles-page.php',
         'admin/meta-boxes.php',
     );
-    
+
     foreach ( $admin_files as $file ) {
         $file_path = WPCW_PLUGIN_DIR . $file;
         if ( file_exists( $file_path ) ) {
@@ -241,12 +255,12 @@ function wpcw_load_public() {
     if ( is_admin() ) {
         return;
     }
-    
+
     $public_files = array(
         'public/shortcodes.php',
         'public/my-account-endpoints.php',
     );
-    
+
     foreach ( $public_files as $file ) {
         $file_path = WPCW_PLUGIN_DIR . $file;
         if ( file_exists( $file_path ) ) {
@@ -263,55 +277,55 @@ function wpcw_activate_plugin() {
     try {
         // Check dependencies first
         $dependency_errors = wpcw_check_dependencies();
-        
+
         if ( ! empty( $dependency_errors ) ) {
             $error_message = implode( '\n', $dependency_errors );
-            wp_die( 
+            wp_die(
                 esc_html( $error_message ),
                 esc_html__( 'Error de Dependencias - WP Cupón WhatsApp', 'wp-cupon-whatsapp' ),
                 array( 'back_link' => true )
             );
         }
-        
+
         // Load installer class
         $installer_file = WPCW_PLUGIN_DIR . 'includes/class-wpcw-installer.php';
         if ( ! file_exists( $installer_file ) ) {
-            wp_die( 
+            wp_die(
                 esc_html__( 'Error: No se pudo encontrar el archivo de instalación del plugin.', 'wp-cupon-whatsapp' ),
                 esc_html__( 'Error de Instalación - WP Cupón WhatsApp', 'wp-cupon-whatsapp' ),
                 array( 'back_link' => true )
             );
         }
-        
+
         require_once $installer_file;
-        
+
         if ( ! class_exists( 'WPCW_Installer' ) ) {
-            wp_die( 
+            wp_die(
                 esc_html__( 'Error: No se pudo cargar la clase de instalación del plugin.', 'wp-cupon-whatsapp' ),
                 esc_html__( 'Error de Instalación - WP Cupón WhatsApp', 'wp-cupon-whatsapp' ),
                 array( 'back_link' => true )
             );
         }
-        
+
         // Load required files for activation
         $required_files = array(
             'includes/post-types.php',
             'includes/taxonomies.php',
             'includes/roles.php',
         );
-        
+
         foreach ( $required_files as $file ) {
             $file_path = WPCW_PLUGIN_DIR . $file;
             if ( file_exists( $file_path ) ) {
                 require_once $file_path;
             }
         }
-        
+
         // Initialize plugin settings
         if ( method_exists( 'WPCW_Installer', 'init_settings' ) ) {
             WPCW_Installer::init_settings();
         }
-        
+
         // Create canjes table with error handling
         if ( method_exists( 'WPCW_Installer', 'create_canjes_table' ) ) {
             $table_created = WPCW_Installer::create_canjes_table();
@@ -320,36 +334,36 @@ function wpcw_activate_plugin() {
                 error_log( 'WP Cupón WhatsApp: No se pudo crear la tabla de canjes durante la activación.' );
             }
         }
-        
+
         // Register CPTs
         if ( function_exists( 'wpcw_register_post_types' ) ) {
             wpcw_register_post_types();
         }
-        
+
         // Register Taxonomies
         if ( function_exists( 'wpcw_register_taxonomies' ) ) {
             wpcw_register_taxonomies();
         }
-        
+
         // Add User Roles
         if ( function_exists( 'wpcw_add_roles' ) ) {
             wpcw_add_roles();
         }
-        
+
         // Create plugin pages automatically
         if ( method_exists( 'WPCW_Installer', 'auto_create_pages' ) ) {
             WPCW_Installer::auto_create_pages();
         }
-        
+
         // Flush rewrite rules
         flush_rewrite_rules();
-        
+
     } catch ( Exception $e ) {
         // Log the error
         error_log( 'WP Cupón WhatsApp Activation Error: ' . $e->getMessage() );
-        
+
         // Show user-friendly error message
-        wp_die( 
+        wp_die(
             esc_html__( 'Error durante la activación del plugin. Por favor, revise los logs del servidor para más detalles.', 'wp-cupon-whatsapp' ),
             esc_html__( 'Error de Activación - WP Cupón WhatsApp', 'wp-cupon-whatsapp' ),
             array( 'back_link' => true )
@@ -366,19 +380,19 @@ function wpcw_deactivate_plugin() {
     $roles_file = WPCW_PLUGIN_DIR . 'includes/roles.php';
     if ( file_exists( $roles_file ) ) {
         require_once $roles_file;
-        
+
         // Remove User Roles
         if ( function_exists( 'wpcw_remove_roles' ) ) {
             wpcw_remove_roles();
         }
     }
-    
+
     // Clear rewrite rules
     flush_rewrite_rules();
-    
+
     // Clean up options if needed
     // delete_option('wpcw_settings');
-    
+
     // Note: We don't delete the canjes table by default to preserve data
     // If you want to delete the table, uncomment the following lines:
     // global $wpdb;
@@ -403,5 +417,3 @@ if ( ! function_exists( 'wpcw_init_plugin' ) ) {
     }
     add_action( 'plugins_loaded', 'wpcw_init_plugin', 20 );
 }
-
-?>
