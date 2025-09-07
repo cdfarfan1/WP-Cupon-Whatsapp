@@ -1,0 +1,3 @@
+=== TEST DE INTEGRACIÓN CON WOOCOMMERCE ===
+Iniciando prueba de integración con WooCommerce para WP Cupón WhatsApp
+

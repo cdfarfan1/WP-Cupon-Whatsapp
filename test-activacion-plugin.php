@@ -323,11 +323,21 @@ try {
     include_once $archivoMain;
     echo "✓ Plugin cargado exitosamente\n";
     
-    // Verificar si se definieron las clases principales
-    if (class_exists('WP_Cupon_WhatsApp')) {
-        echo "✓ Clase principal 'WP_Cupon_WhatsApp' definida\n";
+    // Verificar si se definieron las constantes principales
+    if (defined('WPCW_VERSION') && defined('WPCW_PLUGIN_DIR') && defined('WPCW_PLUGIN_URL')) {
+        echo "✓ Constantes principales del plugin definidas correctamente\n";
+        echo "  - WPCW_VERSION: " . WPCW_VERSION . "\n";
+        echo "  - WPCW_PLUGIN_DIR: " . WPCW_PLUGIN_DIR . "\n";
+        echo "  - WPCW_PLUGIN_URL: " . WPCW_PLUGIN_URL . "\n";
     } else {
-        echo "⚠ Clase principal 'WP_Cupon_WhatsApp' no encontrada\n";
+        echo "⚠ Constantes principales del plugin no definidas correctamente\n";
+    }
+    
+    // Verificar si se definieron las funciones principales
+    if (function_exists('wpcw_init') && function_exists('wpcw_load_textdomain')) {
+        echo "✓ Funciones principales del plugin definidas correctamente\n";
+    } else {
+        echo "⚠ Funciones principales del plugin no definidas correctamente\n";
     }
     
 } catch (Error $e) {
@@ -345,7 +355,57 @@ if (!empty($output)) {
     echo "\nSALIDA CAPTURADA:\n$output\n";
 }
 
+echo "\n5. VERIFICANDO FUNCIONALIDADES ESPECÍFICAS:\n";
+
+// Verificar shortcodes registrados
+echo "Shortcodes registrados:\n";
+$shortcodes = array(
+    'wpcw_solicitud_adhesion_form',
+    'wpcw_mis_cupones',
+    'wpcw_cupones_publicos',
+    'wpcw_canje_cupon'
+);
+
+foreach ($shortcodes as $shortcode) {
+    if (function_exists('shortcode_exists')) {
+        echo "  - $shortcode: " . (shortcode_exists($shortcode) ? "✓" : "✗") . "\n";
+    } else {
+        echo "  - $shortcode: Simulado en prueba\n";
+    }
+}
+
+// Verificar integración con WooCommerce
+echo "\nIntegración con WooCommerce:\n";
+if (function_exists('wpcw_add_custom_register_fields') && 
+    function_exists('wpcw_add_custom_account_fields')) {
+    echo "  ✓ Campos personalizados de WooCommerce\n";
+} else {
+    echo "  ✗ Campos personalizados de WooCommerce no definidos\n";
+}
+
+// Verificar integración con WhatsApp
+echo "\nIntegración con WhatsApp:\n";
+if (function_exists('wpcw_request_canje_handler')) {
+    echo "  ✓ Manejador de canjes por WhatsApp\n";
+} else {
+    echo "  ✗ Manejador de canjes por WhatsApp no definido\n";
+}
+
+// Verificar integración con Elementor
+echo "\nIntegración con Elementor:\n";
+if (file_exists(WPCW_PLUGIN_DIR . 'elementor/elementor-addon.php')) {
+    echo "  ✓ Archivo de integración con Elementor encontrado\n";
+} else {
+    echo "  ✗ Archivo de integración con Elementor no encontrado\n";
+}
+
 echo "\n=== RESULTADO ===\n";
 echo "Test de activación completado.\n";
 echo "Si no hay errores arriba, el plugin debería activarse correctamente.\n";
+echo "\nPróximos pasos recomendados:\n";
+echo "1. Activar el plugin en WordPress\n";
+echo "2. Configurar el plugin en WP Cupon > Configuración\n";
+echo "3. Crear cupones de prueba\n";
+echo "4. Probar los shortcodes en páginas de prueba\n";
+echo "5. Verificar la integración con WhatsApp usando enlaces wa.me\n";
 ?>

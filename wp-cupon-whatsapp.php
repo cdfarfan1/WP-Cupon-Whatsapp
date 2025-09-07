@@ -316,6 +316,7 @@ function wpcw_activate_plugin() {
     require_once WPCW_PLUGIN_DIR . 'includes/roles.php';
     require_once WPCW_PLUGIN_DIR . 'includes/email-verification.php';
     require_once WPCW_PLUGIN_DIR . 'includes/redemption-handler.php';
+    require_once WPCW_PLUGIN_DIR . 'includes/woocommerce-integration.php';
 
     // Create canjes table.
     $table_created = WPCW_Installer::create_canjes_table();
