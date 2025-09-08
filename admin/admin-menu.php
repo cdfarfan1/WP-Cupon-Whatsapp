@@ -1,6 +1,6 @@
 <?php
 /**
- * WP Cupón WhatsApp Admin Menu
+ * WP Cupón WhatsApp (Versión Corregida) Admin Menu
  *
  * Handles the creation of the plugin's admin menu and submenus.
  */

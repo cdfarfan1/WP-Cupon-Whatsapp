@@ -1,6 +1,6 @@
 <?php
 /**
- * Shortcodes for WP Cupón WhatsApp
+ * Shortcodes for WP Cupón WhatsApp (Versión Corregida)
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
