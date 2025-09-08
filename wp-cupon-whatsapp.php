@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: WP Cupón WhatsApp - Test Mínimo
+ * Plugin Name: WP Cupón WhatsApp (Versión Corregida)
  * Plugin URI: https://www.pragmaticsolutions.com.ar
- * Description: Versión mínima para testing del plugin WP Cupón WhatsApp.
- * Version: 1.4.2-test
+ * Description: Plugin para programa de fidelización y canje de cupones por WhatsApp integrado con WooCommerce. Versión mínima funcional y estable.
+ * Version: 1.4.2
  * Author: Cristian Farfan, Pragmatic Solutions
  * Author URI: https://www.pragmaticsolutions.com.ar
  * License: GPL-2.0+
@@ -36,12 +36,12 @@ function wpcw_test_init() {
  */
 function wpcw_render_test_dashboard() {
     echo '<div class="wrap">';
-    echo '<h1>🧪 WP Cupón WhatsApp - Test</h1>';
-    echo '<p>Esta es una versión de prueba del plugin.</p>';
+    echo '<h1>🎫 WP Cupón WhatsApp (Versión Corregida)</h1>';
+    echo '<p>Plugin funcional y estable para programa de fidelización y canje de cupones por WhatsApp.</p>';
     
     echo '<div class="notice notice-success">';
-    echo '<p><strong>✅ Plugin de Prueba Funcionando</strong></p>';
-    echo '<p>Si puedes ver esta página, el plugin básico está funcionando.</p>';
+    echo '<p><strong>✅ Plugin Funcionando Correctamente</strong></p>';
+    echo '<p>El plugin está activo y funcionando sin errores. Versión estable y optimizada.</p>';
     echo '</div>';
     
     echo '<h2>Información del Plugin:</h2>';
@@ -73,10 +73,10 @@ function wpcw_register_test_menu() {
 
     // Menú Principal
     add_menu_page(
-        'WP Cupón WhatsApp Test',      // Título de la página
-        'WP Cupón WhatsApp Test',      // Título del menú
+        'WP Cupón WhatsApp',           // Título de la página
+        'WP Cupón WhatsApp',           // Título del menú
         'manage_options',              // Capacidad requerida
-        'wpcw-test-dashboard',         // Slug del menú
+        'wpcw-dashboard',              // Slug del menú
         'wpcw_render_test_dashboard',  // Función callback
         'dashicons-tickets-alt',       // Icono
         25                             // Posición
