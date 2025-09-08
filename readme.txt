@@ -3,11 +3,11 @@ Contributors: Cristian Farfan, Pragmatic Solutions
 Tags: woocommerce, coupon, whatsapp, loyalty, rewards
 Requires at least: 5.0
 Tested up to: 6.4
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Plugin para programa de fidelización y canje de cupones por WhatsApp integrado con WooCommerce. Versión corregida con problemas de headers resueltos, formularios mejorados y optimizaciones de rendimiento.
+Plugin para programa de fidelización y canje de cupones por WhatsApp integrado con WooCommerce. Versión mínima funcional y estable, optimizada para evitar errores de activación y con funcionalidades básicas operativas.
 
 == Description ==
 
@@ -63,6 +63,13 @@ Principales funcionalidades:
 * Nueva categoría "WP Cupón WhatsApp" en Elementor
 * Mejorada la verificación de dependencias (PHP, WordPress, WooCommerce, Elementor)
 * Correcciones de errores y mejoras de rendimiento
+
+= 1.4.2 =
+* Versión mínima funcional y estable
+* Eliminadas dependencias problemáticas que causaban errores de activación
+* Simplificado el código para evitar errores fatales
+* Dashboard de prueba funcional con verificaciones básicas
+* Plugin completamente operativo sin errores
 
 = 1.0.0 =
 * Initial release.
