@@ -1,13 +1,13 @@
-=== WP Canje Cupon Whatsapp ===
+=== WP Cupón WhatsApp ===
 Contributors: Cristian Farfan, Pragmatic Solutions
 Tags: woocommerce, coupon, whatsapp, loyalty, rewards
 Requires at least: 5.0
 Tested up to: 6.4
-Stable tag: 1.2.1
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Plugin para programa de fidelización y canje de cupones por WhatsApp integrado con WooCommerce.
+Plugin para programa de fidelización y canje de cupones por WhatsApp integrado con WooCommerce. Versión completa con formularios mejorados, problemas de headers resueltos y optimizaciones de rendimiento.
 
 == Description ==
 
@@ -38,6 +38,23 @@ Principales funcionalidades:
 * Próximamente.
 
 == Changelog ==
+
+= 1.4.1 =
+* UNIFICACIÓN: Plugin renombrado a "WP Cupón WhatsApp" (versión única)
+* CORRECCIÓN: Resuelto problema de visualización de campos en formularios
+* MEJORA: Implementados estilos CSS modernos y responsive para formularios
+* NUEVO: JavaScript de validación en tiempo real para formularios
+* OPTIMIZACIÓN: Mejorada experiencia de usuario en todos los formularios
+* CORRECCIÓN: Problemas de headers durante instalación resueltos
+* MEJORA: Diseño responsive y accesibilidad mejorada
+
+= 1.4.0 =
+* CORRECCIÓN CRÍTICA: Resuelto problema de "headers already sent" durante la instalación
+* Implementado sistema de output buffering para prevenir errores de headers
+* Organizados archivos de testing en carpeta separada
+* Mejorado sistema de activación limpia
+* Optimizado rendimiento y estabilidad
+* Actualizada documentación técnica
 
 = 1.1.0 =
 * Añadida integración con Elementor
