@@ -122,8 +122,10 @@ function wpcw_safe_admin_notice( $content, $type = 'info' ) {
 }
 
 // Initialize the output buffering system
-// PROBLEMA IDENTIFICADO: Esta línea causa que las páginas muestren HTML sin procesar
-// wpcw_init_output_buffering();
+// Solo inicializar si estamos en modo debug
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    wpcw_init_output_buffering();
+}
 
 /**
  * Override WordPress functions that might cause issues

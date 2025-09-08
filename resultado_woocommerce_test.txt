@@ -1,2 +1,0 @@
-=== TEST SIMPLIFICADO DE INTEGRACIÓN CON WOOCOMMERCE ===
-✓ Archivo de integración con WooCommerce encontrado

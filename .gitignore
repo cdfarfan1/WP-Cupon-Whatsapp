@@ -1,0 +1,64 @@
+# Archivos de testing y debug
+testing-files/
+debug-*.php
+test-*.php
+*test*.php
+*debug*.php
+*simulation*.php
+*activation*.php
+*verificar*.php
+*diagnostico*.php
+*syntax*.php
+*check*.php
+*corregir*.php
+*crear*.php
+*descargar*.php
+*limpiar*.php
+*probar*.php
+*prueba*.php
+*quick*.php
+*restaurar*.php
+*simple*.php
+*verify*.php
+*standalone*.php
+*fixed*.php
+*load*.php
+app.php
+
+# Archivos de resultado
+resultado_*.txt
+resumen-*.php
+
+# Archivos temporales
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Logs
+*.log
+debug.log
+
+# Archivos de configuración local
+wp-config-local.php
+config-local.php
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de WordPress
+wp-content/uploads/
+wp-content/cache/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+
+# Archivos de plugins temporales
+temp-wordpress/

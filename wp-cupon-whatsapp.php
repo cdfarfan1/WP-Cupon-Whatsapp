@@ -24,6 +24,11 @@ if ( ! defined( 'WPINC' ) ) {
 // error_log('WPCW: WooCommerce activo: ' . (class_exists('WooCommerce') ? 'SÍ' : 'NO'));
 // error_log('WPCW: Elementor cargado: ' . (did_action('elementor/loaded') ? 'SÍ' : 'NO'));
 
+// PREVENIR PROBLEMAS DE HEADERS - Iniciar output buffering temprano
+if (!ob_get_level()) {
+    ob_start();
+}
+
 // Define constants first
 define( 'WPCW_VERSION', '1.2.2' );
 define( 'WPCW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -181,29 +186,48 @@ foreach ( $core_files as $file ) {
 }
 // error_log('WPCW: Todos los archivos principales cargados');
 
-// Plugin activation
+// Plugin activation - Usar activación limpia
 register_activation_hook(
     __FILE__,
     function () {
-        if ( ! wpcw_check_dependencies() ) {
-            deactivate_plugins( plugin_basename( __FILE__ ) );
-            wp_die( 'Por favor, verifica los requisitos del plugin antes de activarlo.' );
+        // Iniciar output buffering para prevenir problemas de headers
+        if (!ob_get_level()) {
+            ob_start();
         }
-
-        if ( class_exists( 'WPCW_Installer' ) ) {
-            // Inicializar configuraciones
-            WPCW_Installer::init_settings();
-
-            // Crear tabla de canjes
-            WPCW_Installer::create_canjes_table();
-
-            // Crear páginas automáticamente durante la activación
-            WPCW_Installer::auto_create_pages();
-
-            // Registrar roles iniciales
-            if ( function_exists( 'wpcw_add_roles' ) ) {
-                wpcw_add_roles();
+        
+        try {
+            if ( ! wpcw_check_dependencies() ) {
+                deactivate_plugins( plugin_basename( __FILE__ ) );
+                wp_die( 'Por favor, verifica los requisitos del plugin antes de activarlo.' );
             }
+
+            if ( class_exists( 'WPCW_Installer' ) ) {
+                // Inicializar configuraciones
+                WPCW_Installer::init_settings();
+
+                // Crear tabla de canjes
+                WPCW_Installer::create_canjes_table();
+
+                // Crear páginas automáticamente durante la activación
+                WPCW_Installer::auto_create_pages();
+
+                // Registrar roles iniciales
+                if ( function_exists( 'wpcw_add_roles' ) ) {
+                    wpcw_add_roles();
+                }
+            }
+            
+            // Limpiar output buffer
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
+            
+        } catch (Exception $e) {
+            // Limpiar output buffer en caso de error
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
+            throw $e;
         }
     }
 );
