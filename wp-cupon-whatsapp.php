@@ -612,11 +612,19 @@ function wpcw_public_enqueue_scripts_styles() {
 
     // Si es una página relevante, cargar los recursos necesarios
     if ( $should_load ) {
-        // Encolar estilos
+        // Encolar estilos principales
         wp_enqueue_style(
             'wpcw-public-style',
             WPCW_PLUGIN_URL . 'public/css/public.css',
             array(),
+            WPCW_VERSION
+        );
+        
+        // Encolar estilos de formularios
+        wp_enqueue_style(
+            'wpcw-forms-style',
+            WPCW_PLUGIN_URL . 'public/css/forms.css',
+            array('wpcw-public-style'),
             WPCW_VERSION
         );
 
@@ -628,6 +636,15 @@ function wpcw_public_enqueue_scripts_styles() {
                 array( 'jquery' ), // Dependencia de jQuery
                 WPCW_VERSION,    // Versión del plugin
                 true             // Cargar en el footer
+            );
+            
+            // Cargar script de mejora de formularios
+            wp_enqueue_script(
+                'wpcw-forms-enhancement',
+                WPCW_PLUGIN_URL . 'public/js/forms-enhancement.js',
+                array( 'jquery' ),
+                WPCW_VERSION,
+                true
             );
 
             // Localizar el script para pasar datos de PHP a JS
