@@ -41,6 +41,18 @@ function wpcw_init() {
         add_action( 'admin_notices', 'wpcw_woocommerce_missing_notice' );
         return;
     }
+    
+    // Declare compatibility with WooCommerce features
+    add_action( 'before_woocommerce_init', 'wpcw_declare_woocommerce_compatibility' );
+}
+
+/**
+ * Declare WooCommerce compatibility
+ */
+function wpcw_declare_woocommerce_compatibility() {
+    if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+    }
 }
 
 /**
