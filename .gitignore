@@ -1,64 +1,45 @@
-# Archivos de testing y debug
-testing-files/
-debug-*.php
-test-*.php
-*test*.php
-*debug*.php
-*simulation*.php
-*activation*.php
-*verificar*.php
-*diagnostico*.php
-*syntax*.php
-*check*.php
-*corregir*.php
-*crear*.php
-*descargar*.php
-*limpiar*.php
-*probar*.php
-*prueba*.php
-*quick*.php
-*restaurar*.php
-*simple*.php
-*verify*.php
-*standalone*.php
-*fixed*.php
-*load*.php
-app.php
-
-# Archivos de resultado
-resultado_*.txt
-resumen-*.php
-
-# Archivos temporales
-*.tmp
-*.temp
-*.bak
-*.backup
-
-# Logs
-*.log
-debug.log
-
-# Archivos de configuración local
-wp-config-local.php
-config-local.php
-
-# Archivos de IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Archivos del sistema
-.DS_Store
-Thumbs.db
-
-# Archivos de WordPress
+# WordPress
+wp-config.php
 wp-content/uploads/
 wp-content/cache/
 wp-content/backup-db/
 wp-content/advanced-cache.php
 wp-content/wp-cache-config.php
 
-# Archivos de plugins temporales
-temp-wordpress/
+# Logs
+*.log
+error_log
+debug.log
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node modules
+node_modules/
+npm-debug.log
+
+# Composer
+vendor/
+composer.lock
+
+# Backup files
+*.backup
+*.bak
+backup-*/
