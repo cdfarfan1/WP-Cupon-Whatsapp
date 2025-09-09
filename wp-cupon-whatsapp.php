@@ -29,6 +29,13 @@ define( 'WPCW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WPCW_TEXT_DOMAIN', 'wp-cupon-whatsapp' );
 define( 'WPCW_PLUGIN_FILE', __FILE__ );
 
+// Declare WooCommerce compatibility early
+add_action( 'before_woocommerce_init', function() {
+    if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+    }
+});
+
 /**
  * Initialize plugin functionality
  */
@@ -39,20 +46,8 @@ function wpcw_init() {
     // Check dependencies
     if ( ! class_exists( 'WooCommerce' ) ) {
         add_action( 'admin_notices', 'wpcw_woocommerce_missing_notice' );
-        return;
-    }
-    
-    // Declare compatibility with WooCommerce features
-    add_action( 'before_woocommerce_init', 'wpcw_declare_woocommerce_compatibility' );
+    return;
 }
-
-/**
- * Declare WooCommerce compatibility
- */
-function wpcw_declare_woocommerce_compatibility() {
-    if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-    }
 }
 
 /**
@@ -100,7 +95,7 @@ function wpcw_register_menu() {
     if ( ! current_user_can( 'manage_options' ) ) {
         return;
     }
-    
+
     add_menu_page(
         'WP Cupón WhatsApp',
         'WP Cupón WhatsApp',
