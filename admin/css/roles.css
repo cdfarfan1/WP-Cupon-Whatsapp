@@ -1,0 +1,97 @@
+.wpcw-roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.wpcw-role-card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+}
+
+.wpcw-role-card h2 {
+    margin-top: 0;
+    color: #23282d;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.wpcw-capabilities-list {
+    margin-top: 15px;
+}
+
+.wpcw-capabilities-list h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.wpcw-capabilities-list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpcw-capabilities-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px dotted #eee;
+}
+
+.wpcw-cap-status {
+    font-weight: bold;
+}
+
+.wpcw-cap-status:contains("✓") {
+    color: #46b450;
+}
+
+.wpcw-cap-status:contains("✗") {
+    color: #dc3232;
+}
+
+.wpcw-assign-role-form {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+}
+
+.wpcw-users-list {
+    margin-top: 30px;
+}
+
+.wpcw-users-list table {
+    margin-top: 10px;
+}
+
+.wpcw-users-list th {
+    font-weight: 600;
+}
+
+.wpcw-users-list td, .wpcw-users-list th {
+    padding: 12px 10px;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 782px) {
+    .wpcw-roles-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wpcw-users-list td, .wpcw-users-list th {
+        padding: 8px;
+    }
+
+    .wpcw-users-list .column-primary {
+        display: block;
+    }
+}

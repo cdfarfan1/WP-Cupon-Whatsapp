@@ -1,0 +1,31 @@
+{
+    "name": "wp-cupon-whatsapp/plugin",
+    "description": "Plugin de WordPress para cupones de descuento con integración WhatsApp",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7",
+        "wp-coding-standards/wpcs": "^3.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1"
+    },
+    "scripts": {
+        "phpcs": "phpcs --standard=.phpcs.xml",
+        "phpcbf": "phpcbf --standard=.phpcs.xml",
+        "install-codestandards": [
+            "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
+        ]
+    },
+    "extra": {
+        "installer-paths": {
+            "vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

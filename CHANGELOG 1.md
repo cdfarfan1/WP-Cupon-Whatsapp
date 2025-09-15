@@ -1,0 +1,313 @@
+# Bitácora de Cambios - WP Cupón WhatsApp
+
+Este archivo documenta todos los cambios importantes realizados en el plugin.
+
+---
+
+## [Versión 1.4.0] - 2025-01-27
+
+Versión mayor que introduce un sistema completo de validaciones mejoradas para email y WhatsApp, además de herramientas avanzadas para despliegue masivo y configuración automática.
+
+### ✨ **Nuevas Funcionalidades - Core**
+
+*   **Sistema de Validación Mejorada de Email:**
+    *   Detección automática de errores comunes en dominios (gmail, hotmail, yahoo)
+    *   Sugerencias inteligentes de corrección para dominios mal escritos
+    *   Validación robusta combinando filtros PHP nativos con expresiones regulares
+    *   Validación AJAX en tiempo real desde el frontend
+    *   **Archivo:** `includes/validation-enhanced.php`
+
+*   **Validación Completa de WhatsApp con wa.me:**
+    *   Formateo automático de números argentinos al formato `+54 9 11 1234-5678`
+    *   Generación automática de enlaces `wa.me` para prueba directa sin API
+    *   Detección de números falsos y patrones no válidos
+    *   Validación específica para Argentina con longitud y formato correctos
+    *   Prueba automática de enlaces wa.me para verificar validez
+    *   **Archivos:** `includes/validation-enhanced.php`, `admin/js/validation-enhanced.js`
+
+*   **Sistema de Pruebas Exhaustivo:**
+    *   Script completo de pruebas con interfaz web amigable
+    *   Pruebas de email válidos e inválidos con sugerencias
+    *   Pruebas de números WhatsApp con diferentes formatos
+    *   Pruebas de corrección de carga de teléfono
+    *   **Archivo:** `test-validation-enhanced.php`
+
+### 🚀 **Nuevas Funcionalidades - Producción Masiva**
+
+*   **Sistema de Configuración Automática** (`WPCW_Auto_Config`):
+    *   Configuraciones regionales predefinidas para 6 países
+    *   Detección automática de país por idioma, zona horaria e IP
+    *   Instalador inteligente con configuración automática
+    *   Funciones AJAX para configuración manual
+
+*   **Detector Regional Avanzado** (`WPCW_Regional_Detector`):
+    *   Detección ponderada por múltiples métodos
+    *   Patrones regionales para Argentina, México, Colombia, España, EE.UU. y Brasil
+    *   Validación de coherencia de configuración
+    *   Recomendaciones automáticas de configuración
+
+*   **Herramientas de Migración y Backup** (`WPCW_Migration_Tools`):
+    *   Exportación e importación de configuraciones
+    *   Backups completos (metadatos, configuración, esquema DB)
+    *   Configuración masiva para múltiples sitios
+    *   Gestión de backups con interfaz AJAX
+
+*   **Sistema de Logs Centralizado** (`WPCW_Centralized_Logger`):
+    *   Múltiples niveles de log (debug, info, warning, error)
+    *   Identificador único de sitio
+    *   Manejadores de logs (archivo, DB, remoto, email)
+    *   Envío de logs en lotes y estadísticas
+
+*   **Instalador Automático** (`WPCW_Auto_Installer`):
+    *   10 pasos de instalación automatizada
+    *   4 perfiles de configuración (minimal, standard, enterprise, development)
+    *   3 modos de despliegue (individual, multisitio, masivo)
+    *   Validación completa de requisitos del sistema
+
+*   **Optimizador de Rendimiento** (`WPCW_Performance_Optimizer`):
+    *   4 perfiles de optimización (básico, estándar, agresivo, desarrollo)
+    *   Caché multinivel (consultas, objetos, páginas, fragmentos)
+    *   Minificación CSS/JS, optimización de imágenes, lazy loading
+    *   Integración CDN y monitoreo de rendimiento
+
+*   **Comandos WP-CLI** (`WPCW_CLI_Commands`):
+    *   `wp wpcw install` - Instalación automatizada
+    *   `wp wpcw status` - Estado del plugin
+    *   `wp wpcw configure` - Configuración por línea de comandos
+    *   `wp wpcw optimize` - Optimización de rendimiento
+    *   `wp wpcw backup` - Gestión de backups
+    *   `wp wpcw logs` - Gestión de logs
+
+*   **Scripts de Despliegue Masivo**:
+    *   Script Bash para Linux/Mac (`mass-deployment.sh`)
+    *   Script PowerShell para Windows (`mass-deployment.ps1`)
+    *   Configuración JSON centralizada (`mass-deployment-config.json`)
+    *   Soporte para despliegue en lotes con validación
+
+*   **Documentación Completa**:
+    *   Guía de administradores (`DOCUMENTACION_ADMINISTRADORES.md`)
+    *   Guía de despliegue masivo (`README-MASS-DEPLOYMENT.md`)
+    *   Configuración regional automática
+    *   Mejores prácticas de seguridad y rendimiento
+
+### 🐛 **Correcciones Críticas**
+
+*   **Error de Carga del Teléfono:**
+    *   Corregido error crítico donde los campos de teléfono no se cargaban correctamente
+    *   Implementada función `fix_phone_loading()` para manejar datos serializados
+    *   Manejo automático de arrays mal formateados y valores nulos
+    *   Filtros de WordPress para interceptar metadatos problemáticos
+    *   **Archivos afectados:** `includes/validation-enhanced.php`, `admin/js/validation-enhanced.js`
+
+### 🔧 **Mejoras Técnicas**
+
+*   **Validación Dual (Cliente/Servidor):**
+    *   Validación en tiempo real en JavaScript para mejor UX
+    *   Validación robusta en PHP para seguridad del servidor
+    *   Sincronización perfecta entre ambos sistemas
+
+*   **Sin Dependencias Externas:**
+    *   No requiere APIs de terceros para WhatsApp
+    *   Utiliza únicamente enlaces wa.me estándar
+    *   Compatible con cualquier entorno WordPress
+
+*   **Manejo Robusto de Errores:**
+    *   Gestión de datos corruptos o mal formateados
+    *   Recuperación automática de errores de carga
+    *   Logging detallado para debugging
+
+### 📁 **Archivos Nuevos**
+
+*   `includes/validation-enhanced.php` - Clase principal de validaciones mejoradas
+*   `admin/js/validation-enhanced.js` - Validaciones del lado del cliente
+*   `test-validation-enhanced.php` - Script de pruebas exhaustivo
+*   `MEJORAS_VALIDACION.md` - Documentación detallada de las mejoras
+
+### 📝 **Archivos Modificados**
+
+*   `wp-cupon-whatsapp-fixed.php` - Inclusión del sistema de validación
+*   `admin/interactive-forms.php` - Carga de scripts de validación mejorada
+
+---
+
+## [Versión 1.3.1] - 2025-01-16
+
+Versión de corrección que resuelve errores críticos relacionados con funciones duplicadas y sintaxis PHP.
+
+### 🐛 **Correcciones Críticas**
+
+*   **Error Fatal de Redeclaración de Función:**
+    *   Corregido error fatal: "Cannot redeclare wpcw_start_output_buffering()"
+    *   Función duplicada comentada en `debug-output.php`
+    *   Mantenida función principal en `fix-headers.php`
+    *   **Archivos afectados:** `debug-output.php`, `fix-headers.php`
+
+*   **Error de Sintaxis PHP:**
+    *   Corregido error de sintaxis: "Unclosed '{' on line 32" en `debug-headers.php`
+    *   Añadida llave de cierre faltante para el bucle `foreach`
+    *   Estructura de llaves corregida y validada
+    *   **Archivo afectado:** `debug-headers.php`
+
+*   **Verificación de Funciones Duplicadas:**
+    *   Revisión completa del código para detectar otras posibles duplicaciones
+    *   Confirmado que no existen otras funciones duplicadas en archivos de debug
+    *   Sistema de depuración optimizado y sin conflictos
+
+---
+
+## [Versión 1.3.0] - 2025-01-16
+
+Esta versión introduce mejoras significativas en el sistema de taxonomías y metaboxes para comercios, optimizando la gestión de categorías y el guardado de datos.
+
+### ✨ **Nuevas Funcionalidades**
+
+*   **Nueva Taxonomía para Categorías de Comercios:**
+    *   Implementada taxonomía `wpcw_business_category` para una mejor organización de comercios
+    *   Reemplaza el sistema anterior de campos meta por una taxonomía nativa de WordPress
+    *   Soporte completo para jerarquías y términos personalizados
+    *   **Archivo:** `includes/taxonomies.php`
+
+*   **Sistema de Guardado Mejorado:**
+    *   Implementado hook `save_post` automático para comercios e instituciones
+    *   Función `wpcw_handle_save_post` con protección contra bucles infinitos
+    *   Verificación de permisos y nonces integrada
+    *   **Archivo:** `admin/interactive-forms.php`
+
+### 🔧 **Mejoras Técnicas**
+
+*   **Metaboxes de Comercios Optimizados:**
+    *   Corrección en la obtención de categorías usando `wp_get_object_terms()`
+    *   Eliminación de campos meta redundantes para categorías
+    *   Mejor integración con el sistema de taxonomías de WordPress
+    *   **Archivo:** `admin/interactive-forms.php`
+
+*   **Funcionalidad WhatsApp Verificada:**
+    *   Confirmado funcionamiento correcto de enlaces `wa.me`
+    *   Validación de números de teléfono para Argentina (prefijo 54)
+    *   Plantillas de mensajes predefinidas para diferentes eventos
+    *   **Archivo:** `includes/whatsapp-handlers.php`
+
+### 🐛 **Correcciones**
+
+*   **Guardado de Categorías:**
+    *   Corregido guardado de categorías de comercio usando taxonomías en lugar de meta fields
+    *   Eliminación de código redundante para `_wpcw_business_category`
+    *   Mejor consistencia en el manejo de datos
+
+*   **Visualización de Metaboxes:**
+    *   Verificada correcta visualización de todos los metaboxes en el panel de administración
+    *   Hooks `add_meta_boxes` correctamente conectados
+    *   Campos de teléfono y WhatsApp funcionando correctamente
+
+---
+
+## [Versión 1.2.3] - 2025-01-15
+
+Esta versión corrige los errores de "headers already sent" que persistían después de las correcciones de PHP 8+.
+
+### 🐛 **Corrección de Errores Críticos**
+
+*   **Corrección de Errores "Headers Already Sent":**
+    *   Comentadas todas las líneas de debug `error_log()` activas que causaban output antes de los headers
+    *   **Archivos corregidos:** `wp-cupon-whatsapp.php`, `admin/admin-menu.php`
+    *   Deshabilitada carga temporal de archivos de diagnóstico (`diagnostico-completo.php`, `debug-menu-especifico.php`)
+    *   **Resultado:** Eliminados los warnings "Cannot modify header information - headers already sent"
+    *   **Solución final:** Plugin completamente funcional sin errores de headers en PHP 8+
+
+---
+
+## [Versión 1.2.2] - 2025-01-15
+
+Esta versión completa la corrección de errores Deprecated de PHP 8+ iniciada en la versión 1.2.1.
+
+### 🐛 **Corrección de Errores Críticos**
+
+*   **Corrección Completa de Errores Deprecated de PHP 8+:**
+    *   Se han corregido **TODOS** los errores `Deprecated` restantes relacionados con `get_option()` y `wp_redirect()`.
+    *   **11 archivos modificados** con correcciones adicionales de compatibilidad PHP 8+
+    *   **Archivos corregidos:** `wp-cupon-whatsapp.php`, `includes/approval-handler.php`, `public/shortcodes.php`, `elementor/widgets/widget-formulario-adhesion.php`, `admin/settings-page.php`, `includes/class-wpcw-installer.php`, `admin/setup-wizard.php`, `includes/redemption-logic.php`, `includes/redemption-handler.php`
+    *   **Soluciones implementadas:**
+        *   Añadidos valores por defecto a todas las llamadas `get_option()` para evitar pasar `null` a funciones internas de WordPress
+        *   Implementadas validaciones en `wp_redirect()` para prevenir redirecciones con URLs vacías
+        *   Valores por defecto específicos: `blog_charset` → `'UTF-8'`, `admin_email` → `'admin@example.com'`, opciones personalizadas → `0` o `false`
+        *   Prevención de errores en `wp-includes/functions.php` líneas 7360 y 2195
+    *   **Resultado:** Plugin 100% compatible con PHP 8+ sin errores Deprecated
+
+---
+
+## [Versión 1.2.1] - 2025-01-15
+
+Esta versión se centra en la corrección de errores críticos de compatibilidad con PHP 8+ y mejoras en la experiencia del usuario.
+
+### 🐛 **Corrección de Errores Críticos**
+
+*   **Solucionados Errores Deprecated de PHP 8+ (Actualización Completa):**
+    *   Se han corregido **TODOS** los errores `Deprecated` relacionados con `strpos()`, `str_replace()`, `get_option()` y `wp_redirect()` que causaban problemas de "headers already sent".
+    *   **Primera fase - Archivos corregidos:** `includes/whatsapp-handlers.php`, `wp-cupon-whatsapp.php`, `admin/settings-page.php`, `includes/rest-api.php`
+    *   **Segunda fase - Archivos adicionales corregidos:** `includes/customer-fields.php`, `admin/roles-page.php`, `includes/class-wpcw-registration-forms.php`
+    *   **Tercera fase - Corrección completa de `get_option()` y `wp_redirect()`:**
+        *   **11 archivos modificados** con correcciones adicionales de compatibilidad PHP 8+
+        *   Añadidos valores por defecto a todas las llamadas `get_option()` para evitar pasar `null` a funciones internas de WordPress
+        *   Implementadas validaciones en `wp_redirect()` para prevenir redirecciones con URLs vacías
+        *   **Archivos corregidos:** `wp-cupon-whatsapp.php`, `includes/approval-handler.php`, `public/shortcodes.php`, `elementor/widgets/widget-formulario-adhesion.php`, `admin/settings-page.php`, `includes/class-wpcw-installer.php`, `admin/setup-wizard.php`, `includes/redemption-logic.php`, `includes/redemption-handler.php`
+    *   **Soluciones implementadas:**
+        *   Casting explícito a `string` para evitar pasar valores `null` a funciones de cadena
+        *   Valores por defecto en `get_option()`: `blog_charset` → `'UTF-8'`, `admin_email` → `'admin@example.com'`, opciones personalizadas → `0` o `false`
+        *   Verificaciones `isset()` antes de usar `sanitize_text_field()`
+        *   Validaciones de URLs antes de `wp_redirect()`
+    *   **Resultado:** Plugin 100% compatible con PHP 8+ sin errores Deprecated
+
+### 🛠️ **Mejoras de Experiencia de Usuario**
+
+*   **Avisos de Dependencias Dismissibles:**
+    *   El mensaje de advertencia "WP Canje Cupón WhatsApp requiere: WooCommerce instalado y activado, Elementor instalado y activado" ahora es cerrable.
+    *   Se implementó un sistema de almacenamiento por usuario que recuerda cuando un usuario ha cerrado el aviso.
+    *   Incluye funcionalidad JavaScript y manejador AJAX para una experiencia fluida.
+
+---
+
+## [Versión 1.2.0] - 2025-07-22
+
+Esta versión se centra en la reorganización del menú de administración, la integración con Elementor y la corrección de errores críticos.
+
+### ✨ **Nuevas Características**
+
+*   **Integración con Elementor:**
+    *   Se ha añadido compatibilidad completa con Elementor.
+    *   **Nuevo Widget "Lista de Cupones WPCW":** Permite arrastrar y soltar un widget para mostrar listas de cupones (públicos o de lealtad) con amplias opciones de personalización de contenido y estilo directamente desde el editor de Elementor.
+    *   **Nuevo Widget "Formulario Solicitud Adhesión WPCW":** Permite incrustar el formulario de adhesión para comercios e instituciones en cualquier página construida con Elementor, con controles de estilo completos.
+    *   **Nueva Categoría de Widgets:** Se ha creado la categoría "WP Cupón WhatsApp" en el panel de widgets de Elementor para un fácil acceso.
+
+### 🛠️ **Mejoras y Cambios**
+
+*   **Menú de Administración Unificado:**
+    *   Se han eliminado los múltiples menús de nivel superior ("Comercios", "Instituciones", "Solicitudes") que generaban confusión.
+    *   Toda la gestión del plugin se ha centralizado bajo un único menú principal en la barra lateral de WordPress llamado **"WP Cupón WhatsApp"**.
+    *   **Nueva Página de Escritorio:** Se ha añadido una página de bienvenida ("Escritorio") con accesos rápidos a las funciones más importantes (ver solicitudes, gestionar comercios, ajustes, etc.).
+    *   **Estructura de Submenús Lógica:** Los submenús ahora están organizados de forma intuitiva: Escritorio, Solicitudes, Comercios, Instituciones, Estadísticas y Ajustes.
+
+### 🐛 **Corrección de Errores**
+
+*   **Solucionado Error Crítico de Carga de Traducciones:**
+    *   Se ha corregido el error `PHP Notice: Function _load_textdomain_just_in_time was called incorrectly` y las advertencias subsiguientes `Warning: Cannot modify header information - headers already sent`.
+    *   **Causa:** El problema se debía a que las funciones de traducción se ejecutaban antes de que el "text domain" del plugin se cargara de forma segura, especialmente debido a la carga temprana de los archivos de widgets de Elementor.
+    *   **Solución (en dos partes):**
+        1.  Se ha cambiado el hook que carga los archivos de idioma de `plugins_loaded` a `init`, como recomienda el mensaje de error de WordPress.
+        2.  Se ha refactorizado el código en los widgets de Elementor y en los archivos de registro de CPTs y menús para evitar ejecutar funciones de traducción en el ámbito global de los archivos, retrasando su ejecución a un punto seguro del ciclo de vida de WordPress.
+*   **Archivos de Traducción Actualizados:**
+    *   Se ha actualizado el archivo de traducción al español (`.po`) para incluir todas las nuevas cadenas de texto de la interfaz de los widgets de Elementor.
+
+### 📄 **Documentación**
+
+*   **Manual de Usuario (`MANUAL_DE_USUARIO.md`):** Se ha creado un manual de usuario detallado que explica la instalación, configuración, gestión y uso de los nuevos widgets de Elementor. También incluye una sección de diagnóstico para problemas comunes.
+*   **README.md:** Se ha actualizado el archivo `README.md` para reflejar las nuevas características y la estructura del plugin.
+*   **Bitácora de Cambios (`CHANGELOG.md`):** Se ha creado este archivo para mantener un registro claro y accesible de todos los cambios futuros.
+
+---
+
+## [Versión 1.0.0] - Fecha de Lanzamiento Original
+
+*   Lanzamiento inicial del plugin.
+*   Funcionalidad básica de gestión de cupones, CPTs para comercios, instituciones y solicitudes.
+*   Páginas de administración y estadísticas iniciales.
+*   Shortcodes para la visualización de contenido.

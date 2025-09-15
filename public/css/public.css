@@ -1,0 +1,302 @@
+/* Estilos para WP Cupón WhatsApp */
+
+/* Formulario de canje de cupones */
+.wpcw-canje-cupon-form {
+    max-width: 800px;
+    margin: 20px 0;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.wpcw-canje-cupon-form h2 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #0073aa;
+    padding-bottom: 10px;
+}
+
+/* Información del cupón */
+.wpcw-coupon-info {
+    background: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border-left: 4px solid #0073aa;
+}
+
+.wpcw-coupon-info h3 {
+    margin-top: 0;
+    color: #0073aa;
+    font-size: 1.5em;
+}
+
+.wpcw-coupon-info .coupon-description {
+    font-size: 1.1em;
+    margin: 10px 0;
+    color: #555;
+}
+
+.wpcw-coupon-info .discount-info {
+    font-weight: bold;
+    color: #d63638;
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.wpcw-coupon-info .expiry-date {
+    color: #666;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+/* Acciones de canje */
+.wpcw-redemption-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.wpcw-canjear-cupon-btn {
+    background: #25d366 !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    font-size: 16px !important;
+    border-radius: 6px !important;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none !important;
+    display: inline-block;
+}
+
+.wpcw-canjear-cupon-btn:hover {
+    background: #128c7e !important;
+    color: white !important;
+}
+
+.wpcw-canjear-cupon-btn:disabled {
+    background: #ccc !important;
+    cursor: not-allowed;
+}
+
+/* Lista de cupones disponibles */
+.wpcw-available-coupons {
+    margin-top: 20px;
+}
+
+.wpcw-coupons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.wpcw-coupon-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.wpcw-coupon-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.wpcw-coupon-card h4 {
+    margin-top: 0;
+    color: #0073aa;
+    font-size: 1.3em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.wpcw-coupon-card .description {
+    color: #666;
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.wpcw-coupon-card .discount {
+    font-weight: bold;
+    color: #d63638;
+    font-size: 1.1em;
+    margin: 15px 0;
+}
+
+.wpcw-coupon-card .wpcw-canjear-cupon-btn {
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* Mensajes de estado */
+.wpcw-error {
+    background: #ffeaea;
+    color: #d63638;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #d63638;
+    margin: 15px 0;
+}
+
+.wpcw-warning {
+    background: #fff8e1;
+    color: #8a6914;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #ffb900;
+    margin: 15px 0;
+}
+
+.wpcw-warning .button {
+    margin-top: 10px;
+}
+
+.wpcw-login-required {
+    background: #e1f5fe;
+    color: #0277bd;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #0277bd;
+    margin: 15px 0;
+}
+
+.wpcw-login-required a {
+    color: #0277bd;
+    text-decoration: underline;
+}
+
+/* Indicador de carga */
+.wpcw-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.wpcw-loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0073aa;
+    border-radius: 50%;
+    animation: wpcw-spin 1s linear infinite;
+}
+
+@keyframes wpcw-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .wpcw-coupons-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .wpcw-canje-cupon-form {
+        padding: 15px;
+        margin: 10px 0;
+    }
+    
+    .wpcw-coupon-info {
+        padding: 15px;
+    }
+}
+
+/* Estilos para otros shortcodes existentes */
+.wpcw-mis-cupones,
+.wpcw-cupones-publicos,
+.wpcw-solicitud-adhesion {
+    margin: 20px 0;
+}
+
+.wpcw-coupon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.wpcw-coupon-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.wpcw-form-field {
+    margin-bottom: 15px;
+}
+
+.wpcw-form-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.wpcw-form-field input,
+.wpcw-form-field select,
+.wpcw-form-field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.wpcw-form-field input:focus,
+.wpcw-form-field select:focus,
+.wpcw-form-field textarea:focus {
+    border-color: #0073aa;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+}
+
+.wpcw-submit-btn {
+    background: #0073aa;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.wpcw-submit-btn:hover {
+    background: #005a87;
+}
+
+.wpcw-pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.wpcw-pagination a,
+.wpcw-pagination span {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 2px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #0073aa;
+}
+
+.wpcw-pagination a:hover {
+    background: #f0f0f0;
+}
+
+.wpcw-pagination .current {
+    background: #0073aa;
+    color: white;
+    border-color: #0073aa;
+}

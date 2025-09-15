@@ -1,0 +1,6 @@
+[27-Aug-2025 05:21:51 Europe/Berlin] PHP Warning:  Attempt to read property "prefix" on null in D:\Google Drive\Mi unidad\00000-DEV-CRIS\2025-07\WP-Cupon-Whatsapp\WP-Cupon-Whatsapp\wp-cupon-whatsapp.php on line 40
+[27-Aug-2025 05:21:51 Europe/Berlin] PHP Warning:  Array to string conversion in D:\Google Drive\Mi unidad\00000-DEV-CRIS\2025-07\WP-Cupon-Whatsapp\WP-Cupon-Whatsapp\simular-activacion-wordpress.php on line 30
+[27-Aug-2025 05:23:55 Europe/Berlin] PHP Warning:  Attempt to read property "prefix" on null in D:\Google Drive\Mi unidad\00000-DEV-CRIS\2025-07\WP-Cupon-Whatsapp\WP-Cupon-Whatsapp\wp-cupon-whatsapp.php on line 40
+[27-Aug-2025 05:23:56 Europe/Berlin] PHP Warning:  Array to string conversion in D:\Google Drive\Mi unidad\00000-DEV-CRIS\2025-07\WP-Cupon-Whatsapp\WP-Cupon-Whatsapp\simular-activacion-wordpress.php on line 30
+[27-Aug-2025 05:29:14 Europe/Berlin] PHP Warning:  Attempt to read property "prefix" on null in D:\Google Drive\Mi unidad\00000-DEV-CRIS\2025-07\WP-Cupon-Whatsapp\WP-Cupon-Whatsapp\wp-cupon-whatsapp.php on line 40
+[27-Aug-2025 05:29:14 Europe/Berlin] PHP Warning:  Array to string conversion in D:\Google Drive\Mi unidad\00000-DEV-CRIS\2025-07\WP-Cupon-Whatsapp\WP-Cupon-Whatsapp\simular-activacion-wordpress.php on line 30

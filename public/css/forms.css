@@ -1,0 +1,349 @@
+.wpcw-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Formulario de solicitud de adhesión */
+#wpcw-solicitud-adhesion-form {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.wpcw-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.wpcw-form h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 24px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+.wpcw-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.wpcw-form-group label {
+    font-weight: 600;
+    color: #444;
+    font-size: 14px;
+}
+
+.wpcw-form-group input,
+.wpcw-form-group textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/* Estilos específicos para el formulario de adhesión */
+#wpcw-solicitud-adhesion-form p {
+    margin-bottom: 15px;
+}
+
+#wpcw-solicitud-adhesion-form label {
+    display: block;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+#wpcw-solicitud-adhesion-form input[type="text"],
+#wpcw-solicitud-adhesion-form input[type="email"],
+#wpcw-solicitud-adhesion-form input[type="tel"],
+#wpcw-solicitud-adhesion-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e1e1e1;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+#wpcw-solicitud-adhesion-form input[type="text"]:focus,
+#wpcw-solicitud-adhesion-form input[type="email"]:focus,
+#wpcw-solicitud-adhesion-form input[type="tel"]:focus,
+#wpcw-solicitud-adhesion-form textarea:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.1);
+    outline: none;
+}
+
+#wpcw-solicitud-adhesion-form input[type="radio"] {
+    margin-right: 8px;
+    transform: scale(1.2);
+}
+
+#wpcw-solicitud-adhesion-form fieldset {
+    border: 2px solid #e1e1e1;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+#wpcw-solicitud-adhesion-form legend {
+    font-weight: 600;
+    color: #333;
+    padding: 0 10px;
+    font-size: 16px;
+}
+
+.wpcw-form-group input:focus,
+.wpcw-form-group textarea:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+/* Botón de envío */
+#wpcw-solicitud-adhesion-form input[type="submit"] {
+    background: #2271b1;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#wpcw-solicitud-adhesion-form input[type="submit"]:hover {
+    background: #1e5a96;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(34, 113, 177, 0.3);
+}
+
+#wpcw-solicitud-adhesion-form input[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* Mensajes de error */
+.wpcw-form-errors {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.wpcw-form-errors p {
+    margin: 0 0 10px 0;
+}
+
+.wpcw-form-errors p:last-child {
+    margin-bottom: 0;
+}
+
+/* Mensaje de éxito */
+.wpcw-form-success {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.wpcw-form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .wpcw-form-container,
+    #wpcw-solicitud-adhesion-form {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    #wpcw-solicitud-adhesion-form input[type="text"],
+    #wpcw-solicitud-adhesion-form input[type="email"],
+    #wpcw-solicitud-adhesion-form input[type="tel"],
+    #wpcw-solicitud-adhesion-form textarea {
+        font-size: 16px; /* Previene zoom en iOS */
+    }
+    
+    #wpcw-solicitud-adhesion-form fieldset {
+        padding: 10px;
+    }
+    
+    #wpcw-solicitud-adhesion-form legend {
+        font-size: 14px;
+    }
+}
+
+/* Mejoras de accesibilidad */
+#wpcw-solicitud-adhesion-form input:required,
+#wpcw-solicitud-adhesion-form textarea:required {
+    border-left: 4px solid #2271b1;
+}
+
+#wpcw-solicitud-adhesion-form input:invalid:not(:focus):not(:placeholder-shown),
+#wpcw-solicitud-adhesion-form textarea:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: #dc3545;
+}
+
+/* Indicador de campos requeridos */
+#wpcw-solicitud-adhesion-form label:has(+ input[required]):after,
+#wpcw-solicitud-adhesion-form label:has(+ textarea[required]):after {
+    content: " *";
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Estilos para errores de campo */
+.wpcw-field-error {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1) !important;
+}
+
+.wpcw-field-error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* Mejoras adicionales para formularios */
+.wpcw-enhanced-form {
+    position: relative;
+}
+
+.wpcw-applicant-type-fieldset {
+    background: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+.wpcw-form-input,
+.wpcw-form-textarea {
+    transition: all 0.3s ease;
+}
+
+.wpcw-form-input:focus,
+.wpcw-form-textarea:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(34, 113, 177, 0.15);
+}
+
+.wpcw-submit-button {
+    background: #2271b1;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wpcw-submit-button:hover {
+    background: #135e96;
+    transform: translateY(-1px);
+}
+
+.wpcw-form-messages {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 4px;
+    display: none;
+}
+
+.wpcw-form-messages.success {
+    background: #ecf8e6;
+    color: #287b28;
+    border: 1px solid #287b28;
+    display: block;
+}
+
+.wpcw-form-messages.error {
+    background: #fbe9e7;
+    color: #c62828;
+    border: 1px solid #c62828;
+    display: block;
+}
+
+.wpcw-form-group.has-error input,
+.wpcw-form-group.has-error textarea {
+    border-color: #c62828;
+}
+
+.wpcw-form-group.has-error .error-message {
+    color: #c62828;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 600px) {
+    .wpcw-form-container {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .wpcw-form-group input,
+    .wpcw-form-group textarea {
+        font-size: 14px;
+    }
+
+    .wpcw-submit-button {
+        width: 100%;
+    }
+}
+
+/* Loading state */
+.wpcw-form.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.wpcw-form.loading .wpcw-submit-button {
+    position: relative;
+    padding-left: 40px;
+}
+
+.wpcw-form.loading .wpcw-submit-button::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: wpcw-spin 1s infinite linear;
+}
+
+@keyframes wpcw-spin {
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}

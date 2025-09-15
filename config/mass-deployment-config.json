@@ -1,0 +1,371 @@
+{
+  "deployment": {
+    "version": "1.4.0",
+    "plugin_slug": "wp-cupon-whatsapp",
+    "default_profile": "standard",
+    "default_optimization": "standard",
+    "batch_size": 10,
+    "delay_between_sites": 2000,
+    "timeout": 300000,
+    "retry_attempts": 3,
+    "retry_delay": 5000
+  },
+  "profiles": {
+    "minimal": {
+      "description": "Configuración mínima para sitios básicos",
+      "features": {
+        "auto_config": true,
+        "regional_detection": false,
+        "performance_optimization": false,
+        "centralized_logging": false,
+        "migration_tools": false
+      },
+      "settings": {
+        "wpcw_phone_validation": "basic",
+        "wpcw_email_validation": "basic",
+        "wpcw_cache_enabled": false,
+        "wpcw_debug_mode": false,
+        "wpcw_auto_updates": true
+      }
+    },
+    "standard": {
+      "description": "Configuración estándar para la mayoría de sitios",
+      "features": {
+        "auto_config": true,
+        "regional_detection": true,
+        "performance_optimization": true,
+        "centralized_logging": true,
+        "migration_tools": true
+      },
+      "settings": {
+        "wpcw_phone_validation": "enhanced",
+        "wpcw_email_validation": "enhanced",
+        "wpcw_cache_enabled": true,
+        "wpcw_debug_mode": false,
+        "wpcw_auto_updates": true,
+        "wpcw_backup_enabled": true,
+        "wpcw_monitoring_enabled": true
+      }
+    },
+    "enterprise": {
+      "description": "Configuración empresarial para sitios de alto tráfico",
+      "features": {
+        "auto_config": true,
+        "regional_detection": true,
+        "performance_optimization": true,
+        "centralized_logging": true,
+        "migration_tools": true,
+        "advanced_analytics": true,
+        "multi_site_management": true
+      },
+      "settings": {
+        "wpcw_phone_validation": "advanced",
+        "wpcw_email_validation": "advanced",
+        "wpcw_cache_enabled": true,
+        "wpcw_cache_type": "redis",
+        "wpcw_debug_mode": false,
+        "wpcw_auto_updates": true,
+        "wpcw_backup_enabled": true,
+        "wpcw_backup_frequency": "daily",
+        "wpcw_monitoring_enabled": true,
+        "wpcw_performance_monitoring": true,
+        "wpcw_security_enhanced": true,
+        "wpcw_cdn_enabled": true
+      }
+    },
+    "development": {
+      "description": "Configuración para entornos de desarrollo",
+      "features": {
+        "auto_config": true,
+        "regional_detection": true,
+        "performance_optimization": false,
+        "centralized_logging": true,
+        "migration_tools": true,
+        "debug_tools": true
+      },
+      "settings": {
+        "wpcw_phone_validation": "basic",
+        "wpcw_email_validation": "basic",
+        "wpcw_cache_enabled": false,
+        "wpcw_debug_mode": true,
+        "wpcw_auto_updates": false,
+        "wpcw_backup_enabled": false,
+        "wpcw_monitoring_enabled": true,
+        "wpcw_test_mode": true,
+        "wpcw_verbose_logging": true
+      }
+    }
+  },
+  "optimization_levels": {
+    "none": {
+      "description": "Sin optimizaciones",
+      "settings": {
+        "minify_css": false,
+        "minify_js": false,
+        "optimize_images": false,
+        "lazy_loading": false,
+        "database_optimization": false,
+        "cdn_integration": false,
+        "caching": false
+      }
+    },
+    "basic": {
+      "description": "Optimizaciones básicas",
+      "settings": {
+        "minify_css": true,
+        "minify_js": true,
+        "optimize_images": false,
+        "lazy_loading": true,
+        "database_optimization": false,
+        "cdn_integration": false,
+        "caching": true,
+        "cache_type": "file"
+      }
+    },
+    "standard": {
+      "description": "Optimizaciones estándar",
+      "settings": {
+        "minify_css": true,
+        "minify_js": true,
+        "optimize_images": true,
+        "lazy_loading": true,
+        "database_optimization": true,
+        "cdn_integration": false,
+        "caching": true,
+        "cache_type": "object",
+        "preload_resources": true,
+        "gzip_compression": true
+      }
+    },
+    "aggressive": {
+      "description": "Optimizaciones agresivas para máximo rendimiento",
+      "settings": {
+        "minify_css": true,
+        "minify_js": true,
+        "optimize_images": true,
+        "lazy_loading": true,
+        "database_optimization": true,
+        "cdn_integration": true,
+        "caching": true,
+        "cache_type": "redis",
+        "preload_resources": true,
+        "gzip_compression": true,
+        "critical_css": true,
+        "defer_js": true,
+        "resource_hints": true
+      }
+    }
+  },
+  "regional_configs": {
+    "AR": {
+      "country": "Argentina",
+      "currency": "ARS",
+      "phone_format": "+54 9 11 xxxx-xxxx",
+      "whatsapp_code": "+54",
+      "timezone": "America/Argentina/Buenos_Aires",
+      "language": "es_AR",
+      "date_format": "d/m/Y",
+      "time_format": "H:i"
+    },
+    "MX": {
+      "country": "México",
+      "currency": "MXN",
+      "phone_format": "+52 1 xx xxxx xxxx",
+      "whatsapp_code": "+52",
+      "timezone": "America/Mexico_City",
+      "language": "es_MX",
+      "date_format": "d/m/Y",
+      "time_format": "H:i"
+    },
+    "CO": {
+      "country": "Colombia",
+      "currency": "COP",
+      "phone_format": "+57 3xx xxx xxxx",
+      "whatsapp_code": "+57",
+      "timezone": "America/Bogota",
+      "language": "es_CO",
+      "date_format": "d/m/Y",
+      "time_format": "H:i"
+    },
+    "ES": {
+      "country": "España",
+      "currency": "EUR",
+      "phone_format": "+34 xxx xxx xxx",
+      "whatsapp_code": "+34",
+      "timezone": "Europe/Madrid",
+      "language": "es_ES",
+      "date_format": "d/m/Y",
+      "time_format": "H:i"
+    },
+    "US": {
+      "country": "United States",
+      "currency": "USD",
+      "phone_format": "+1 (xxx) xxx-xxxx",
+      "whatsapp_code": "+1",
+      "timezone": "America/New_York",
+      "language": "en_US",
+      "date_format": "m/d/Y",
+      "time_format": "g:i A"
+    },
+    "BR": {
+      "country": "Brasil",
+      "currency": "BRL",
+      "phone_format": "+55 (xx) xxxxx-xxxx",
+      "whatsapp_code": "+55",
+      "timezone": "America/Sao_Paulo",
+      "language": "pt_BR",
+      "date_format": "d/m/Y",
+      "time_format": "H:i"
+    }
+  },
+  "logging": {
+    "enabled": true,
+    "level": "info",
+    "max_file_size": "10MB",
+    "max_files": 10,
+    "remote_logging": {
+      "enabled": false,
+      "endpoint": "",
+      "api_key": ""
+    },
+    "email_notifications": {
+      "enabled": false,
+      "recipients": [],
+      "error_threshold": 5
+    }
+  },
+  "monitoring": {
+    "enabled": true,
+    "metrics": {
+      "performance": true,
+      "errors": true,
+      "usage": true,
+      "security": true
+    },
+    "alerts": {
+      "email": {
+        "enabled": false,
+        "recipients": []
+      },
+      "webhook": {
+        "enabled": false,
+        "url": ""
+      }
+    }
+  },
+  "backup": {
+    "enabled": true,
+    "frequency": "weekly",
+    "retention": 30,
+    "include": {
+      "settings": true,
+      "database": true,
+      "files": false
+    },
+    "storage": {
+      "local": true,
+      "remote": {
+        "enabled": false,
+        "provider": "",
+        "credentials": {}
+      }
+    }
+  },
+  "security": {
+    "api_rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 60
+    },
+    "ip_whitelist": {
+      "enabled": false,
+      "ips": []
+    },
+    "encryption": {
+      "sensitive_data": true,
+      "algorithm": "AES-256-CBC"
+    }
+  },
+  "api": {
+    "version": "v1",
+    "base_url": "/wp-json/wpcw/v1",
+    "authentication": {
+      "required": true,
+      "method": "jwt"
+    },
+    "endpoints": {
+      "status": "/status",
+      "config": "/config",
+      "install": "/install",
+      "optimize": "/optimize",
+      "backup": "/backup",
+      "logs": "/logs"
+    }
+  },
+  "wp_cli": {
+    "commands": {
+      "install": "wp wpcw install",
+      "configure": "wp wpcw configure",
+      "optimize": "wp wpcw optimize",
+      "backup": "wp wpcw backup",
+      "status": "wp wpcw status",
+      "logs": "wp wpcw logs"
+    }
+  },
+  "requirements": {
+    "php": {
+      "min_version": "7.4",
+      "recommended_version": "8.0",
+      "extensions": [
+        "curl",
+        "json",
+        "mbstring",
+        "openssl",
+        "zip"
+      ]
+    },
+    "wordpress": {
+      "min_version": "5.0",
+      "recommended_version": "6.0"
+    },
+    "memory": {
+      "min_limit": "128M",
+      "recommended_limit": "256M"
+    },
+    "permissions": {
+      "wp_content": "755",
+      "plugins": "755",
+      "uploads": "755"
+    }
+  },
+  "troubleshooting": {
+    "common_issues": {
+      "plugin_activation_failed": {
+        "description": "El plugin no se puede activar",
+        "solutions": [
+          "Verificar permisos de archivos",
+          "Comprobar versión de PHP",
+          "Revisar logs de errores",
+          "Desactivar otros plugins conflictivos"
+        ]
+      },
+      "configuration_not_applied": {
+        "description": "La configuración no se aplica correctamente",
+        "solutions": [
+          "Limpiar caché del sitio",
+          "Verificar permisos de base de datos",
+          "Comprobar configuración regional",
+          "Revisar logs del plugin"
+        ]
+      },
+      "performance_issues": {
+        "description": "El sitio funciona lento después de la instalación",
+        "solutions": [
+          "Ajustar nivel de optimización",
+          "Verificar configuración de caché",
+          "Optimizar base de datos",
+          "Revisar uso de memoria"
+        ]
+      }
+    }
+  }
+}

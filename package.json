@@ -1,0 +1,30 @@
+{
+  "name": "wp-cupon-whatsapp",
+  "version": "1.0.0",
+  "description": "Plugin de WordPress para cupones de descuento con integración WhatsApp",
+  "private": true,
+  "scripts": {
+    "lint:js": "eslint assets/js/**/*.js --ext .js",
+    "lint:js:fix": "eslint assets/js/**/*.js --ext .js --fix",
+    "lint:css": "stylelint assets/css/**/*.css",
+    "lint:css:fix": "stylelint assets/css/**/*.css --fix",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:fix": "npm run lint:js:fix && npm run lint:css:fix"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-wordpress": "^2.0.0",
+    "stylelint": "^16.2.1",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-order": "^6.0.4"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "coupon",
+    "whatsapp",
+    "discount"
+  ],
+  "author": "Tu Nombre",
+  "license": "GPL-2.0-or-later"
+}
