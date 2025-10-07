@@ -4,6 +4,90 @@ Este documento es el diario de a bordo cronológico del proyecto. Cada entrada c
 
 ---
 
+## Log Entry: 2025-10-07 11
+
+*   **Feature Slice:** MVP 2.2 - Capa de Personalización (FASE 2 COMPLETADA)
+*   **Action:** Implementación de la gestión de categorías preferidas y la vista ordenada en el portal del beneficiario.
+*   **Lead Agent:** La Diseñadora de Experiencias, El Artesano de WordPress
+*   **Files Modified:** `includes/class-wpcw-shortcodes.php`
+*   **Reasoning:** Se ha añadido un formulario para que los usuarios guarden sus categorías de interés. La consulta de cupones del portal ahora prioriza estas categorías, mostrando primero los resultados más relevantes para el usuario. Esto completa la funcionalidad planificada para la Fase 2.
+*   **Commit Hash:** 82ed51c
+
+---
+
+## Log Entry: 2025-10-07 10
+
+*   **Feature Slice:** MVP 2.1 - Catálogo General de Beneficios (COMPLETADO)
+*   **Action:** Implementación del shortcode `[wpcw_portal_beneficiario]`.
+*   **Lead Agent:** El Artesano de WordPress
+*   **Supervisor:** El Arquitecto
+*   **Files Modified:** `includes/class-wpcw-shortcodes.php`
+*   **Reasoning:** Se ha creado la lógica principal que permite a un beneficiario validado ver su catálogo de cupones. La función consulta la cadena completa de Usuario -> Institución -> Convenios -> Cupones, sentando las bases para la futura personalización. Esto completa la primera parte del portal del beneficiario.
+*   **Commit Hash:** cd1eb20
+
+---
+
+## Log Entry: 2025-10-07 9
+
+*   **Feature Slice:** MVP 2.0 - Registro y Validación Simple (Parte B - COMPLETADO)
+*   **Action:** Implementación del shortcode y formulario público para el registro de beneficiarios.
+*   **Lead Agent:** El Artesano de WordPress, La Diseñadora de Experiencias
+*   **Supervisor:** El Guardián de la Seguridad
+*   **Files Modified:** `includes/class-wpcw-shortcodes.php`
+*   **Reasoning:** Se ha creado el shortcode `[wpcw_registro_beneficiario]` que renderiza un formulario de registro. La lógica del formulario valida el email del usuario contra la lista de miembros válidos (subida por el Gerente de Institución) antes de crear la cuenta de usuario. Esto completa el flujo de validación simple y finaliza el MVP de la Fase 2.
+*   **Commit Hash:** 96f37f1
+
+---
+
+## Log Entry: 2025-10-07 8
+
+*   **Feature Slice:** MVP 2.0 - Registro y Validación Simple (Parte A)
+*   **Action:** Implementación del panel y la lógica para la gestión de miembros vía subida de CSV.
+*   **Lead Agent:** El Artesano de WordPress, La Diseñadora de Experiencias
+*   **Supervisor:** El Guardián de la Seguridad
+*   **Files Modified:** `admin/institution-dashboard-page.php`
+*   **Reasoning:** Se ha añadido la interfaz y la lógica de backend para que un Gerente de Institución pueda subir un archivo CSV con los emails de sus miembros. El sistema procesa y guarda esta lista, estableciendo la base para el sistema de validación de beneficiarios. Esto completa la primera mitad del MVP de la Fase 2.
+*   **Commit Hash:** a155486
+
+---
+
+## Log Entry: 2025-10-07 7
+
+*   **Feature Slice:** Gestión de Cupones por Convenio
+*   **Action:** Refactorización del metabox de cupones para asociarlos a convenios.
+*   **Lead Agent:** El Artesano de WordPress
+*   **Supervisor:** El Arquitecto
+*   **Files Modified:** `admin/coupon-meta-boxes.php`
+*   **Reasoning:** Se ha reescrito por completo el metabox de la pantalla de edición de cupones. Se eliminó la asociación directa a un negocio y se reemplazó por un selector que solo muestra los convenios activos del usuario. La lógica de guardado ahora almacena `_wpcw_associated_convenio_id` y se añadió una columna a la lista de cupones para visualizar esta nueva relación. Esto alinea el sistema de cupones con la nueva arquitectura.
+*   **Commit Hash:** 62ac71b
+
+---
+
+## Log Entry: 2025-10-07 6
+
+*   **Feature Slice:** MVP 1.1 - La Autopista de Respuesta (COMPLETADO)
+*   **Action:** Implementación de la lógica de acción para aceptar y rechazar convenios desde la página virtual.
+*   **Lead Agent:** El Artesano de WordPress
+*   **Supervisor:** El Guardián de la Seguridad
+*   **Files Modified:** `public/response-handler.php`
+*   **Reasoning:** Se ha completado el flujo de respuesta. La página virtual ahora procesa los parámetros de acción (`accept`/`reject`), actualiza el estado del post del convenio, e invalida el token de seguridad eliminándolo. Esto completa la funcionalidad del MVP 1.1, permitiendo un ciclo completo de propuesta y respuesta.
+*   **Commit Hash:** 5ea99c4
+
+---
+
+## Log Entry: 2025-10-07 5
+
+*   **Feature Slice:** MVP 1.1 - La Autopista de Respuesta
+*   **Action:** Creación del manejador de página virtual para `/responder-convenio/`.
+*   **Lead Agent:** El Artesano de WordPress
+*   **Supervisor:** El Guardián de la Seguridad
+*   **Files Created:** `public/response-handler.php`
+*   **Files Modified:** `wp-cupon-whatsapp.php`, `includes/roles.php`
+*   **Reasoning:** Se ha implementado la lógica para que WordPress reconozca la URL `/responder-convenio/` sin necesidad de un archivo físico. El manejador intercepta la petición, valida el token de seguridad y el estado del convenio, y muestra una interfaz básica de respuesta. Se ha añadido `flush_rewrite_rules()` a la activación para asegurar que la nueva URL funcione inmediatamente.
+*   **Commit Hash:** 4b1951d
+
+---
+
 ## Log Entry: 2025-10-07 4
 
 *   **Feature Slice:** MVP 1.1 - La Autopista de Respuesta

@@ -82,6 +82,45 @@ function wpcw_handle_member_csv_upload() {
 }
 add_action( 'admin_init', 'wpcw_handle_member_csv_upload' );
 
+/**
+ * Handles saving the API configuration for member validation.
+ */
+function wpcw_handle_api_config_form() {
+    if ( ! isset( $_POST['submit_api_config'] ) ) {
+        return;
+    }
+
+    if ( ! isset( $_POST['wpcw_nonce_api_config'] ) || ! wp_verify_nonce( $_POST['wpcw_nonce_api_config'], 'wpcw_api_config_nonce' ) ) {
+        wp_die( 'Error de seguridad.' );
+    }
+    if ( ! current_user_can( 'manage_institution' ) ) {
+        wp_die( 'No tienes permisos para esta acción.' );
+    }
+
+    $institution_id = get_user_meta( get_current_user_id(), '_wpcw_institution_id', true );
+    if ( ! $institution_id ) {
+        // Error notice is handled by the main notice function
+        return;
+    }
+
+    // Get and sanitize data
+    $validation_method = isset( $_POST['wpcw_validation_method'] ) ? sanitize_key( $_POST['wpcw_validation_method'] ) : 'csv';
+    $api_url = isset( $_POST['wpcw_api_endpoint_url'] ) ? esc_url_raw( $_POST['wpcw_api_endpoint_url'] ) : '';
+    $api_header = isset( $_POST['wpcw_api_header_name'] ) ? sanitize_text_field( $_POST['wpcw_api_header_name'] ) : '';
+    $api_key = isset( $_POST['wpcw_api_key'] ) ? sanitize_text_field( $_POST['wpcw_api_key'] ) : ''; // Not encrypted, as per TD001
+
+    // Save data
+    update_post_meta( $institution_id, '_wpcw_validation_method', $validation_method );
+    update_post_meta( $institution_id, '_wpcw_api_url', $api_url );
+    update_post_meta( $institution_id, '_wpcw_api_header', $api_header );
+    update_post_meta( $institution_id, '_wpcw_api_key', $api_key );
+
+    $redirect_url = add_query_arg( 'wpcw_notice', 'api_config_updated', admin_url( 'admin.php?page=wpcw-institution-dashboard' ) );
+    wp_safe_redirect( $redirect_url );
+    exit;
+}
+add_action( 'admin_init', 'wpcw_handle_api_config_form' );
+
 
 /**
  * Displays admin notices for institution dashboard actions.
@@ -93,6 +132,8 @@ function wpcw_institution_admin_notices() {
 
     if ( $_GET['wpcw_notice'] === 'members_updated' ) {
         echo '<div class="notice notice-success is-dismissible"><p>' . __( '¡Lista de miembros actualizada correctamente!', 'wp-cupon-whatsapp' ) . '</p></div>';
+    } elseif ( $_GET['wpcw_notice'] === 'api_config_updated' ) {
+        echo '<div class="notice notice-success is-dismissible"><p>' . __( '¡Configuración de API guardada correctamente!', 'wp-cupon-whatsapp' ) . '</p></div>';
     }
 }
 add_action( 'admin_notices', 'wpcw_institution_admin_notices' );
@@ -158,6 +199,42 @@ function wpcw_render_institution_dashboard_page() {
                                 <div class="wpcw-member-list">
                                     <p><em><?php _e( 'Aquí se mostrará la lista de emails de los miembros actualmente válidos.', 'wp-cupon-whatsapp' ); ?></em></p>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Nueva sección para Configuración de API -->
+                        <div class="postbox">
+                            <h2 class="hndle"><span><?php _e( 'Configuración de Validación por API', 'wp-cupon-whatsapp' ); ?></span></h2>
+                            <div class="inside">
+                                <form method="post">
+                                    <?php wp_nonce_field( 'wpcw_api_config_nonce', 'wpcw_nonce_api_config' ); ?>
+                                    <table class="form-table">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row"><?php _e( 'Método de Validación', 'wp-cupon-whatsapp' ); ?></th>
+                                                <td>
+                                                    <label><input type="radio" name="wpcw_validation_method" value="csv" checked> <?php _e( 'Lista CSV (Subida Manual)', 'wp-cupon-whatsapp' ); ?></label><br>
+                                                    <label><input type="radio" name="wpcw_validation_method" value="api"> <?php _e( 'API Externa (Tiempo Real)', 'wp-cupon-whatsapp' ); ?></label>
+                                                </td>
+                                            </tr>
+                                            <tr class="api-config-row">
+                                                <th scope="row"><label for="wpcw_api_endpoint_url"><?php _e( 'URL del Endpoint de la API', 'wp-cupon-whatsapp' ); ?></label></th>
+                                                <td><input type="url" name="wpcw_api_endpoint_url" id="wpcw_api_endpoint_url" class="large-text" placeholder="https://api.miinstitucion.com/validar-miembro"></td>
+                                            </tr>
+                                            <tr class="api-config-row">
+                                                <th scope="row"><label for="wpcw_api_header_name"><?php _e( 'Nombre de la Cabecera de Auth', 'wp-cupon-whatsapp' ); ?></label></th>
+                                                <td><input type="text" name="wpcw_api_header_name" id="wpcw_api_header_name" class="regular-text" placeholder="X-API-KEY"></td>
+                                            </tr>
+                                            <tr class="api-config-row">
+                                                <th scope="row"><label for="wpcw_api_key"><?php _e( 'Valor de la API Key', 'wp-cupon-whatsapp' ); ?></label></th>
+                                                <td><input type="password" name="wpcw_api_key" id="wpcw_api_key" class="large-text"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p class="submit">
+                                        <input type="submit" name="submit_api_config" class="button button-primary" value="<?php _e( 'Guardar Configuración de API', 'wp-cupon-whatsapp' ); ?>">
+                                    </p>
+                                </form>
                             </div>
                         </div>
 
