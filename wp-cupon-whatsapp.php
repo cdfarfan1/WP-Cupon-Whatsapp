@@ -55,6 +55,7 @@ require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
 require_once WPCW_PLUGIN_DIR . 'admin/business-management.php';
 require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
 require_once WPCW_PLUGIN_DIR . 'admin/dashboard-pages.php';
+require_once WPCW_PLUGIN_DIR . 'admin/institution-dashboard-page.php'; // Carga del nuevo panel
 
 // Include public files
 require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
