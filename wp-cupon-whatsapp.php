@@ -49,6 +49,7 @@ require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-coupon-manager.php';
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-redemption-manager.php';
 require_once WPCW_PLUGIN_DIR . 'includes/redemption-handler.php';
 require_once WPCW_PLUGIN_DIR . 'includes/ajax-handlers.php';
+require_once WPCW_PLUGIN_DIR . 'includes/managers/class-wpcw-institution-manager.php'; // Carga del nuevo gestor
 
 // Include admin files
 require_once WPCW_PLUGIN_DIR . 'admin/admin-menu.php';
