@@ -10,6 +10,111 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Handles the submission of the propose convenio form.
+ * Hooked into 'admin_init' to process before headers are sent.
+ */
+function wpcw_handle_propose_convenio_form() {
+    // Check if our form has been submitted
+    if ( ! isset( $_POST['submit_propose_convenio' ] ) ) {
+        return;
+    }
+
+    // --- Security Check by El Guardián ---
+    if ( ! isset( $_POST['wpcw_nonce'] ) || ! wp_verify_nonce( $_POST['wpcw_nonce'], 'wpcw_propose_convenio_nonce' ) ) {
+        wp_die( __( 'Error de seguridad. Inténtalo de nuevo.', 'wp-cupon-whatsapp' ) );
+    }
+
+    // Check user capability
+    if ( ! current_user_can( 'manage_business_profile' ) ) {
+        wp_die( __( 'No tienes permisos para realizar esta acción.', 'wp-cupon-whatsapp' ) );
+    }
+
+    // --- Data Validation by El Artesano ---
+    $recipient_institution_id = isset( $_POST['wpcw_institution_id'] ) ? absint( $_POST['wpcw_institution_id'] ) : 0;
+    $convenio_terms = isset( $_POST['wpcw_convenio_terms'] ) ? sanitize_textarea_field( $_POST['wpcw_convenio_terms'] ) : '';
+
+    if ( $recipient_institution_id === 0 || empty( $convenio_terms ) ) {
+        add_action( 'admin_notices', function() {
+            echo '<div class="notice notice-error is-dismissible"><p>' . __( 'Error: Debes seleccionar una institución y describir los términos del convenio.', 'wp-cupon-whatsapp' ) . '</p></div>';
+        } );
+        return;
+    }
+
+    // --- Convenio Creation by El Artesano ---
+    $current_user_id = get_current_user_id();
+    // This is a placeholder. We need a function to get the business associated with the current user.
+    // For now, we'll assume a function `wpcw_get_business_id_for_user()` exists.
+    $provider_business_id = get_user_meta( $current_user_id, '_wpcw_business_id', true );
+
+    if ( ! $provider_business_id ) {
+        add_action( 'admin_notices', function() {
+            echo '<div class="notice notice-error is-dismissible"><p>' . __( 'Error: Tu usuario no está asociado a ningún negocio.', 'wp-cupon-whatsapp' ) . '</p></div>';
+        } );
+        return;
+    }
+
+    $provider_name = get_the_title( $provider_business_id );
+    $recipient_name = get_the_title( $recipient_institution_id );
+
+    $convenio_post = array(
+        'post_title'  => sprintf( 'Propuesta de %s a %s', $provider_name, $recipient_name ),
+        'post_type'   => 'wpcw_convenio',
+        'post_status' => 'pending', // WordPress uses 'pending' for pending review
+        'post_author' => $current_user_id,
+    );
+
+    $convenio_id = wp_insert_post( $convenio_post );
+
+    if ( is_wp_error( $convenio_id ) ) {
+        add_action( 'admin_notices', function() use ( $convenio_id ) {
+            echo '<div class="notice notice-error is-dismissible"><p>' . sprintf( __( 'Error al crear el convenio: %s', 'wp-cupon-whatsapp' ), $convenio_id->get_error_message() ) . '</p></div>';
+        } );
+        return;
+    }
+
+    // --- Metadata Storage ---
+    update_post_meta( $convenio_id, '_convenio_provider_id', $provider_business_id );
+    update_post_meta( $convenio_id, '_convenio_recipient_id', $recipient_institution_id );
+    update_post_meta( $convenio_id, '_convenio_status', 'pending' );
+    update_post_meta( $convenio_id, '_convenio_terms', $convenio_terms );
+    update_post_meta( $convenio_id, '_convenio_originator_id', $current_user_id );
+
+    // --- Notification System ---
+    // This assumes the institution has an email stored in its metadata.
+    $recipient_email = get_post_meta( $recipient_institution_id, '_institution_email', true );
+    if ( $recipient_email && is_email( $recipient_email ) ) {
+        $subject = sprintf( 'Nueva propuesta de convenio de %s', $provider_name );
+        $message = "Hola,\n\nHas recibido una nueva propuesta de convenio del negocio '" . $provider_name . "'.\n\n";
+        $message .= "Términos propuestos: " . $convenio_terms . "\n\n";
+        $message .= "Para revisar, aceptar o rechazar esta propuesta, por favor, accede a tu panel de gestión.\n"; // This link will be updated in MVP 1.1
+        $message .= admin_url( 'admin.php?page=wpcw-institution-dashboard' );
+
+        wp_mail( $recipient_email, $subject, $message );
+    }
+
+    // --- User Feedback ---
+    // Redirect to avoid form resubmission
+    $redirect_url = add_query_arg( 'wpcw_notice', 'convenio_propuesto', admin_url( 'admin.php?page=wpcw-business-convenios' ) );
+    wp_safe_redirect( $redirect_url );
+    exit;
+}
+add_action( 'admin_init', 'wpcw_handle_propose_convenio_form' );
+
+/**
+ * Displays admin notices for convenio management.
+ */
+function wpcw_business_convenios_admin_notices() {
+    if ( ! isset( $_GET['wpcw_notice'] ) ) {
+        return;
+    }
+
+    if ( $_GET['wpcw_notice'] === 'convenio_propuesto' ) {
+        echo '<div class="notice notice-success is-dismissible"><p>' . __( '¡Propuesta de convenio enviada exitosamente!', 'wp-cupon-whatsapp' ) . '</p></div>';
+    }
+}
+add_action( 'admin_notices', 'wpcw_business_convenios_admin_notices' );
+
+/**
  * Renders the content of the Business Owner's convenios page.
  */
 function wpcw_render_business_convenios_page() {
@@ -26,7 +131,7 @@ function wpcw_render_business_convenios_page() {
         <div id="propose-convenio-form-wrap" class="postbox" style="display: none; margin-top: 20px;">
             <h2 class="hndle"><span><?php _e( 'Nueva Propuesta de Convenio', 'wp-cupon-whatsapp' ); ?></span></h2>
             <div class="inside">
-                <form id="propose-convenio-form" method="post">
+                <form id="propose-convenio-form" method="post" action="">
                     <?php
                     // Security Nonce by El Guardián
                     wp_nonce_field( 'wpcw_propose_convenio_nonce', 'wpcw_nonce' );
