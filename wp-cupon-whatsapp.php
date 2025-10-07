@@ -62,6 +62,7 @@ require_once WPCW_PLUGIN_DIR . 'admin/business-convenios-page.php'; // Carga del
 // Include public files
 require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-shortcodes.php';
+require_once WPCW_PLUGIN_DIR . 'public/response-handler.php'; // Carga del manejador de respuestas de convenio
 
 // Include API files (rest-api.php no existe, usando class-wpcw-rest-api.php que ya está cargado)
 

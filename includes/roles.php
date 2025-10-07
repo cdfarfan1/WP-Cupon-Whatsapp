@@ -59,6 +59,10 @@ class WPCW_Roles_Manager {
             $admin->add_cap( 'redeem_coupons' );
             $admin->add_cap( 'view_institution_dashboard' );
         }
+
+        // Flush rewrite rules to register our virtual page
+        flush_rewrite_rules();
+    }
     }
 
     /**
