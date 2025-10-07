@@ -27,6 +27,7 @@ class WPCW_Shortcodes {
         add_shortcode( 'wpcw_mis_canjes', array( __CLASS__, 'my_redemptions_shortcode' ) );
         add_shortcode( 'wpcw_dashboard_usuario', array( __CLASS__, 'user_dashboard_shortcode' ) );
         add_shortcode( 'wpcw_registro_beneficiario', array( __CLASS__, 'render_beneficiary_registration_form' ) );
+        add_shortcode( 'wpcw_portal_beneficiario', array( __CLASS__, 'render_beneficiary_portal' ) );
 
         // Enqueue frontend scripts and styles
         add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_frontend_assets' ) );
@@ -843,6 +844,93 @@ class WPCW_Shortcodes {
         );
 
         return isset( $labels[$status] ) ? $labels[$status] : $status;
+    }
+
+    /**
+     * Beneficiary Portal Shortcode
+     */
+    public static function render_beneficiary_portal( $atts ) {
+        if ( ! is_user_logged_in() ) {
+            return '<div class="wpcw-message wpcw-error">' . __( 'Debes iniciar sesión para ver tus beneficios.', 'wp-cupon-whatsapp' ) . '</div>';
+        }
+
+        $user_id = get_current_user_id();
+        $institution_id = get_user_meta( $user_id, '_wpcw_institution_id', true );
+
+        if ( ! $institution_id ) {
+            return '<div class="wpcw-message wpcw-info">' . __( 'Tu cuenta no está asociada a ninguna institución. No podemos mostrarte beneficios.', 'wp-cupon-whatsapp' ) . '</div>';
+        }
+
+        ob_start();
+
+        // 1. Find all active convenios for the user's institution
+        $convenio_ids = get_posts([
+            'post_type' => 'wpcw_convenio',
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'meta_query' => [
+                [
+                    'key' => '_convenio_recipient_id',
+                    'value' => $institution_id,
+                ]
+            ],
+            'fields' => 'ids',
+        ]);
+
+        if ( empty( $convenio_ids ) ) {
+            echo '<div class="wpcw-message wpcw-info">' . __( 'Tu institución no tiene convenios activos en este momento.', 'wp-cupon-whatsapp' ) . '</div>';
+            return ob_get_clean();
+        }
+
+        // 2. Find all coupons associated with those convenios
+        $coupon_query_args = [
+            'post_type' => 'shop_coupon',
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'meta_query' => [
+                'relation' => 'AND',
+                [
+                    'key' => '_wpcw_associated_convenio_id',
+                    'value' => $convenio_ids,
+                    'compare' => 'IN',
+                ],
+                [
+                    'relation' => 'OR',
+                    [
+                        'key' => 'date_expires',
+                        'value' => time(),
+                        'compare' => '>',
+                        'type' => 'NUMERIC'
+                    ],
+                    [
+                        'key' => 'date_expires',
+                        'compare' => 'NOT EXISTS'
+                    ]
+                ]
+            ]
+        ];
+
+        $coupons_query = new WP_Query( $coupon_query_args );
+
+        echo '<div class="wpcw-beneficiary-portal">';
+        echo '<h2>' . __( 'Tu Catálogo de Beneficios', 'wp-cupon-whatsapp' ) . '</h2>';
+
+        if ( $coupons_query->have_posts() ) {
+            echo '<div class="wpcw-coupons-grid">';
+            while ( $coupons_query->have_posts() ) {
+                $coupons_query->the_post();
+                $coupon = new WC_Coupon( get_the_ID() );
+                self::render_coupon_card( $coupon, true );
+            }
+            echo '</div>';
+        } else {
+            echo '<div class="wpcw-message wpcw-info">' . __( 'No hay cupones disponibles para los convenios de tu institución en este momento.', 'wp-cupon-whatsapp' ) . '</div>';
+        }
+        wp_reset_postdata();
+
+        echo '</div>';
+
+        return ob_get_clean();
     }
 }
 
