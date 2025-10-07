@@ -854,14 +854,20 @@ class WPCW_Shortcodes {
             return '<div class="wpcw-message wpcw-error">' . __( 'Debes iniciar sesión para ver tus beneficios.', 'wp-cupon-whatsapp' ) . '</div>';
         }
 
+        ob_start();
         $user_id = get_current_user_id();
-        $institution_id = get_user_meta( $user_id, '_wpcw_institution_id', true );
 
-        if ( ! $institution_id ) {
-            return '<div class="wpcw-message wpcw-info">' . __( 'Tu cuenta no está asociada a ninguna institución. No podemos mostrarte beneficios.', 'wp-cupon-whatsapp' ) . '</div>';
+        // --- Handle Preferences Form Submission ---
+        if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['action'] ) && $_POST['action'] === 'wpcw_save_preferences' ) {
+            if ( isset( $_POST['wpcw_preferences_nonce'] ) && wp_verify_nonce( $_POST['wpcw_preferences_nonce'], 'wpcw_user_preferences' ) ) {
+                $preferred_categories = isset( $_POST['preferred_categories'] ) ? (array) $_POST['preferred_categories'] : [];
+                $sanitized_categories = array_map( 'absint', $preferred_categories );
+                update_user_meta( $user_id, '_wpcw_preferred_categories', $sanitized_categories );
+                echo '<div class="wpcw-message wpcw-success">' . __( 'Tus preferencias han sido guardadas.', 'wp-cupon-whatsapp' ) . '</div>';
+            }
         }
 
-        ob_start();
+        $institution_id = get_user_meta( $user_id, '_wpcw_institution_id', true );
 
         // 1. Find all active convenios for the user's institution
         $convenio_ids = get_posts([
@@ -913,19 +919,66 @@ class WPCW_Shortcodes {
         $coupons_query = new WP_Query( $coupon_query_args );
 
         echo '<div class="wpcw-beneficiary-portal">';
+
+        // --- Preferences UI by La Diseñadora ---
+        $all_categories = get_terms( [ 'taxonomy' => 'wpcw_coupon_category', 'hide_empty' => false ] );
+        $user_preferences = get_user_meta( $user_id, '_wpcw_preferred_categories', true );
+        if ( ! is_array( $user_preferences ) ) { $user_preferences = []; }
+
+        echo '<div class="wpcw-preferences-section">';
+        echo '<h3>' . __( 'Mis Preferencias', 'wp-cupon-whatsapp' ) . '</h3>';
+        echo '<form method="post">';
+        echo '<input type="hidden" name="action" value="wpcw_save_preferences">';
+        wp_nonce_field( 'wpcw_user_preferences', 'wpcw_preferences_nonce' );
+        echo '<p>' . __( 'Selecciona tus categorías de interés para ver primero los beneficios que más te importan.', 'wp-cupon-whatsapp' ) . '</p>';
+        echo '<div class="wpcw-category-checkboxes">';
+        foreach ( $all_categories as $category ) {
+            echo '<label><input type="checkbox" name="preferred_categories[]" value="' . esc_attr( $category->term_id ) . '" ' . checked( in_array( $category->term_id, $user_preferences ), true, false ) . '> ' . esc_html( $category->name ) . '</label>';
+        }
+        echo '</div>';
+        echo '<p><button type="submit">' . __( 'Guardar Preferencias', 'wp-cupon-whatsapp' ) . '</button></p>';
+        echo '</form>';
+        echo '</div>';
+
         echo '<h2>' . __( 'Tu Catálogo de Beneficios', 'wp-cupon-whatsapp' ) . '</h2>';
 
-        if ( $coupons_query->have_posts() ) {
+        // --- Sorted Coupon Query by El Artesano ---
+        $preferred_coupons = [];
+        $other_coupons = [];
+
+        if ( ! empty( $user_preferences ) ) {
+            $preferred_args = $coupon_query_args;
+            $preferred_args['tax_query'] = [[
+                'taxonomy' => 'wpcw_coupon_category',
+                'field'    => 'term_id',
+                'terms'    => $user_preferences,
+            ]];
+            $preferred_query = new WP_Query( $preferred_args );
+            $preferred_coupons = $preferred_query->posts;
+
+            $other_args = $coupon_query_args;
+            $other_args['post__not_in'] = wp_list_pluck( $preferred_coupons, 'ID' );
+            $other_query = new WP_Query( $other_args );
+            $other_coupons = $other_query->posts;
+
+        } else {
+            // If no preferences, get all coupons normally
+            $other_query = new WP_Query( $coupon_query_args );
+            $other_coupons = $other_query->posts;
+        }
+
+        $sorted_coupons = array_merge( $preferred_coupons, $other_coupons );
+
+        if ( ! empty( $sorted_coupons ) ) {
             echo '<div class="wpcw-coupons-grid">';
-            while ( $coupons_query->have_posts() ) {
-                $coupons_query->the_post();
-                $coupon = new WC_Coupon( get_the_ID() );
-                self::render_coupon_card( $coupon, true );
+            foreach ( $sorted_coupons as $post ) {
+                setup_postdata( $post );
+                $coupon = new WC_Coupon( $post->ID );
+                self::render_coupon_card( $coupon, true ); // Re-using existing render function
             }
             echo '</div>';
         } else {
-            echo '<div class="wpcw-message wpcw-info">' . __( 'No hay cupones disponibles para los convenios de tu institución en este momento.', 'wp-cupon-whatsapp' ) . '</div>';
-        }
+
         wp_reset_postdata();
 
         echo '</div>';
