@@ -39,6 +39,13 @@ class WPCW_Roles_Manager {
             'manage_business_employees' => true,
             'view_business_reports' => true,
             'export_business_data' => true,
+            'approve_beneficiary_requests' => true, // New capability
+        ];
+
+        $supervisor_caps = [
+            'read' => true,
+            'approve_beneficiary_requests' => true,
+            'view_business_reports' => true, // Can see reports but not manage other settings
         ];
 
         $employee_caps = [
@@ -49,7 +56,8 @@ class WPCW_Roles_Manager {
         // Add the roles
         add_role( 'wpcw_institution_manager', __( 'Gerente de Institución', 'wp-cupon-whatsapp' ), $institution_manager_caps );
         add_role( 'wpcw_business_owner', __( 'Dueño de Negocio', 'wp-cupon-whatsapp' ), $business_owner_caps );
-        add_role( 'wpcw_employee', __( 'Empleado de Negocio', 'wp-cupon-whatsapp' ), $employee_caps );
+        add_role( 'wpcw_benefits_supervisor', __( 'Supervisor de Beneficios', 'wp-cupon-whatsapp' ), $supervisor_caps );
+        add_role( 'wpcw_employee', __( 'Staff del Negocio', 'wp-cupon-whatsapp' ), $employee_caps );
 
         // Add capabilities to the administrator role
         $admin = get_role( 'administrator' );
@@ -58,11 +66,8 @@ class WPCW_Roles_Manager {
             $admin->add_cap( 'manage_business_profile' );
             $admin->add_cap( 'redeem_coupons' );
             $admin->add_cap( 'view_institution_dashboard' );
+            $admin->add_cap( 'approve_beneficiary_requests' );
         }
-
-        // Flush rewrite rules to register our virtual page
-        flush_rewrite_rules();
-    }
     }
 
     /**
@@ -72,6 +77,7 @@ class WPCW_Roles_Manager {
     public static function remove_roles() {
         remove_role( 'wpcw_institution_manager' );
         remove_role( 'wpcw_business_owner' );
+        remove_role( 'wpcw_benefits_supervisor' );
         remove_role( 'wpcw_employee' );
         remove_role( 'wpcw_business_staff' ); // Also remove the old role if it exists
     }
