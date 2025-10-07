@@ -95,5 +95,33 @@ function wpcw_register_post_types() {
         'capability_type' => 'post',
     );
     register_post_type( 'wpcw_application', $application_args );
+
+    // Register wpcw_convenio CPT (New)
+    $convenio_labels = array(
+        'name'               => _x( 'Convenios', 'post type general name', 'wp-cupon-whatsapp' ),
+        'singular_name'      => _x( 'Convenio', 'post type singular name', 'wp-cupon-whatsapp' ),
+        'menu_name'          => _x( 'Convenios', 'admin menu', 'wp-cupon-whatsapp' ),
+        'name_admin_bar'     => _x( 'Convenio', 'add new on admin bar', 'wp-cupon-whatsapp' ),
+        'add_new'            => _x( 'Añadir Nuevo', 'convenio', 'wp-cupon-whatsapp' ),
+        'add_new_item'       => __( 'Añadir Nuevo Convenio', 'wp-cupon-whatsapp' ),
+        'new_item'           => __( 'Nuevo Convenio', 'wp-cupon-whatsapp' ),
+        'edit_item'          => __( 'Editar Convenio', 'wp-cupon-whatsapp' ),
+        'view_item'          => __( 'Ver Convenio', 'wp-cupon-whatsapp' ),
+        'all_items'          => __( 'Todos los Convenios', 'wp-cupon-whatsapp' ),
+        'search_items'       => __( 'Buscar Convenios', 'wp-cupon-whatsapp' ),
+        'not_found'          => __( 'No se encontraron convenios.', 'wp-cupon-whatsapp' ),
+        'not_found_in_trash' => __( 'No se encontraron convenios en la papelera.', 'wp-cupon-whatsapp' ),
+    );
+    $convenio_args   = array(
+        'labels'          => $convenio_labels,
+        'public'          => false, // Not for public frontend
+        'show_ui'         => true,  // Show in the admin panel
+        'show_in_menu'    => true,  // Show in its own admin menu for now
+        'menu_icon'       => 'dashicons-businesswoman', // Icon representing partnership
+        'capability_type' => 'post',
+        'supports'        => array( 'title', 'custom-fields' ),
+        'rewrite'         => false,
+    );
+    register_post_type( 'wpcw_convenio', $convenio_args );
 }
 add_action( 'init', 'wpcw_register_post_types' );
