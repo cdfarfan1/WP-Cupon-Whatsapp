@@ -12,6 +12,8 @@
 
 WP Cupón WhatsApp es un plugin completo para WordPress que permite crear y gestionar programas de fidelización con canje de cupones a través de WhatsApp. Está completamente integrado con WooCommerce y es compatible con Elementor.
 
+> **📚 DOCUMENTACIÓN COMPLETA**: Consulta el [Índice Maestro de Documentación](docs/INDEX.md) para acceder a toda la documentación organizada del proyecto.
+
 ### ✨ Características Principales
 
 - 🎫 **Sistema de Cupones Avanzado**: Creación masiva, importación CSV, gestión por lotes
