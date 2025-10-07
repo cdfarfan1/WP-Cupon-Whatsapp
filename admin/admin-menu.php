@@ -66,6 +66,38 @@ if ( ! function_exists( 'wpcw_render_plugin_dashboard_page' ) ) {
             </div>
             <?php endif; ?>
             
+            <!-- Enhanced Dashboard with Real Metrics -->
+            <?php WPCW_Dashboard::render_metrics_cards(); ?>
+
+            <!-- Chart Section -->
+            <?php WPCW_Dashboard::render_chart(); ?>
+
+            <!-- Notifications and Health Status -->
+            <div class="wpcw-dashboard-secondary">
+                <div class="wpcw-dashboard-notifications">
+                    <?php WPCW_Dashboard::render_notifications(); ?>
+                </div>
+                <div class="wpcw-dashboard-health">
+                    <?php WPCW_Dashboard::render_system_health(); ?>
+                </div>
+            </div>
+
+            <style>
+            .wpcw-dashboard-secondary {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 20px;
+                margin: 30px 0;
+            }
+
+            @media (max-width: 768px) {
+                .wpcw-dashboard-secondary {
+                    grid-template-columns: 1fr;
+                }
+            }
+            </style>
+
+            <!-- Quick Actions -->
             <div class="wpcw-dashboard">
                 <div class="wpcw-dashboard-cards">
                     <div class="wpcw-card wpcw-card-primary">
@@ -185,14 +217,14 @@ function wpcw_register_plugin_admin_menu() {
         'wpcw_render_plugin_dashboard_page'      // Callback para el contenido
     );
 
-    // Solicitudes
+    // Solicitudes de Adhesión
     add_submenu_page(
         'wpcw-main-dashboard',                   // Slug del menú padre (actualizado)
-        'Solicitudes',                           // Título de la página
+        'Solicitudes de Adhesión',               // Título de la página
         'Solicitudes',                           // Título del submenú
         'manage_options',                        // Capacidad requerida
-        'wpcw-solicitudes',                      // Slug único del submenú
-        'wpcw_redirect_to_solicitudes'           // Callback de redirección
+        'wpcw-applications',                     // Slug único del submenú
+        'wpcw_render_business_applications_page' // Callback para la página
     );
 
     // Comercios
@@ -201,8 +233,8 @@ function wpcw_register_plugin_admin_menu() {
         'Comercios',                             // Título de la página
         'Comercios',                             // Título del submenú
         'manage_options',                        // Capacidad requerida
-        'wpcw-comercios',                        // Slug único del submenú
-        'wpcw_redirect_to_comercios'             // Callback de redirección
+        'wpcw-businesses',                       // Slug único del submenú
+        'wpcw_render_businesses_page'            // Callback para la página
     );
 
     // Instituciones
@@ -223,6 +255,16 @@ function wpcw_register_plugin_admin_menu() {
         'manage_options',                        // Capacidad requerida
         'wpcw-canjes',                          // Slug de este submenú
         'wpcw_canjes_page'                      // Callback para el contenido
+    );
+
+    // Gestión de Usuarios de Comercios
+    add_submenu_page(
+        null,                                    // No mostrar en menú
+        'Usuarios del Comercio',                 // Título de la página
+        'Usuarios del Comercio',                 // Título del submenú
+        'manage_options',                        // Capacidad requerida
+        'wpcw-business-users',                   // Slug de este submenú
+        'wpcw_render_business_users_page'        // Callback
     );
 
     // Estadísticas
@@ -250,6 +292,58 @@ function wpcw_register_plugin_admin_menu() {
 
     // error_log('WPCW: *** FUNCIÓN wpcw_register_plugin_admin_menu COMPLETADA ***');
 }
+
+// Enqueue scripts and styles for dashboard
+function wpcw_enqueue_dashboard_assets( $hook ) {
+    // Only load on our dashboard page
+    if ( $hook !== 'toplevel_page_wpcw-main-dashboard' ) {
+        return;
+    }
+
+    // Enqueue Chart.js
+    wp_enqueue_script(
+        'chart-js',
+        'https://cdn.jsdelivr.net/npm/chart.js',
+        array(),
+        '4.4.0',
+        true
+    );
+
+    // Enqueue our dashboard script
+    wp_enqueue_script(
+        'wpcw-dashboard',
+        plugins_url( 'admin/js/dashboard.js', dirname( __FILE__ ) ),
+        array( 'chart-js' ),
+        WPCW_VERSION,
+        true
+    );
+
+    // Enqueue dashboard styles
+    wp_enqueue_style(
+        'wpcw-dashboard',
+        plugins_url( 'admin/css/dashboard.css', dirname( __FILE__ ) ),
+        array(),
+        WPCW_VERSION
+    );
+}
+add_action( 'admin_enqueue_scripts', 'wpcw_enqueue_dashboard_assets' );
+
+// AJAX handler for refreshing dashboard metrics
+function wpcw_refresh_dashboard_metrics() {
+    // For now, skip nonce check for simplicity - in production, add proper nonce
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json_error( __( 'No tienes permisos para realizar esta acción.', 'wp-cupon-whatsapp' ) );
+    }
+
+    $metrics = WPCW_Dashboard::get_metrics();
+    $chart_data = WPCW_Dashboard::get_chart_data();
+
+    wp_send_json_success( array(
+        'metrics' => $metrics,
+        'chart_data' => $chart_data,
+    ) );
+}
+add_action( 'wp_ajax_wpcw_refresh_dashboard_metrics', 'wpcw_refresh_dashboard_metrics' );
 
 // Registrar el hook para crear el menú administrativo
 add_action( 'admin_menu', 'wpcw_register_plugin_admin_menu', 1 );

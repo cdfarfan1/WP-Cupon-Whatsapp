@@ -96,27 +96,28 @@ class WPCW_Installer {
                 id mediumint(9) NOT NULL AUTO_INCREMENT,
                 user_id bigint(20) UNSIGNED NOT NULL,
                 coupon_id bigint(20) UNSIGNED NOT NULL,
-                coupon_code varchar(100) NOT NULL,
-                coupon_type varchar(50) NOT NULL DEFAULT 'institucional',
-                amount decimal(10,2) NOT NULL DEFAULT '0.00',
-                currency varchar(3) NOT NULL DEFAULT 'USD',
-                status varchar(20) NOT NULL DEFAULT 'pending',
-                whatsapp_number varchar(20) DEFAULT NULL,
-                email varchar(100) DEFAULT NULL,
-                verification_code varchar(10) DEFAULT NULL,
-                verification_status varchar(20) NOT NULL DEFAULT 'pending',
-                redemption_date datetime DEFAULT NULL,
-                expiry_date datetime DEFAULT NULL,
-                metadata longtext DEFAULT NULL,
+                numero_canje varchar(20) NOT NULL,
+                token_confirmacion varchar(64) NOT NULL,
+                estado_canje varchar(50) NOT NULL DEFAULT 'pendiente_confirmacion',
+                fecha_solicitud_canje datetime NOT NULL,
+                fecha_confirmacion_canje datetime DEFAULT NULL,
+                comercio_id bigint(20) UNSIGNED DEFAULT NULL,
+                whatsapp_url text DEFAULT NULL,
+                codigo_cupon_wc varchar(100) DEFAULT NULL,
+                id_pedido_wc bigint(20) UNSIGNED DEFAULT NULL,
+                origen_canje varchar(50) DEFAULT 'webapp',
+                notas_internas text DEFAULT NULL,
+                fecha_rechazo datetime DEFAULT NULL,
+                fecha_cancelacion datetime DEFAULT NULL,
                 created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 PRIMARY KEY (id),
                 KEY user_id (user_id),
                 KEY coupon_id (coupon_id),
-                KEY coupon_code (coupon_code),
-                KEY status (status),
-                KEY verification_status (verification_status),
-                KEY created_at (created_at)
+                KEY numero_canje (numero_canje),
+                KEY estado_canje (estado_canje),
+                KEY fecha_solicitud_canje (fecha_solicitud_canje),
+                KEY comercio_id (comercio_id)
             ) $charset_collate;";
 
             // Load WordPress upgrade functions
@@ -134,8 +135,24 @@ class WPCW_Installer {
             $wpdb->show_errors();
             $suppress_errors = $wpdb->suppress_errors( false );
 
+            // Log before dbDelta
+            if ( class_exists( 'WPCW_Logger' ) ) {
+                WPCW_Logger::log( 'info', 'Executing dbDelta for canjes table', array(
+                    'table_name' => $table_name,
+                    'memory_usage' => memory_get_usage(true),
+                ) );
+            }
+
             // Execute dbDelta
             $result = dbDelta( $sql );
+
+            // Log after dbDelta
+            if ( class_exists( 'WPCW_Logger' ) ) {
+                WPCW_Logger::log( 'info', 'dbDelta execution completed', array(
+                    'result' => $result,
+                    'memory_usage' => memory_get_usage(true),
+                ) );
+            }
 
             // Restore error suppression
             $wpdb->suppress_errors( $suppress_errors );
@@ -216,15 +233,14 @@ class WPCW_Installer {
             // Required columns
             $required_columns = array(
                 'id',
-				'user_id',
-				'coupon_id',
-				'coupon_code',
-				'coupon_type',
-                'amount',
-				'currency',
-				'status',
-				'created_at',
-				'updated_at',
+    'user_id',
+    'coupon_id',
+    'numero_canje',
+    'token_confirmacion',
+    'estado_canje',
+    'fecha_solicitud_canje',
+    'created_at',
+    'updated_at',
             );
 
             $existing_columns = array();
@@ -413,12 +429,50 @@ class WPCW_Installer {
      * Run installation checks
      */
     public static function run_installation_checks() {
-        $checks = array(
-            'system_requirements'     => self::check_system_requirements(),
-            'table_creation'          => self::create_canjes_table(),
-            'settings_initialization' => self::init_settings(),
-            'pages_creation'          => self::auto_create_pages(),
-        );
+        $checks = array();
+
+        // Log start of checks
+        if ( class_exists( 'WPCW_Logger' ) ) {
+            WPCW_Logger::log( 'info', 'Starting installation checks', array(
+                'memory_usage' => memory_get_usage(true),
+            ) );
+        }
+
+        $checks['system_requirements'] = self::check_system_requirements();
+
+        if ( class_exists( 'WPCW_Logger' ) ) {
+            WPCW_Logger::log( 'info', 'System requirements check completed', array(
+                'result' => $checks['system_requirements'],
+                'memory_usage' => memory_get_usage(true),
+            ) );
+        }
+
+        $checks['table_creation'] = self::create_canjes_table();
+
+        if ( class_exists( 'WPCW_Logger' ) ) {
+            WPCW_Logger::log( 'info', 'Table creation check completed', array(
+                'result' => $checks['table_creation'],
+                'memory_usage' => memory_get_usage(true),
+            ) );
+        }
+
+        $checks['settings_initialization'] = self::init_settings();
+
+        if ( class_exists( 'WPCW_Logger' ) ) {
+            WPCW_Logger::log( 'info', 'Settings initialization check completed', array(
+                'result' => $checks['settings_initialization'],
+                'memory_usage' => memory_get_usage(true),
+            ) );
+        }
+
+        $checks['pages_creation'] = self::auto_create_pages();
+
+        if ( class_exists( 'WPCW_Logger' ) ) {
+            WPCW_Logger::log( 'info', 'Pages creation check completed', array(
+                'result' => $checks['pages_creation'],
+                'memory_usage' => memory_get_usage(true),
+            ) );
+        }
 
         return $checks;
     }
