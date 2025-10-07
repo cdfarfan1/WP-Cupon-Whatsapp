@@ -73,21 +73,30 @@ function wpcw_handle_propose_convenio_form() {
     }
 
     // --- Metadata Storage ---
+    $token = bin2hex( random_bytes( 32 ) ); // Token generation by El Ingeniero de Datos
     update_post_meta( $convenio_id, '_convenio_provider_id', $provider_business_id );
     update_post_meta( $convenio_id, '_convenio_recipient_id', $recipient_institution_id );
     update_post_meta( $convenio_id, '_convenio_status', 'pending' );
     update_post_meta( $convenio_id, '_convenio_terms', $convenio_terms );
     update_post_meta( $convenio_id, '_convenio_originator_id', $current_user_id );
+    update_post_meta( $convenio_id, '_convenio_response_token', $token ); // Token storage
 
     // --- Notification System ---
     // This assumes the institution has an email stored in its metadata.
     $recipient_email = get_post_meta( $recipient_institution_id, '_institution_email', true );
     if ( $recipient_email && is_email( $recipient_email ) ) {
         $subject = sprintf( 'Nueva propuesta de convenio de %s', $provider_name );
+        
+        // Secure link construction
+        $response_url = add_query_arg( [
+            'convenio_id' => $convenio_id,
+            'token' => $token
+        ], home_url( '/responder-convenio/' ) );
+
         $message = "Hola,\n\nHas recibido una nueva propuesta de convenio del negocio '" . $provider_name . "'.\n\n";
         $message .= "Términos propuestos: " . $convenio_terms . "\n\n";
-        $message .= "Para revisar, aceptar o rechazar esta propuesta, por favor, accede a tu panel de gestión.\n"; // This link will be updated in MVP 1.1
-        $message .= admin_url( 'admin.php?page=wpcw-institution-dashboard' );
+        $message .= "Para revisar, aceptar o rechazar esta propuesta, por favor, haz clic en el siguiente enlace seguro:\n";
+        $message .= esc_url( $response_url );
 
         wp_mail( $recipient_email, $subject, $message );
     }
