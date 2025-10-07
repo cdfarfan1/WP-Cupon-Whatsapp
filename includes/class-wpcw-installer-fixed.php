@@ -294,6 +294,16 @@ class WPCW_Installer {
                     'content' => '[wpcw_canje_cupon]',
                     'slug'    => 'canje-cupon',
                 ),
+                'registro_beneficiario' => array(
+                    'title'   => __( 'Registro de Beneficiarios', 'wp-cupon-whatsapp' ),
+                    'content' => '[wpcw_registro_beneficiario]',
+                    'slug'    => 'registro-beneficiarios',
+                ),
+                'portal_beneficiario'   => array(
+                    'title'   => __( 'Portal de Beneficios', 'wp-cupon-whatsapp' ),
+                    'content' => '[wpcw_portal_beneficiario]',
+                    'slug'    => 'portal-beneficios',
+                ),
             );
 
             $created_pages = array();
