@@ -107,13 +107,21 @@ function wpcw_handle_api_config_form() {
     $validation_method = isset( $_POST['wpcw_validation_method'] ) ? sanitize_key( $_POST['wpcw_validation_method'] ) : 'csv';
     $api_url = isset( $_POST['wpcw_api_endpoint_url'] ) ? esc_url_raw( $_POST['wpcw_api_endpoint_url'] ) : '';
     $api_header = isset( $_POST['wpcw_api_header_name'] ) ? sanitize_text_field( $_POST['wpcw_api_header_name'] ) : '';
-    $api_key = isset( $_POST['wpcw_api_key'] ) ? sanitize_text_field( $_POST['wpcw_api_key'] ) : ''; // Not encrypted, as per TD001
 
-    // Save data
+    // Encrypt API Key if provided
+    if ( ! empty( $_POST['wpcw_api_key'] ) ) {
+        $key = wpcw_get_encryption_key();
+        $iv = openssl_random_pseudo_bytes( 16 );
+        $encrypted_key = openssl_encrypt( sanitize_text_field( $_POST['wpcw_api_key'] ), 'aes-256-cbc', $key, 0, $iv );
+        // Store IV with the key for decryption
+        $stored_value = base64_encode( $iv . $encrypted_key );
+        update_post_meta( $institution_id, '_wpcw_api_key_encrypted', $stored_value );
+    }
+
+    // Save other data
     update_post_meta( $institution_id, '_wpcw_validation_method', $validation_method );
     update_post_meta( $institution_id, '_wpcw_api_url', $api_url );
     update_post_meta( $institution_id, '_wpcw_api_header', $api_header );
-    update_post_meta( $institution_id, '_wpcw_api_key', $api_key );
 
     $redirect_url = add_query_arg( 'wpcw_notice', 'api_config_updated', admin_url( 'admin.php?page=wpcw-institution-dashboard' ) );
     wp_safe_redirect( $redirect_url );
@@ -139,10 +147,21 @@ function wpcw_ajax_test_api_connection() {
     $institution_id = get_user_meta( get_current_user_id(), '_wpcw_institution_id', true );
     $api_url = get_post_meta( $institution_id, '_wpcw_api_url', true );
     $api_header = get_post_meta( $institution_id, '_wpcw_api_header', true );
-    $api_key = get_post_meta( $institution_id, '_wpcw_api_key', true ); // TD001: Not encrypted
+    $encrypted_api_key = get_post_meta( $institution_id, '_wpcw_api_key_encrypted', true );
 
-    if ( empty( $api_url ) || empty( $api_header ) || empty( $api_key ) ) {
+    if ( empty( $api_url ) || empty( $api_header ) || empty( $encrypted_api_key ) ) {
         wp_send_json_error( [ 'message' => 'La configuración de la API está incompleta.' ] );
+    }
+
+    // Decrypt the API key
+    $key = wpcw_get_encryption_key();
+    $decoded_value = base64_decode( $encrypted_api_key );
+    $iv = substr( $decoded_value, 0, 16 );
+    $encrypted_key = substr( $decoded_value, 16 );
+    $api_key = openssl_decrypt( $encrypted_key, 'aes-256-cbc', $key, 0, $iv );
+
+    if ( ! $api_key ) {
+        wp_send_json_error( [ 'message' => 'Error crítico: No se pudo desencriptar la API Key.' ] );
     }
 
     // Construct the request

@@ -4,6 +4,18 @@ Este documento es el diario de a bordo cronológico del proyecto. Cada entrada c
 
 ---
 
+## Log Entry: 2025-10-07 13
+
+*   **Feature Slice:** MVP 3.0 - Configuración de API de Validación (COMPLETADO)
+*   **Action:** Implementación de la herramienta de prueba de conexión de API.
+*   **Lead Agent:** El Ingeniero de Datos
+*   **Supervisor:** El Guardián de la Seguridad
+*   **Files Modified:** `admin/institution-dashboard-page.php`
+*   **Reasoning:** Se ha añadido la interfaz y la lógica AJAX para que el Gerente de Institución pueda probar su configuración de API en tiempo real. Esto es crucial para que los usuarios puedan auto-diagnosticar problemas de conexión antes de activar la validación por API para sus beneficiarios. Esto completa el primer entregable de la Fase 3.
+*   **Commit Hash:** 63c18ad
+
+---
+
 ## Log Entry: 2025-10-07 12
 
 *   **Feature Slice:** MVP 3.0 - Configuración de API de Validación

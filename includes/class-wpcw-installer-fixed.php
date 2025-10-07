@@ -474,6 +474,51 @@ class WPCW_Installer {
             ) );
         }
 
+        $checks['encryption_setup'] = self::setup_encryption();
+
         return $checks;
+    }
+
+    /**
+     * Setup encryption key on activation.
+     * Design by El Guardián de la Seguridad.
+     */
+    public static function setup_encryption() {
+        // Check if key already exists
+        if ( get_option( 'wpcw_encryption_key_path' ) && file_exists( get_option( 'wpcw_encryption_key_path' ) ) ) {
+            return true;
+        }
+
+        try {
+            $uploads = wp_upload_dir();
+            $secure_dir_name = 'wpcw-secure-' . wp_generate_password( 12, false );
+            $secure_dir_path = $uploads['basedir'] . '/' . $secure_dir_name;
+
+            // Create secure directory
+            if ( ! wp_mkdir_p( $secure_dir_path ) ) {
+                throw new Exception( 'Could not create secure directory for encryption key.' );
+            }
+
+            // Create .htaccess for security
+            $htaccess_content = "Deny from all";
+            @file_put_contents( $secure_dir_path . '/.htaccess', $htaccess_content );
+
+            // Create key file
+            $key_file_path = $secure_dir_path . '/encryption.key';
+            $encryption_key = bin2hex( random_bytes( 32 ) ); // 64 characters hex
+
+            if ( ! @file_put_contents( $key_file_path, $encryption_key ) ) {
+                throw new Exception( 'Could not write to encryption key file.' );
+            }
+
+            // Store the path to the key file in the database
+            update_option( 'wpcw_encryption_key_path', $key_file_path );
+
+            return true;
+
+        } catch ( Exception $e ) {
+            error_log( 'WPCW Critical Error: ' . $e->getMessage() );
+            return false;
+        }
     }
 }
