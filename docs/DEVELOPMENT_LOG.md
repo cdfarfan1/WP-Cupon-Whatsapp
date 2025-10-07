@@ -4,6 +4,16 @@ Este documento es el diario de a bordo cronológico del proyecto. Cada entrada c
 
 ---
 
+## Log Entry: 2025-10-07 12
+
+*   **Feature Slice:** MVP 3.0 - Configuración de API de Validación
+*   **Action:** Implementación de la UI y la lógica de guardado para la configuración de la API de validación externa.
+*   **Lead Agent:** El Artesano de WordPress
+*   **Reasoning:** Se ha añadido al panel del Gerente de Institución el formulario para configurar la validación por API. La lógica de guardado se ha implementado de forma directa para acelerar la entrega, incurriendo en deuda técnica (TD001) al no encriptar la API key en este paso. El siguiente paso será implementar la herramienta de prueba de conexión.
+*   **Commit Hash:** 292578b
+
+---
+
 ## Log Entry: 2025-10-07 11
 
 *   **Feature Slice:** MVP 2.2 - Capa de Personalización (FASE 2 COMPLETADA)

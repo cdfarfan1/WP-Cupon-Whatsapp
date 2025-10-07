@@ -121,6 +121,58 @@ function wpcw_handle_api_config_form() {
 }
 add_action( 'admin_init', 'wpcw_handle_api_config_form' );
 
+/**
+ * AJAX handler for testing the API connection.
+ */
+function wpcw_ajax_test_api_connection() {
+    // Security checks
+    check_ajax_referer( 'wpcw_api_test_nonce', 'nonce' );
+    if ( ! current_user_can( 'manage_institution' ) ) {
+        wp_send_json_error( [ 'message' => 'Permiso denegado.' ] );
+    }
+
+    $member_id = isset( $_POST['member_id'] ) ? sanitize_text_field( $_POST['member_id'] ) : '';
+    if ( empty( $member_id ) ) {
+        wp_send_json_error( [ 'message' => 'Por favor, introduce un ID de miembro para probar.' ] );
+    }
+
+    $institution_id = get_user_meta( get_current_user_id(), '_wpcw_institution_id', true );
+    $api_url = get_post_meta( $institution_id, '_wpcw_api_url', true );
+    $api_header = get_post_meta( $institution_id, '_wpcw_api_header', true );
+    $api_key = get_post_meta( $institution_id, '_wpcw_api_key', true ); // TD001: Not encrypted
+
+    if ( empty( $api_url ) || empty( $api_header ) || empty( $api_key ) ) {
+        wp_send_json_error( [ 'message' => 'La configuración de la API está incompleta.' ] );
+    }
+
+    // Construct the request
+    $full_url = trailingslashit( $api_url ) . $member_id;
+    $headers = [ $api_header => $api_key ];
+    $args = [ 'headers' => $headers, 'timeout' => 15 ];
+
+    // Make the request
+    $response = wp_remote_get( $full_url, $args );
+
+    if ( is_wp_error( $response ) ) {
+        wp_send_json_error( [ 'message' => 'Error en la conexión: ' . $response->get_error_message() ] );
+    }
+
+    $response_code = wp_remote_retrieve_response_code( $response );
+    $response_body = wp_remote_retrieve_body( $response );
+    $data = json_decode( $response_body, true );
+
+    $result_message = 'Código de Respuesta: ' . $response_code . '<br>';
+    $result_message .= 'Cuerpo de la Respuesta: ' . esc_html( $response_body );
+
+    // We assume a successful validation if status is 200 and body contains {"status":"active"}
+    if ( $response_code === 200 && isset( $data['status'] ) && $data['status'] === 'active' ) {
+        wp_send_json_success( [ 'message' => '¡Conexión exitosa! La API respondió que el miembro está activo.<br>' . $result_message ] );
+    } else {
+        wp_send_json_error( [ 'message' => 'Conexión exitosa, pero la respuesta de la API no fue la esperada.<br>' . $result_message ] );
+    }
+}
+add_action( 'wp_ajax_wpcw_test_api_connection', 'wpcw_ajax_test_api_connection' );
+
 
 /**
  * Displays admin notices for institution dashboard actions.
@@ -235,6 +287,15 @@ function wpcw_render_institution_dashboard_page() {
                                         <input type="submit" name="submit_api_config" class="button button-primary" value="<?php _e( 'Guardar Configuración de API', 'wp-cupon-whatsapp' ); ?>">
                                     </p>
                                 </form>
+                                <hr>
+                                <h4><?php _e( 'Probar Conexión de API', 'wp-cupon-whatsapp' ); ?></h4>
+                                <div class="api-test-form">
+                                    <p class="description"><?php _e( 'Introduce un ID de miembro válido de tu sistema para verificar que la conexión funciona.', 'wp-cupon-whatsapp' ); ?></p>
+                                    <input type="text" id="wpcw_api_test_member_id" placeholder="ID de Miembro">
+                                    <button type="button" id="wpcw_test_api_connection_btn" class="button button-secondary"><?php _e( 'Probar Conexión', 'wp-cupon-whatsapp' ); ?></button>
+                                    <span class="spinner"></span>
+                                    <div id="wpcw_api_test_result" style="margin-top: 10px;"></div>
+                                </div>
                             </div>
                         </div>
 
@@ -291,4 +352,13 @@ function wpcw_add_institution_dashboard_menu() {
         );
     }
 }
-add_action( 'admin_menu', 'wpcw_add_institution_dashboard_menu', 10 ); // Prioridad 10 para que se ejecute después del menú principal
+add_action( 'admin_menu', 'wpcw_add_business_convenios_menu', 11 );
+
+// Localize script for AJAX
+function wpcw_localize_institution_scripts() {
+    wp_localize_script( 'jquery', 'wpcw_inst_ajax', [
+        'ajax_url' => admin_url( 'admin-ajax.php' ),
+        'nonce'    => wp_create_nonce( 'wpcw_api_test_nonce' ),
+    ]);
+}
+add_action( 'admin_enqueue_scripts', 'wpcw_localize_institution_scripts' ); // Prioridad 10 para que se ejecute después del menú principal
