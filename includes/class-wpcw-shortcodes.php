@@ -26,6 +26,7 @@ class WPCW_Shortcodes {
         add_shortcode( 'wpcw_canje_cupon', array( __CLASS__, 'coupon_redemption_shortcode' ) );
         add_shortcode( 'wpcw_mis_canjes', array( __CLASS__, 'my_redemptions_shortcode' ) );
         add_shortcode( 'wpcw_dashboard_usuario', array( __CLASS__, 'user_dashboard_shortcode' ) );
+        add_shortcode( 'wpcw_registro_beneficiario', array( __CLASS__, 'render_beneficiary_registration_form' ) );
 
         // Enqueue frontend scripts and styles
         add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_frontend_assets' ) );
@@ -626,6 +627,91 @@ class WPCW_Shortcodes {
 
         return ob_get_clean();
     }
+
+    /**
+     * Beneficiary Registration Form Shortcode
+     */
+    public static function render_beneficiary_registration_form( $atts ) {
+        ob_start();
+        $errors = [];
+
+        // --- Logic by El Artesano ---
+        if ( 'POST' === $_SERVER['REQUEST_METHOD'] && ! empty( $_POST['action'] ) && $_POST['action'] === 'wpcw_register_beneficiary' ) {
+            // --- Security by El Guardián ---
+            if ( ! isset( $_POST['wpcw_beneficiary_nonce'] ) || ! wp_verify_nonce( $_POST['wpcw_beneficiary_nonce'], 'wpcw_beneficiary_registration' ) ) {
+                $errors[] = 'Error de seguridad. Por favor, recarga la página y vuelve a intentarlo.';
+            } else {
+                // --- Data Validation ---
+                $email = isset( $_POST['wpcw_email'] ) ? sanitize_email( $_POST['wpcw_email'] ) : '';
+                $institution_id = isset( $_POST['wpcw_institution_id'] ) ? absint( $_POST['wpcw_institution_id'] ) : 0;
+                $password = isset( $_POST['wpcw_password'] ) ? $_POST['wpcw_password'] : '';
+
+                if ( empty( $email ) || ! is_email( $email ) ) { $errors[] = 'Por favor, introduce un email válido.'; }
+                if ( empty( $password ) ) { $errors[] = 'La contraseña no puede estar vacía.'; }
+                if ( $institution_id === 0 ) { $errors[] = 'Debes seleccionar una institución.'; }
+                if ( email_exists( $email ) ) { $errors[] = 'Este email ya está registrado. Por favor, inicia sesión.'; }
+
+                if ( empty( $errors ) ) {
+                    // --- Core Validation Logic ---
+                    $valid_members = get_post_meta( $institution_id, '_wpcw_valid_member_emails', true );
+                    if ( is_array( $valid_members ) && in_array( $email, $valid_members ) ) {
+                        // Success! Create user.
+                        $user_id = wp_create_user( $email, $password, $email );
+                        if ( ! is_wp_error( $user_id ) ) {
+                            update_user_meta( $user_id, '_wpcw_institution_id', $institution_id );
+                            // TODO: Log user in and redirect.
+                            echo '<div class="wpcw-message wpcw-success">¡Registro completado! Ahora puedes iniciar sesión.</div>';
+                        } else {
+                            $errors[] = 'Error al crear el usuario: ' . $user_id->get_error_message();
+                        }
+                    } else {
+                        $errors[] = 'Tu email no se encuentra en la lista de miembros válidos para la institución seleccionada.';
+                    }
+                }
+            }
+        }
+
+        // --- UI by La Diseñadora ---
+        if ( ! empty( $errors ) ) {
+            echo '<div class="wpcw-message wpcw-error"><ul>';
+            foreach ( $errors as $error ) {
+                echo '<li>' . esc_html( $error ) . '</li>';
+            }
+            echo '</ul></div>';
+        }
+        ?>
+        <form method="post" class="wpcw-registration-form">
+            <input type="hidden" name="action" value="wpcw_register_beneficiary">
+            <?php wp_nonce_field( 'wpcw_beneficiary_registration', 'wpcw_beneficiary_nonce' ); ?>
+
+            <p>
+                <label for="wpcw_email">Email *</label>
+                <input type="email" id="wpcw_email" name="wpcw_email" required>
+            </p>
+            <p>
+                <label for="wpcw_password">Contraseña *</label>
+                <input type="password" id="wpcw_password" name="wpcw_password" required>
+            </p>
+            <p>
+                <label for="wpcw_institution_id">Institución *</label>
+                <select name="wpcw_institution_id" id="wpcw_institution_id" required>
+                    <option value="">-- Seleccionar --</option>
+                    <?php
+                    $institutions = WPCW_Institution_Manager::get_all_institutions();
+                    foreach ( $institutions as $id => $name ) {
+                        echo '<option value="' . esc_attr( $id ) . '">' . esc_html( $name ) . '</option>';
+                    }
+                    ?>
+                </select>
+            </p>
+            <p>
+                <button type="submit">Registrarse</button>
+            </p>
+        </form>
+        <?php
+        return ob_get_clean();
+    }
+
 
     /**
      * Process adhesion form
