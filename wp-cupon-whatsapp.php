@@ -75,6 +75,12 @@ require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-rest-api.php';
 // Include Elementor integration
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-elementor.php';
 
+// Load debug tools only if debug mode is enabled
+if ( defined( 'WPCW_DEBUG_MODE' ) && WPCW_DEBUG_MODE ) {
+    require_once WPCW_PLUGIN_DIR . 'admin/developer-tools-page.php';
+    require_once WPCW_PLUGIN_DIR . 'includes/debug/class-wpcw-seeder.php';
+}
+
 /**
  * Initialize plugin functionality
  * Main initialization function following WordPress best practices

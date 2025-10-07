@@ -4,6 +4,18 @@ Este documento es el diario de a bordo cronológico del proyecto. Cada entrada c
 
 ---
 
+## Log Entry: 2025-10-07 17
+
+*   **Feature Slice:** Flujo de Canje Presencial
+*   **Action:** Creación de la interfaz y el manejador AJAX para la validación de canjes.
+*   **Lead Agent:** El Artesano de WordPress
+*   **Files Created:** `admin/validate-redemption-page.php`
+*   **Files Modified:** `wp-cupon-whatsapp.php`
+*   **Reasoning:** Se ha creado la página de administración para que el Staff del Negocio pueda validar códigos de canje. La implementación incluye la interfaz de usuario, el script de jQuery para la llamada AJAX y la función de backend que recibe la petición. La lógica de validación real es un placeholder, pero el flujo de comunicación está completo.
+*   **Commit Hash:** bc08f9d
+
+---
+
 ## Log Entry: 2025-10-07 16
 
 *   **Feature Slice:** Gestión de Roles y Permisos
