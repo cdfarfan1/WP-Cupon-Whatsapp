@@ -1,4 +1,4 @@
-<?php
+p<?php
 /**
  * Tests for WPCW_Redemption_Handler class
  *

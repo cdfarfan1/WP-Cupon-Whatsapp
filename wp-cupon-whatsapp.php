@@ -59,6 +59,7 @@ require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
 require_once WPCW_PLUGIN_DIR . 'admin/dashboard-pages.php';
 require_once WPCW_PLUGIN_DIR . 'admin/institution-dashboard-page.php'; // Carga del nuevo panel
 require_once WPCW_PLUGIN_DIR . 'admin/business-convenios-page.php'; // Carga del panel de convenios para negocios
+require_once WPCW_PLUGIN_DIR . 'admin/validate-redemption-page.php'; // Carga de la página de validación de canjes
 
 // Include public files
 require_once WPCW_PLUGIN_DIR . 'public/shortcodes.php';

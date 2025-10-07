@@ -4,6 +4,41 @@ Este documento es el diario de a bordo cronológico del proyecto. Cada entrada c
 
 ---
 
+## Log Entry: 2025-10-07 16
+
+*   **Feature Slice:** Gestión de Roles y Permisos
+*   **Action:** Creación del nuevo rol "Supervisor de Beneficios".
+*   **Lead Agent:** El Artesano de WordPress
+*   **Supervisor:** El Guardián de la Seguridad
+*   **Files Modified:** `includes/roles.php`
+*   **Reasoning:** Para permitir la delegación de la aprobación de beneficiarios de forma segura y estructurada, se ha creado el rol `wpcw_benefits_supervisor`. Este rol tiene la capacidad específica `approve_beneficiary_requests`, que también ha sido añadida a los roles de gestión superiores. Esto evita sobrecargar el rol del "Staff de Negocio" con responsabilidades administrativas.
+*   **Commit Hash:** d654bea
+
+---
+
+## Log Entry: 2025-10-07 15
+
+*   **Feature Slice:** Onboarding y Configuración
+*   **Action:** Mejora del instalador para la creación automática de páginas de beneficiarios.
+*   **Lead Agent:** El Artesano de WordPress
+*   **Files Modified:** `includes/class-wpcw-installer-fixed.php`
+*   **Reasoning:** Para mejorar la experiencia de usuario y facilitar el despliegue masivo, se ha actualizado la función `create_pages` del instalador. Ahora, durante la activación del plugin, se crearán automáticamente las páginas "Registro de Beneficiarios" y "Portal de Beneficios", cada una con su shortcode correspondiente ya insertado.
+*   **Commit Hash:** 5340def
+
+---
+
+## Log Entry: 2025-10-07 14
+
+*   **Feature Slice:** Fase de Refactorización
+*   **Action:** Pago de la Deuda Técnica TD001 - Encriptación de API Keys.
+*   **Lead Agent:** El Guardián de la Seguridad
+*   **Files Created:** `includes/utils.php`
+*   **Files Modified:** `includes/class-wpcw-installer-fixed.php`, `admin/institution-dashboard-page.php`, `wp-cupon-whatsapp.php`
+*   **Reasoning:** Se ha implementado un sistema de autogestión de claves de encriptación en la activación del plugin. La lógica de guardado y lectura de la API key en el panel de la institución ha sido refactorizada para usar encriptación (openssl_encrypt/decrypt), saldando la deuda técnica y eliminando el almacenamiento de secretos en texto plano.
+*   **Commit Hash:** 84af228
+
+---
+
 ## Log Entry: 2025-10-07 13
 
 *   **Feature Slice:** MVP 3.0 - Configuración de API de Validación (COMPLETADO)
