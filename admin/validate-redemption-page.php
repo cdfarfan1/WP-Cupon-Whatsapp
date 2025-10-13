@@ -79,7 +79,9 @@ add_action( 'wp_ajax_wpcw_validate_redemption_code', 'wpcw_ajax_validate_redempt
  * Enqueue script for the validation page.
  */
 function wpcw_enqueue_validation_page_scripts( $hook ) {
-    if ( $hook !== 'wp-cupón-whatsapp_page_wpcw-validate-redemption' ) {
+    // Check if we're on the validation page
+    $screen = get_current_screen();
+    if ( ! $screen || strpos( $screen->id, 'wpcw-validate-redemption' ) === false ) {
         return;
     }
 

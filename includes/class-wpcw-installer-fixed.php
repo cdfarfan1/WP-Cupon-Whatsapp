@@ -217,7 +217,7 @@ class WPCW_Installer {
     }
 
     /**
-     * Verify table structure
+     * Verify table structure and run migration if needed
      */
     private static function verify_table_structure( $table_name ) {
         global $wpdb;
@@ -233,14 +233,14 @@ class WPCW_Installer {
             // Required columns
             $required_columns = array(
                 'id',
-    'user_id',
-    'coupon_id',
-    'numero_canje',
-    'token_confirmacion',
-    'estado_canje',
-    'fecha_solicitud_canje',
-    'created_at',
-    'updated_at',
+                'user_id',
+                'coupon_id',
+                'numero_canje',
+                'token_confirmacion',
+                'estado_canje',
+                'fecha_solicitud_canje',
+                'created_at',
+                'updated_at',
             );
 
             $existing_columns = array();
@@ -249,13 +249,19 @@ class WPCW_Installer {
             }
 
             // Check if all required columns exist
+            $missing_columns = array();
             foreach ( $required_columns as $required_column ) {
                 if ( ! in_array( $required_column, $existing_columns ) ) {
-                    if ( class_exists( 'WPCW_Logger' ) ) {
-                        WPCW_Logger::log( "Missing required column: $required_column", 'warning' );
-                    }
-                    return false;
+                    $missing_columns[] = $required_column;
                 }
+            }
+
+            // If columns are missing, run migration
+            if ( ! empty( $missing_columns ) ) {
+                if ( class_exists( 'WPCW_Logger' ) ) {
+                    WPCW_Logger::log( 'Missing columns detected: ' . implode( ', ', $missing_columns ) . '. Running migration...', 'warning' );
+                }
+                return self::migrate_table_schema( $table_name, $existing_columns );
             }
 
             return true;
@@ -263,6 +269,182 @@ class WPCW_Installer {
         } catch ( Exception $e ) {
             if ( class_exists( 'WPCW_Logger' ) ) {
                 WPCW_Logger::log( 'Table structure verification error: ' . $e->getMessage(), 'error' );
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Migrate table schema from old version to new version
+     * OPTIMIZED: Uses single ALTER TABLE for all columns (faster)
+     */
+    private static function migrate_table_schema( $table_name, $existing_columns ) {
+        global $wpdb;
+
+        try {
+            // Check if migration already completed
+            if ( get_option( 'wpcw_table_migration_completed' ) ) {
+                return true;
+            }
+
+            // Log migration start
+            if ( class_exists( 'WPCW_Logger' ) ) {
+                WPCW_Logger::log( 'Starting optimized table migration for: ' . $table_name, 'info' );
+            }
+
+            // Create backup table (only if has data)
+            $row_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$table_name}" );
+            if ( $row_count > 0 ) {
+                $backup_table = $table_name . '_backup_' . date( 'Ymd_His' );
+                $wpdb->query( "CREATE TABLE IF NOT EXISTS {$backup_table} LIKE {$table_name}" );
+                $wpdb->query( "INSERT INTO {$backup_table} SELECT * FROM {$table_name}" );
+                update_option( 'wpcw_table_backup_name', $backup_table );
+            }
+
+            // Build single ALTER TABLE statement with all missing columns
+            $alter_statements = array();
+
+            $column_definitions = array(
+                'coupon_id'                => "coupon_id bigint(20) UNSIGNED NULL",
+                'numero_canje'             => "numero_canje varchar(20) NULL",
+                'token_confirmacion'       => "token_confirmacion varchar(64) NULL",
+                'estado_canje'             => "estado_canje varchar(50) NOT NULL DEFAULT 'pendiente_confirmacion'",
+                'fecha_solicitud_canje'    => "fecha_solicitud_canje datetime NULL",
+                'fecha_confirmacion_canje' => "fecha_confirmacion_canje datetime NULL",
+                'comercio_id'              => "comercio_id bigint(20) UNSIGNED NULL",
+                'whatsapp_url'             => "whatsapp_url text NULL",
+                'codigo_cupon_wc'          => "codigo_cupon_wc varchar(100) NULL",
+                'id_pedido_wc'             => "id_pedido_wc bigint(20) UNSIGNED NULL",
+                'origen_canje'             => "origen_canje varchar(50) DEFAULT 'webapp'",
+                'notas_internas'           => "notas_internas text NULL",
+                'fecha_rechazo'            => "fecha_rechazo datetime NULL",
+                'fecha_cancelacion'        => "fecha_cancelacion datetime NULL",
+                'created_at'               => "created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
+                'updated_at'               => "updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
+            );
+
+            // Only add missing columns
+            foreach ( $column_definitions as $column_name => $definition ) {
+                if ( ! in_array( $column_name, $existing_columns ) ) {
+                    $alter_statements[] = "ADD COLUMN {$definition}";
+                }
+            }
+
+            // Execute single ALTER TABLE if there are columns to add
+            if ( ! empty( $alter_statements ) ) {
+                $sql = "ALTER TABLE {$table_name} " . implode( ', ', $alter_statements );
+                $result = $wpdb->query( $sql );
+
+                if ( $result === false ) {
+                    throw new Exception( "Failed to alter table. Error: " . $wpdb->last_error );
+                }
+            }
+
+            // Migrate data from old columns if they exist (fast UPDATE queries)
+            if ( in_array( 'business_id', $existing_columns ) && in_array( 'redeemed_at', $existing_columns ) ) {
+                // Combined single UPDATE (faster)
+                $wpdb->query(
+                    "UPDATE {$table_name} SET
+                        comercio_id = business_id,
+                        fecha_solicitud_canje = redeemed_at,
+                        fecha_confirmacion_canje = redeemed_at,
+                        estado_canje = 'confirmado_por_negocio'
+                    WHERE business_id IS NOT NULL AND redeemed_at IS NOT NULL"
+                );
+            } elseif ( in_array( 'business_id', $existing_columns ) ) {
+                $wpdb->query( "UPDATE {$table_name} SET comercio_id = business_id WHERE business_id IS NOT NULL" );
+            } elseif ( in_array( 'redeemed_at', $existing_columns ) ) {
+                $wpdb->query(
+                    "UPDATE {$table_name} SET
+                        fecha_solicitud_canje = redeemed_at,
+                        fecha_confirmacion_canje = redeemed_at,
+                        estado_canje = 'confirmado_por_negocio'
+                    WHERE redeemed_at IS NOT NULL"
+                );
+            }
+
+            // Defer index creation to background (non-blocking)
+            update_option( 'wpcw_indexes_pending', true );
+            wp_schedule_single_event( time() + 10, 'wpcw_create_indexes' );
+
+            // Store migration completion
+            update_option( 'wpcw_table_migration_completed', current_time( 'mysql' ) );
+
+            // Log success
+            if ( class_exists( 'WPCW_Logger' ) ) {
+                WPCW_Logger::log( 'Table migration completed successfully (optimized mode)', 'info' );
+            }
+
+            return true;
+
+        } catch ( Exception $e ) {
+            $error_message = 'Table migration error: ' . $e->getMessage();
+            if ( class_exists( 'WPCW_Logger' ) ) {
+                WPCW_Logger::log( $error_message, 'error' );
+            } else {
+                error_log( 'WPCW_Installer: ' . $error_message );
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Create indexes in background (deferred for performance)
+     */
+    public static function create_table_indexes() {
+        global $wpdb;
+
+        try {
+            if ( ! get_option( 'wpcw_indexes_pending' ) ) {
+                return true;
+            }
+
+            $table_name = WPCW_CANJES_TABLE_NAME;
+
+            // Build single ALTER TABLE for all indexes (faster)
+            $index_statements = array();
+            $indexes = array(
+                'idx_user_id'         => 'user_id',
+                'idx_coupon_id'       => 'coupon_id',
+                'idx_numero_canje'    => 'numero_canje',
+                'idx_estado_canje'    => 'estado_canje',
+                'idx_fecha_solicitud' => 'fecha_solicitud_canje',
+                'idx_comercio_id'     => 'comercio_id',
+            );
+
+            foreach ( $indexes as $index_name => $column_name ) {
+                // Check if index exists
+                $index_exists = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = %s AND INDEX_NAME = %s",
+                        $table_name,
+                        $index_name
+                    )
+                );
+
+                if ( ! $index_exists ) {
+                    $index_statements[] = "ADD INDEX {$index_name} ({$column_name})";
+                }
+            }
+
+            // Create all indexes in single ALTER TABLE
+            if ( ! empty( $index_statements ) ) {
+                $sql = "ALTER TABLE {$table_name} " . implode( ', ', $index_statements );
+                $wpdb->query( $sql );
+            }
+
+            // Mark as completed
+            delete_option( 'wpcw_indexes_pending' );
+
+            if ( class_exists( 'WPCW_Logger' ) ) {
+                WPCW_Logger::log( 'Table indexes created successfully', 'info' );
+            }
+
+            return true;
+
+        } catch ( Exception $e ) {
+            if ( class_exists( 'WPCW_Logger' ) ) {
+                WPCW_Logger::log( 'Index creation error: ' . $e->getMessage(), 'error' );
             }
             return false;
         }
@@ -286,7 +468,7 @@ class WPCW_Installer {
                 ),
                 'formulario_adhesion' => array(
                     'title'   => __( 'Formulario de Adhesión', 'wp-cupon-whatsapp' ),
-                    'content' => '[wpcw_formulario_adhesion]',
+                    'content' => '[wpcw_solicitud_adhesion_form]',
                     'slug'    => 'formulario-adhesion',
                 ),
                 'canje_cupon'         => array(

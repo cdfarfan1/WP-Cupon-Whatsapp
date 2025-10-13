@@ -1,0 +1,48 @@
+{
+  "name": "cristianfarfan/plugin-slug",
+  "description": "Plugin description",
+  "type": "wordpress-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Cristian Farfan",
+      "email": "farfancris@gmail.com",
+      "homepage": "https://cristianfarfan.com.ar",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/cdfarfan1/plugin-slug/issues",
+    "source": "https://github.com/cdfarfan1/plugin-slug",
+    "docs": "https://cristianfarfan.com.ar/docs/plugin-slug"
+  },
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0",
+    "wp-coding-standards/wpcs": "^3.0",
+    "phpstan/phpstan": "^1.10"
+  },
+  "autoload": {
+    "psr-4": {
+      "CristianFarfan\\PluginName\\": "includes/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CristianFarfan\\PluginName\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+    "phpcs": "phpcs",
+    "phpcbf": "phpcbf",
+    "phpstan": "phpstan analyse"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}

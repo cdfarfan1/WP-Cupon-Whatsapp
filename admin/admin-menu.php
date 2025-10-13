@@ -97,6 +97,35 @@ if ( ! function_exists( 'wpcw_render_plugin_dashboard_page' ) ) {
             }
             </style>
 
+            <!-- Database Migration Status Widget -->
+            <?php
+            // Quick check for migration status
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'wpcw_canjes';
+            $columns = $wpdb->get_results( "DESCRIBE {$table_name}" );
+            $has_estado_canje = false;
+            foreach ( $columns as $column ) {
+                if ( $column->Field === 'estado_canje' ) {
+                    $has_estado_canje = true;
+                    break;
+                }
+            }
+            ?>
+            <?php if ( $has_estado_canje ) : ?>
+            <div class="notice notice-success" style="display: flex; align-items: center; gap: 15px; margin: 20px 0; padding: 15px; border-left-width: 5px;">
+                <div style="font-size: 32px;">✅</div>
+                <div style="flex: 1;">
+                    <h3 style="margin: 0 0 5px 0;">Base de Datos Migrada Correctamente</h3>
+                    <p style="margin: 0;">
+                        La base de datos está actualizada. Todas las funcionalidades están disponibles.
+                        <a href="<?php echo esc_url( admin_url( 'admin.php?page=wpcw-database-status' ) ); ?>" style="margin-left: 10px;">
+                            Ver detalles →
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <?php endif; ?>
+
             <!-- Quick Actions -->
             <div class="wpcw-dashboard">
                 <div class="wpcw-dashboard-cards">
@@ -312,7 +341,7 @@ function wpcw_enqueue_dashboard_assets( $hook ) {
     // Enqueue our dashboard script
     wp_enqueue_script(
         'wpcw-dashboard',
-        plugins_url( 'admin/js/dashboard.js', dirname( __FILE__ ) ),
+        WPCW_PLUGIN_URL . 'admin/js/dashboard.js',
         array( 'chart-js' ),
         WPCW_VERSION,
         true
@@ -321,7 +350,7 @@ function wpcw_enqueue_dashboard_assets( $hook ) {
     // Enqueue dashboard styles
     wp_enqueue_style(
         'wpcw-dashboard',
-        plugins_url( 'admin/css/dashboard.css', dirname( __FILE__ ) ),
+        WPCW_PLUGIN_URL . 'admin/css/dashboard.css',
         array(),
         WPCW_VERSION
     );
@@ -347,6 +376,59 @@ add_action( 'wp_ajax_wpcw_refresh_dashboard_metrics', 'wpcw_refresh_dashboard_me
 
 // Registrar el hook para crear el menú administrativo
 add_action( 'admin_menu', 'wpcw_register_plugin_admin_menu', 1 );
+
+/**
+ * Legacy redirect: wpcw-dashboard → wpcw-main-dashboard
+ * 
+ * Redirige URLs antiguas al nuevo slug para compatibilidad con bookmarks
+ * y enlaces que aún no se hayan actualizado.
+ * 
+ * @since 1.5.1
+ * @deprecated-slug wpcw-dashboard (remover en v1.6.0 - 6 meses)
+ * @author Marcus Chen - Legacy compatibility strategy
+ * @security wp_safe_redirect() con status 301
+ */
+function wpcw_redirect_legacy_menu_slug() {
+    global $pagenow;
+    
+    // Solo en admin
+    if ( ! is_admin() ) {
+        return;
+    }
+    
+    // Solo en página admin.php
+    if ( $pagenow !== 'admin.php' ) {
+        return;
+    }
+    
+    // Verificar si es una página legacy
+    if ( ! isset( $_GET['page'] ) ) {
+        return;
+    }
+
+    $page = sanitize_text_field( $_GET['page'] );
+    $legacy_slugs = array(
+        'wpcw-dashboard'      => 'wpcw-main-dashboard',
+        'wp-cupon-whatsapp'   => 'wpcw-main-dashboard',
+        'wpcw_dashboard'      => 'wpcw-main-dashboard',
+    );
+
+    // Si no es un slug legacy, salir
+    if ( ! isset( $legacy_slugs[ $page ] ) ) {
+        return;
+    }
+
+    // Construir URL nueva preservando parámetros adicionales
+    $query_params = $_GET;
+    $query_params['page'] = $legacy_slugs[ $page ]; // Cambiar al nuevo slug
+
+    $new_url = add_query_arg( $query_params, admin_url( 'admin.php' ) );
+
+    // Redirect 301 (permanente) - SEO friendly
+    wp_safe_redirect( $new_url, 301 );
+    exit;
+}
+add_action( 'admin_init', 'wpcw_redirect_legacy_menu_slug', 1 );
 
 /**
  * Funciones de redirección para mantener los elementos agrupados en el menú

@@ -47,7 +47,7 @@ function wpcw_setup_wizard_notice() {
                     <a href="' . esc_url( admin_url( 'admin.php?page=wpcw-setup-wizard' ) ) . '" class="button button-primary">
                         🚀 Iniciar Configuración Guiada
                     </a>
-                    <a href="' . esc_url( admin_url( 'admin.php?page=wpcw-dashboard' ) ) . '" class="button button-secondary">
+                    <a href="' . esc_url( admin_url( 'admin.php?page=wpcw-main-dashboard' ) ) . '" class="button button-secondary">
                         📋 Ir al Dashboard
                     </a>
                     <a href="' . esc_url( admin_url( 'admin.php?page=wpcw-settings' ) ) . '" class="button button-secondary">
@@ -124,32 +124,40 @@ function wpcw_render_setup_wizard_page() {
     $max_steps = 4;
 
     // Procesar formularios
-    if ( $_POST && wp_verify_nonce( $_POST['wpcw_setup_nonce'], 'wpcw_setup_wizard' ) ) {
-        wpcw_process_setup_step( $step );
+    if ( ! empty( $_POST ) && isset( $_POST['wpcw_setup_nonce'] ) && wp_verify_nonce( $_POST['wpcw_setup_nonce'], 'wpcw_setup_wizard' ) ) {
+        try {
+            wpcw_process_setup_step( $step );
 
-        // Redirigir al siguiente paso
-        if ( $step < $max_steps ) {
-            wp_redirect( admin_url( 'admin.php?page=wpcw-setup-wizard&step=' . ( $step + 1 ) ) );
-            exit;
-        } else {
-            // Completar el wizard
-            update_option( 'wpcw_setup_wizard_completed', true );
-            wp_redirect( admin_url( 'admin.php?page=wpcw-dashboard&setup=completed' ) );
-            exit;
+            // Redirigir al siguiente paso
+            if ( $step < $max_steps ) {
+                wp_safe_redirect( admin_url( 'admin.php?page=wpcw-setup-wizard&step=' . ( $step + 1 ) ) );
+                exit;
+            } else {
+                // Completar el wizard
+                update_option( 'wpcw_setup_wizard_completed', true );
+                wp_safe_redirect( admin_url( 'admin.php?page=wpcw-main-dashboard&setup=completed' ) );
+                exit;
+            }
+        } catch ( Exception $e ) {
+            // Log error and show message
+            error_log( 'WPCW Setup Wizard Error: ' . $e->getMessage() );
+            add_settings_error( 'wpcw_setup', 'setup_error', 'Error: ' . $e->getMessage(), 'error' );
         }
     }
 
     ?>
     <div class="wrap wpcw-setup-wizard">
         <h1>🎯 Configuración Inicial - WP Cupón WhatsApp</h1>
-        
+
+        <?php settings_errors( 'wpcw_setup' ); ?>
+
         <!-- Barra de progreso -->
         <div style="background: #f1f1f1; height: 10px; border-radius: 5px; margin: 20px 0; overflow: hidden;">
             <div style="background: #0073aa; height: 100%; width: <?php echo ( $step / $max_steps ) * 100; ?>%; transition: width 0.3s ease;"></div>
         </div>
-        
+
         <p><strong>Paso <?php echo $step; ?> de <?php echo $max_steps; ?></strong></p>
-        
+
         <div style="background: #fff; padding: 30px; border: 1px solid #ddd; border-radius: 8px; max-width: 800px;">
             <?php
             switch ( $step ) {
@@ -228,7 +236,7 @@ function wpcw_render_setup_step_welcome() {
             <button type="submit" class="button button-primary button-large">
                 🚀 Comenzar Configuración
             </button>
-            <a href="<?php echo admin_url( 'admin.php?page=wpcw-dashboard' ); ?>" class="button button-secondary" style="margin-left: 10px;">
+            <a href="<?php echo admin_url( 'admin.php?page=wpcw-main-dashboard' ); ?>" class="button button-secondary" style="margin-left: 10px;">
                 ⏭️ Saltar y ir al Dashboard
             </a>
         </p>
@@ -408,7 +416,7 @@ function wpcw_render_setup_step_complete() {
     </div>
     
     <div style="text-align: center; margin: 30px 0;">
-        <a href="<?php echo admin_url( 'admin.php?page=wpcw-dashboard' ); ?>" class="button button-primary button-large">
+        <a href="<?php echo admin_url( 'admin.php?page=wpcw-main-dashboard' ); ?>" class="button button-primary button-large">
             🏠 Ir al Dashboard del Plugin
         </a>
         
@@ -430,24 +438,40 @@ function wpcw_process_setup_step( $step ) {
     switch ( $step ) {
         case 2:
             if ( isset( $_POST['create_missing_pages'] ) ) {
-                WPCW_Installer::create_pages();
+                if ( class_exists( 'WPCW_Installer' ) && method_exists( 'WPCW_Installer', 'create_pages' ) ) {
+                    WPCW_Installer::create_pages();
+                } else {
+                    throw new Exception( 'WPCW_Installer class not found' );
+                }
             }
             break;
 
         case 3:
             // Guardar configuraciones de reCAPTCHA
             if ( isset( $_POST['recaptcha_site_key'] ) ) {
-                update_option( 'wpcw_recaptcha_site_key', sanitize_text_field( $_POST['recaptcha_site_key'] ) );
+                $site_key_updated = update_option( 'wpcw_recaptcha_site_key', sanitize_text_field( $_POST['recaptcha_site_key'] ) );
+                if ( $site_key_updated === false && get_option( 'wpcw_recaptcha_site_key' ) === false ) {
+                    error_log( 'WPCW: Failed to save recaptcha_site_key' );
+                }
             }
             if ( isset( $_POST['recaptcha_secret_key'] ) ) {
-                update_option( 'wpcw_recaptcha_secret_key', sanitize_text_field( $_POST['recaptcha_secret_key'] ) );
+                $secret_key_updated = update_option( 'wpcw_recaptcha_secret_key', sanitize_text_field( $_POST['recaptcha_secret_key'] ) );
+                if ( $secret_key_updated === false && get_option( 'wpcw_recaptcha_secret_key' ) === false ) {
+                    error_log( 'WPCW: Failed to save recaptcha_secret_key' );
+                }
             }
 
-            // Guardar campos obligatorios
-            $required_fields = isset( $_POST['required_fields'] ) ? $_POST['required_fields'] : array();
-            update_option( 'wpcw_required_field_dni', in_array( 'dni', $required_fields ) );
-            update_option( 'wpcw_required_field_whatsapp', in_array( 'whatsapp', $required_fields ) );
-            update_option( 'wpcw_required_field_fecha_nacimiento', in_array( 'fecha_nacimiento', $required_fields ) );
+            // Guardar campos obligatorios con validación
+            $required_fields = isset( $_POST['required_fields'] ) && is_array( $_POST['required_fields'] ) ? $_POST['required_fields'] : array();
+
+            // Sanitizar array
+            $required_fields = array_map( 'sanitize_text_field', $required_fields );
+
+            update_option( 'wpcw_required_field_dni', in_array( 'dni', $required_fields ) ? 1 : 0 );
+            update_option( 'wpcw_required_field_whatsapp', in_array( 'whatsapp', $required_fields ) ? 1 : 0 );
+            update_option( 'wpcw_required_field_fecha_nacimiento', in_array( 'fecha_nacimiento', $required_fields ) ? 1 : 0 );
+
+            error_log( 'WPCW Setup Step 3: Settings saved successfully' );
             break;
     }
 }

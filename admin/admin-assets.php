@@ -9,7 +9,7 @@ function wpcw_enqueue_admin_assets( $hook ) {
     if ( isset( $_GET['page'] ) && $_GET['page'] === 'wpcw_roles' ) {
         wp_enqueue_style(
             'wpcw-roles',
-            plugins_url( 'css/roles.css', __FILE__ ),
+            WPCW_PLUGIN_URL . 'admin/css/roles.css',
             array(),
             WPCW_VERSION
         );
@@ -24,7 +24,7 @@ function wpcw_enqueue_admin_assets( $hook ) {
     // Registrar y encolar estilos de metaboxes
     wp_enqueue_style(
         'wpcw-meta-boxes',
-        plugins_url( 'css/meta-boxes.css', __FILE__ ),
+        WPCW_PLUGIN_URL . 'admin/css/meta-boxes.css',
         array(),
         WPCW_VERSION
     );
@@ -32,7 +32,7 @@ function wpcw_enqueue_admin_assets( $hook ) {
     // Registrar y encolar scripts de metaboxes
     wp_enqueue_script(
         'wpcw-meta-boxes',
-        plugins_url( 'js/meta-boxes.js', __FILE__ ),
+        WPCW_PLUGIN_URL . 'admin/js/meta-boxes.js',
         array( 'jquery' ),
         WPCW_VERSION,
         true

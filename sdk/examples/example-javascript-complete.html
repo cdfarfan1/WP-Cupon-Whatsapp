@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WP Cupón WhatsApp SDK - Ejemplo JavaScript</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .success {
+            border-left-color: #27ae60;
+        }
+
+        .error {
+            border-left-color: #e74c3c;
+        }
+
+        .info {
+            border-left-color: #3498db;
+        }
+
+        .warning {
+            border-left-color: #f39c12;
+        }
+
+        .result {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .config {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .config strong {
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 WP Cupón WhatsApp SDK - Ejemplo JavaScript</h1>
+        <p class="subtitle">Ejemplo completo de integración frontend con el SDK</p>
+
+        <div class="config">
+            <strong>⚠️ Configuración:</strong> Antes de usar, configura tus credenciales en el código JavaScript (línea 30-34).
+        </div>
+
+        <div class="button-group">
+            <button onclick="testPing()">1. Ping API</button>
+            <button onclick="crearBeneficiario()">2. Crear Beneficiario</button>
+            <button onclick="listarCupones()">3. Listar Cupones</button>
+            <button onclick="validarCupon()">4. Validar Cupón</button>
+            <button onclick="registrarCanje()">5. Registrar Canje</button>
+            <button onclick="obtenerHistorial()">6. Obtener Historial</button>
+            <button onclick="obtenerStats()">7. Estadísticas</button>
+            <button onclick="runAll()">▶️ Ejecutar Todo</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <!-- Incluir SDK -->
+    <script src="../javascript/wpcw-sdk.js"></script>
+
+    <script>
+        // ========================================
+        // CONFIGURACIÓN
+        // ========================================
+
+        const config = {
+            apiUrl: 'https://tusitio.com',
+            apiKey: 'tu_api_key_aqui',
+            apiSecret: 'tu_api_secret_aqui',
+            debug: true
+        };
+
+        let sdk;
+        let beneficiarioId;
+        let cuponCodigo;
+        let cuponId;
+
+        // Inicializar SDK
+        function initSDK() {
+            try {
+                sdk = new WPCuponWhatsappSDK(config);
+                addResult('info', 'SDK Inicializado', `Versión: ${sdk.getVersion()}`);
+                return true;
+            } catch (error) {
+                addResult('error', 'Error Inicializando SDK', error.message);
+                return false;
+            }
+        }
+
+        // ========================================
+        // FUNCIONES DE PRUEBA
+        // ========================================
+
+        async function testPing() {
+            if (!sdk) initSDK();
+
+            try {
+                addResult('info', '1. Ping API', 'Enviando ping...');
+                const response = await sdk.ping();
+                addResult('success', 'Ping Exitoso', JSON.stringify(response, null, 2));
+            } catch (error) {
+                addResult('error', 'Ping Fallido', error.message);
+            }
+        }
+
+        async function crearBeneficiario() {
+            if (!sdk) initSDK();
+
+            try {
+                addResult('info', '2. Crear Beneficiario', 'Creando beneficiario...');
+
+                const data = {
+                    institucion_id: 1,
+                    nombre_completo: 'Carlos Rodríguez',
+                    tipo_documento: 'DNI',
+                    numero_documento: '87654321',
+                    telefono_whatsapp: '+54 9 11 8765-4321',
+                    email: 'carlos@example.com'
+                };
+
+                const response = await sdk.createBeneficiario(data);
+
+                beneficiarioId = response.data.id;
+
+                const result = `
+✅ Beneficiario creado exitosamente
+
+ID: ${response.data.id}
+Código: ${response.data.codigo_beneficiario}
+WhatsApp enviado: ${response.data.whatsapp_sent ? 'Sí' : 'No'}
+                `.trim();
+
+                addResult('success', 'Beneficiario Creado', result);
+            } catch (error) {
+                addResult('error', 'Error Creando Beneficiario', error.message);
+            }
+        }
+
+        async function listarCupones() {
+            if (!sdk) initSDK();
+            if (!beneficiarioId) {
+                addResult('warning', 'Listar Cupones', 'Primero crea un beneficiario');
+                return;
+            }
+
+            try {
+                addResult('info', '3. Listar Cupones', 'Obteniendo cupones disponibles...');
+
+                const response = await sdk.getCuponesByBeneficiario(beneficiarioId);
+
+                if (response.data.length === 0) {
+                    addResult('warning', 'Sin Cupones', 'No hay cupones disponibles');
+                    return;
+                }
+
+                cuponCodigo = response.data[0].codigo;
+                cuponId = response.data[0].id;
+
+                let result = `✅ ${response.data.length} cupones encontrados\n\n`;
+
+                response.data.forEach((cupon, index) => {
+                    result += `
+Cupón ${index + 1}:
+  Código: ${cupon.codigo}
+  Nombre: ${cupon.nombre}
+  Descuento: ${cupon.monto}${cupon.tipo_descuento === 'percent' ? '%' : '$'}
+  Comercio: ${cupon.comercio.nombre}
+  Vence: ${cupon.fecha_expiracion}
+  Ya usado: ${cupon.ya_usado ? 'Sí' : 'No'}
+                    `.trim() + '\n\n';
+                });
+
+                addResult('success', 'Cupones Disponibles', result);
+            } catch (error) {
+                addResult('error', 'Error Listando Cupones', error.message);
+            }
+        }
+
+        async function validarCupon() {
+            if (!sdk) initSDK();
+            if (!cuponCodigo || !beneficiarioId) {
+                addResult('warning', 'Validar Cupón', 'Primero lista cupones');
+                return;
+            }
+
+            try {
+                addResult('info', '4. Validar Cupón', `Validando cupón ${cuponCodigo}...`);
+
+                const response = await sdk.validateCupon(cuponCodigo, beneficiarioId);
+
+                if (response.valid) {
+                    const result = `
+✅ Cupón válido
+
+Código: ${response.data.codigo}
+Descuento: ${response.data.monto}${response.data.tipo_descuento === 'percent' ? '%' : '$'}
+Mensaje: ${response.data.message}
+                    `.trim();
+
+                    addResult('success', 'Cupón Válido', result);
+                } else {
+                    const result = `
+❌ Cupón inválido
+
+Razón: ${response.reason}
+Mensaje: ${response.message}
+                    `.trim();
+
+                    addResult('error', 'Cupón Inválido', result);
+                }
+            } catch (error) {
+                addResult('error', 'Error Validando Cupón', error.message);
+            }
+        }
+
+        async function registrarCanje() {
+            if (!sdk) initSDK();
+            if (!cuponId || !beneficiarioId) {
+                addResult('warning', 'Registrar Canje', 'Primero valida un cupón');
+                return;
+            }
+
+            try {
+                addResult('info', '5. Registrar Canje', 'Registrando canje...');
+
+                const montoOriginal = 1500.00;
+                const descuento = 300.00; // 20% de 1500
+                const montoFinal = montoOriginal - descuento;
+
+                const data = {
+                    beneficiario_id: beneficiarioId,
+                    cupon_id: cuponId,
+                    tipo_canje: 'online',
+                    metodo_validacion: 'codigo',
+                    descuento_aplicado: descuento,
+                    monto_original: montoOriginal,
+                    monto_final: montoFinal
+                };
+
+                const response = await sdk.createCanje(data);
+
+                const result = `
+✅ Canje registrado exitosamente
+
+ID: ${response.data.id}
+Descuento: $${descuento.toFixed(2)}
+Monto original: $${montoOriginal.toFixed(2)}
+Monto final: $${montoFinal.toFixed(2)}
+WhatsApp enviado: ${response.data.whatsapp_sent ? 'Sí' : 'No'}
+                `.trim();
+
+                addResult('success', 'Canje Registrado', result);
+            } catch (error) {
+                addResult('error', 'Error Registrando Canje', error.message);
+            }
+        }
+
+        async function obtenerHistorial() {
+            if (!sdk) initSDK();
+            if (!beneficiarioId) {
+                addResult('warning', 'Obtener Historial', 'Primero crea un beneficiario');
+                return;
+            }
+
+            try {
+                addResult('info', '6. Obtener Historial', 'Obteniendo historial de canjes...');
+
+                const response = await sdk.getHistorialBeneficiario(beneficiarioId, {
+                    limit: 10
+                });
+
+                let result = `
+✅ Historial obtenido
+
+Total canjes: ${response.stats.total_canjes}
+Ahorro total: $${response.stats.ahorro_total.toFixed(2)}
+
+                `.trim();
+
+                if (response.data.length > 0) {
+                    result += '\n\nÚltimos canjes:\n';
+
+                    response.data.forEach((canje, index) => {
+                        result += `
+${index + 1}. ${canje.fecha_canje}
+   Cupón: ${canje.cupon_codigo}
+   Comercio: ${canje.comercio_nombre}
+   Tipo: ${canje.tipo_canje}
+   Descuento: $${canje.descuento_aplicado.toFixed(2)}
+                        `.trim() + '\n';
+                    });
+                } else {
+                    result += '\n\nNo hay canjes registrados aún.';
+                }
+
+                addResult('success', 'Historial de Canjes', result);
+            } catch (error) {
+                addResult('error', 'Error Obteniendo Historial', error.message);
+            }
+        }
+
+        async function obtenerStats() {
+            if (!sdk) initSDK();
+
+            try {
+                addResult('info', '7. Estadísticas', 'Obteniendo estadísticas de institución...');
+
+                const hoy = new Date();
+                const primerDia = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+
+                const response = await sdk.getStatsInstitucion(1, {
+                    fecha_desde: primerDia.toISOString().split('T')[0],
+                    fecha_hasta: hoy.toISOString().split('T')[0]
+                });
+
+                const data = response.data;
+
+                const result = `
+✅ Estadísticas obtenidas
+
+BENEFICIARIOS:
+  Total: ${data.beneficiarios.total}
+  Activos: ${data.beneficiarios.activos}
+  Nuevos este mes: ${data.beneficiarios.nuevos_periodo}
+
+CANJES:
+  Total histórico: ${data.canjes.total}
+  Este mes: ${data.canjes.periodo}
+  - Online: ${data.canjes.online}
+  - Presencial: ${data.canjes.presencial}
+  - WhatsApp: ${data.canjes.whatsapp}
+
+AHORRO:
+  Total: $${data.ahorro.total.toFixed(2)}
+  Este mes: $${data.ahorro.periodo.toFixed(2)}
+  Promedio por canje: $${data.ahorro.promedio_por_canje.toFixed(2)}
+
+TOP 3 COMERCIOS:
+${data.comercios.top_5.slice(0, 3).map((c, i) =>
+    `  ${i + 1}. ${c.nombre}\n     Canjes: ${c.total_canjes} | Ahorro: $${c.ahorro_generado.toFixed(2)}`
+).join('\n')}
+                `.trim();
+
+                addResult('success', 'Estadísticas de Institución', result);
+            } catch (error) {
+                addResult('error', 'Error Obteniendo Estadísticas', error.message);
+            }
+        }
+
+        async function runAll() {
+            clearResults();
+
+            if (!initSDK()) return;
+
+            await testPing();
+            await sleep(1000);
+
+            await crearBeneficiario();
+            await sleep(1000);
+
+            await listarCupones();
+            await sleep(1000);
+
+            await validarCupon();
+            await sleep(1000);
+
+            await registrarCanje();
+            await sleep(1000);
+
+            await obtenerHistorial();
+            await sleep(1000);
+
+            await obtenerStats();
+
+            addResult('success', '✅ Flujo Completo Finalizado', 'Todas las pruebas ejecutadas correctamente');
+        }
+
+        // ========================================
+        // FUNCIONES DE UI
+        // ========================================
+
+        function addResult(type, title, content) {
+            const results = document.getElementById('results');
+
+            const section = document.createElement('div');
+            section.className = `section ${type}`;
+
+            const heading = document.createElement('h2');
+            heading.textContent = title;
+
+            const result = document.createElement('div');
+            result.className = 'result';
+            result.textContent = content;
+
+            section.appendChild(heading);
+            section.appendChild(result);
+            results.appendChild(section);
+
+            // Scroll al último resultado
+            section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // ========================================
+        // INICIALIZACIÓN
+        // ========================================
+
+        window.addEventListener('DOMContentLoaded', () => {
+            addResult('info', 'SDK Listo', 'Haz clic en los botones para probar las funcionalidades');
+        });
+    </script>
+</body>
+</html>

@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(ls:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(dir:*)",
+      "Bash(awk:*)",
+      "Bash(php -l:*)",
+      "Bash(php:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

@@ -59,7 +59,7 @@ class WPCW_Elementor {
     public static function enqueue_elementor_styles() {
         wp_enqueue_style(
             'wpcw-elementor',
-            plugins_url( 'public/css/elementor.css', dirname( __FILE__ ) ),
+            WPCW_PLUGIN_URL . 'public/css/elementor.css',
             array(),
             WPCW_VERSION
         );

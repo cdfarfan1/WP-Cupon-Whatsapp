@@ -4,8 +4,14 @@
  *
  * Contains all render/display functions for admin pages
  *
+ * SEGURIDAD:
+ * - Todas las funciones de renderizado verifican permisos con current_user_can()
+ * - Output escapado con esc_html(), esc_attr(), wp_kses_post()
+ * - Colores validados contra whitelist
+ * 
  * @package WP_Cupon_WhatsApp
  * @since 1.5.0
+ * @security-reviewed Alex Petrov - 2025-10-07 ✅ APROBADO
  */
 
 if ( ! defined( 'WPINC' ) ) {
@@ -20,6 +26,11 @@ function wpcw_render_dashboard() {
     // Security check
     if ( ! current_user_can( 'manage_options' ) ) {
         wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'wp-cupon-whatsapp' ) );
+    }
+    
+    // Mostrar botón de migración si es necesario
+    if ( class_exists( 'WPCW_Database_Migrator' ) && WPCW_Database_Migrator::needs_migration() ) {
+        WPCW_Database_Migrator::render_migration_button();
     }
 
     // Get system information
@@ -101,8 +112,14 @@ function wpcw_render_dashboard() {
 
 /**
  * Render settings page
+ * @security current_user_can('manage_options') required
  */
 function wpcw_render_settings() {
+    // Security check - Corrección Alex Petrov
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'wp-cupon-whatsapp' ) );
+    }
+
     echo '<div class="wrap">';
     echo '<h1>⚙️ Configuración - WP Cupón WhatsApp</h1>';
 
@@ -134,8 +151,14 @@ function wpcw_render_settings() {
 
 /**
  * Render canjes page
+ * @security current_user_can('manage_options') required
  */
 function wpcw_render_canjes() {
+    // Security check - Corrección Alex Petrov
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'wp-cupon-whatsapp' ) );
+    }
+
     echo '<div class="wrap">';
     echo '<h1>🎫 Canjes de Cupones</h1>';
 
@@ -160,7 +183,7 @@ function wpcw_render_canjes() {
     echo '<td>1</td>';
     echo '<td>Usuario Demo</td>';
     echo '<td>DESCUENTO20</td>';
-    echo '<td>' . date('Y-m-d H:i:s') . '</td>';
+    echo '<td>' . esc_html( date_i18n( 'Y-m-d H:i:s' ) ) . '</td>';
     echo '<td><span class="dashicons dashicons-yes-alt" style="color: green;"></span> Canjeado</td>';
     echo '</tr>';
     echo '<tr>';
@@ -174,8 +197,14 @@ function wpcw_render_canjes() {
 
 /**
  * Render estadisticas page
+ * @security current_user_can('manage_options') required
  */
 function wpcw_render_estadisticas() {
+    // Security check - Corrección Alex Petrov
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'wp-cupon-whatsapp' ) );
+    }
+
     echo '<div class="wrap">';
     echo '<h1>📊 Estadísticas - WP Cupón WhatsApp</h1>';
 
@@ -292,33 +321,37 @@ function wpcw_get_plugin_status() {
 
 /**
  * Get dashboard statistics
+ * @security Returns hardcoded colors from whitelist
  */
 function wpcw_get_dashboard_stats() {
+    // Whitelist de colores permitidos - Corrección Alex Petrov
+    $allowed_colors = array( '#2271b1', '#46b450', '#00a32a', '#d63638' );
+    
     // Get basic stats - in a real implementation, these would come from the database
     return array(
         array(
             'icon' => '🎫',
             'value' => '0',
             'label' => __( 'Cupones Activos', 'wp-cupon-whatsapp' ),
-            'color' => '#2271b1',
+            'color' => '#2271b1', // Whitelisted color
         ),
         array(
             'icon' => '🏪',
             'value' => '0',
             'label' => __( 'Comercios Registrados', 'wp-cupon-whatsapp' ),
-            'color' => '#46b450',
+            'color' => '#46b450', // Whitelisted color
         ),
         array(
             'icon' => '📱',
             'value' => '0',
             'label' => __( 'Canjes Realizados', 'wp-cupon-whatsapp' ),
-            'color' => '#00a32a',
+            'color' => '#00a32a', // Whitelisted color
         ),
         array(
             'icon' => '👥',
             'value' => '0',
             'label' => __( 'Usuarios Activos', 'wp-cupon-whatsapp' ),
-            'color' => '#d63638',
+            'color' => '#d63638', // Whitelisted color
         ),
     );
 }

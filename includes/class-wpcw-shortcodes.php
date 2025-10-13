@@ -39,14 +39,14 @@ class WPCW_Shortcodes {
     public static function enqueue_frontend_assets() {
         wp_enqueue_style(
             'wpcw-frontend',
-            plugins_url( 'public/css/frontend.css', dirname( __FILE__ ) ),
+            WPCW_PLUGIN_URL . 'public/css/frontend.css',
             array(),
             WPCW_VERSION
         );
 
         wp_enqueue_script(
             'wpcw-frontend',
-            plugins_url( 'public/js/frontend.js', dirname( __FILE__ ) ),
+            WPCW_PLUGIN_URL . 'public/js/frontend.js',
             array( 'jquery' ),
             WPCW_VERSION,
             true
@@ -978,6 +978,10 @@ class WPCW_Shortcodes {
             }
             echo '</div>';
         } else {
+            echo '<div class="wpcw-no-coupons">';
+            echo '<p>' . esc_html__( 'No hay cupones disponibles en este momento.', 'wp-cupon-whatsapp' ) . '</p>';
+            echo '</div>';
+        }
 
         wp_reset_postdata();
 

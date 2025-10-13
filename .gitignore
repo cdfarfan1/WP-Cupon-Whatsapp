@@ -43,3 +43,6 @@ composer.lock
 *.backup
 *.bak
 backup-*/
+
+# Urgent instructions (temporary)
+INSTRUCCIONES_URGENTES_*.md

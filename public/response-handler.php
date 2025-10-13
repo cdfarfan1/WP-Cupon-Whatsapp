@@ -151,6 +151,9 @@ class WPCW_Response_Handler {
         echo '</div>';
         echo '</div>';
         wp_footer();
-}
+    }
 
+} // Cierre de clase WPCW_Response_Handler - Corregido por Sarah Thompson
+
+// Initialize the response handler
 WPCW_Response_Handler::init();

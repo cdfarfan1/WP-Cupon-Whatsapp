@@ -10,8 +10,11 @@
 
 ### Para Nuevos Desarrolladores
 1. Lee: [README.md](../README.md) - Visión general del proyecto
-2. Revisa: [agents/PROJECT_STAFF.md](agents/PROJECT_STAFF.md) - Sistema de agentes élite
-3. Estudia: [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) - Arquitectura técnica
+2. **🆕 NUEVO**: [HANDOFF_GUIDE.md](HANDOFF_GUIDE.md) - **Guía de handoff completa (15 min setup)**
+3. Revisa: [CONTEXT.md](CONTEXT.md) - **Contexto completo del proyecto**
+4. Estudia: [LESSONS_LEARNED.md](LESSONS_LEARNED.md) - **Errores históricos y lecciones**
+5. Consulta: [agents/PROJECT_STAFF.md](agents/PROJECT_STAFF.md) - Sistema de agentes élite
+6. Arquitectura: [architecture/ARCHITECTURE.md](architecture/ARCHITECTURE.md) - Arquitectura técnica
 
 ### Para Administradores
 1. [user-guides/GUIA_INSTALACION.md](user-guides/GUIA_INSTALACION.md) - Instalación paso a paso
@@ -26,6 +29,19 @@
 ---
 
 ## 📁 ESTRUCTURA DE DOCUMENTACIÓN
+
+### 📘 **DOCUMENTOS RAÍZ** - Transferencia de Conocimiento
+Documentación crítica para handoff y continuidad del proyecto.
+
+| Documento | Descripción |
+|-----------|-------------|
+| **🆕 [CONTEXT.md](CONTEXT.md)** | **⭐ CRÍTICO** - Contexto completo del proyecto (542 líneas) |
+| **🆕 [LESSONS_LEARNED.md](LESSONS_LEARNED.md)** | **⭐ CRÍTICO** - 12 errores históricos con análisis de causa raíz |
+| **🆕 [HANDOFF_GUIDE.md](HANDOFF_GUIDE.md)** | **⭐ CRÍTICO** - Guía práctica de handoff (setup en 15 min) |
+| [INDEX.md](INDEX.md) | Este documento - Índice maestro |
+| [REORGANIZACION_DOCUMENTACION.md](REORGANIZACION_DOCUMENTACION.md) | Reporte de reorganización de documentación |
+
+---
 
 ### 🤖 **[agents/](agents/)** - Sistema de Agentes Élite
 Sistema de especialistas con 20+ años de experiencia para gestión del proyecto.
@@ -105,6 +121,23 @@ Soluciones a errores, correcciones aplicadas y mejoras de validación.
 
 ---
 
+### 🌱 **[developer/](developer/)** - Herramientas de Desarrollo
+Documentación técnica y herramientas para desarrolladores.
+
+| Documento | Descripción |
+|-----------|-------------|
+| **🆕 [SEEDER_DOCUMENTATION.md](developer/SEEDER_DOCUMENTATION.md)** | **⭐ NUEVO** - Documentación completa del sistema de generación de datos |
+| **🆕 [SEEDER_QUICK_REFERENCE.md](developer/SEEDER_QUICK_REFERENCE.md)** | **⭐ NUEVO** - Referencia rápida del seeder (credenciales, testing) |
+
+**Sistema Seeder** - Genera 144 elementos de ejemplo:
+- 3 Instituciones, 10 Comercios, 8 Convenios, 30 Cupones
+- 20 Beneficiarios, 5 Dueños, 15 Vendedores, 3 Admins
+- 50 Canjes con distribución temporal realista
+- Emails: `farfancris@gmail.com`, `criis2709@gmail.com`
+- Teléfonos: `+5493883349901`, `+5493885214566`
+
+---
+
 ### 📖 **[user-guides/](user-guides/)** - Guías de Usuario
 Manuales para administradores y usuarios finales.
 
@@ -152,6 +185,7 @@ Optimizaciones de performance y caching.
 | Documento | Descripción |
 |-----------|-------------|
 | [OPTIMIZATIONS.md](optimization/OPTIMIZATIONS.md) | Optimizaciones aplicadas y planificadas |
+| **🆕 [PLUGIN_SIZE_OPTIMIZATION.md](optimization/PLUGIN_SIZE_OPTIMIZATION.md)** | **Propuesta: Reducir tamaño de 63MB → 5MB** |
 
 ---
 

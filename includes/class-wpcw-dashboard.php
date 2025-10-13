@@ -59,14 +59,12 @@ class WPCW_Dashboard {
 
         // Count WPCW enabled coupons
         $wpcw_coupons = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$wpdb->posts} p
-                INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
-                WHERE p.post_type = 'shop_coupon'
-                AND p.post_status = 'publish'
-                AND pm.meta_key = '_wpcw_enabled'
-                AND pm.meta_value = 'yes'"
-            )
+            "SELECT COUNT(*) FROM {$wpdb->posts} p
+            INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+            WHERE p.post_type = 'shop_coupon'
+            AND p.post_status = 'publish'
+            AND pm.meta_key = '_wpcw_enabled'
+            AND pm.meta_value = 'yes'"
         );
 
         $metrics['coupons'] = array(
@@ -217,12 +215,10 @@ class WPCW_Dashboard {
 
         if ( $wpdb->get_var( "SHOW TABLES LIKE '$redemptions_table'" ) == $redemptions_table ) {
             $recent_redemptions = $wpdb->get_results(
-                $wpdb->prepare(
-                    "SELECT * FROM $redemptions_table
-                    WHERE estado_canje = 'pendiente_confirmacion'
-                    ORDER BY fecha_solicitud_canje DESC
-                    LIMIT 3"
-                )
+                "SELECT * FROM $redemptions_table
+                WHERE estado_canje = 'pendiente_confirmacion'
+                ORDER BY fecha_solicitud_canje DESC
+                LIMIT 3"
             );
 
             foreach ( $recent_redemptions as $redemption ) {
