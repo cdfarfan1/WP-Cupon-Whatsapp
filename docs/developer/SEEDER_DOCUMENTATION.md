@@ -269,6 +269,7 @@ El **Sistema Seeder** genera automáticamente un ecosistema completo de datos de
 'user_id' => Beneficiario aleatorio
 'coupon_id' => Cupón aleatorio
 'comercio_id' => Comercio aleatorio
+'convenio_id' => ID del convenio asociado al cupón ⭐ NUEVO
 'estado_canje' => Estado aleatorio
 'fecha_solicitud_canje' => Últimos 90 días (aleatorio)
 'numero_canje' => 'YYYYMMDD-XXXX'
@@ -279,6 +280,9 @@ El **Sistema Seeder** genera automáticamente un ecosistema completo de datos de
 'ip_address' => '127.0.0.1'
 'user_agent' => 'Test Seeder'
 ```
+
+**⚠️ IMPORTANTE**: Cada canje incluye el `convenio_id` extraído del cupón, vinculando así:
+- El canje → al cupón → al convenio → al comercio e institución
 
 ### Distribución Temporal de Canjes
 

@@ -58,6 +58,7 @@ require_once WPCW_PLUGIN_DIR . 'admin/setup-wizard.php'; // Setup wizard - confi
 require_once WPCW_PLUGIN_DIR . 'admin/database-status-page.php'; // Verificación de estado de BD
 require_once WPCW_PLUGIN_DIR . 'admin/business-management.php';
 require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
+require_once WPCW_PLUGIN_DIR . 'admin/convenio-meta-boxes.php';
 require_once WPCW_PLUGIN_DIR . 'admin/dashboard-pages.php';
 require_once WPCW_PLUGIN_DIR . 'admin/stats-page.php'; // Página de estadísticas - Corregido Error #13
 require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php'; // Página de configuración - Corregido Error #14

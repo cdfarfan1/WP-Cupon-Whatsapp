@@ -599,6 +599,9 @@ class WPCW_Seeder {
             $business_id = $businesses[array_rand($businesses)];
             $status = $statuses[array_rand($statuses)];
 
+            // Get convenio_id from coupon
+            $convenio_id = get_post_meta($coupon_id, '_wpcw_associated_convenio_id', true);
+
             $coupon_code = get_the_title($coupon_id);
             $codigo_validacion = 'VAL' . strtoupper(wp_generate_password(8, false, false));
             $numero_canje = date('Ymd') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT);
@@ -662,6 +665,12 @@ class WPCW_Seeder {
             if ( in_array('user_agent', $columns) ) {
                 $data['user_agent'] = 'Test Seeder';
                 $format[] = '%s';
+            }
+
+            // Add convenio_id if column exists and we have a valid convenio_id
+            if ( in_array('convenio_id', $columns) && !empty($convenio_id) ) {
+                $data['convenio_id'] = $convenio_id;
+                $format[] = '%d';
             }
 
             $inserted = $wpdb->insert( $table_name, $data, $format );
