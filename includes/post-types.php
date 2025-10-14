@@ -116,7 +116,7 @@ function wpcw_register_post_types() {
         'labels'          => $convenio_labels,
         'public'          => false, // Not for public frontend
         'show_ui'         => true,  // Show in the admin panel
-        'show_in_menu'    => true,  // Show in its own admin menu for now
+        'show_in_menu'    => 'wpcw-main-dashboard',  // Consolidado en menú principal
         'menu_icon'       => 'dashicons-businesswoman', // Icon representing partnership
         'capability_type' => 'post',
         'supports'        => array( 'title', 'custom-fields' ),

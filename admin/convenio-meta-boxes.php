@@ -51,13 +51,14 @@ function wpcw_render_convenio_details_meta_box( $post ) {
 	wp_nonce_field( 'wpcw_convenio_details_meta_box', 'wpcw_convenio_details_nonce' );
 
 	// Get existing values
-	$provider_id  = get_post_meta( $post->ID, '_convenio_provider_id', true );
-	$recipient_id = get_post_meta( $post->ID, '_convenio_recipient_id', true );
-	$terms        = get_post_meta( $post->ID, '_convenio_terms', true );
-	$discount     = get_post_meta( $post->ID, '_convenio_discount_percentage', true );
-	$max_uses     = get_post_meta( $post->ID, '_convenio_max_uses_per_beneficiary', true );
-	$start_date   = get_post_meta( $post->ID, '_convenio_start_date', true );
-	$end_date     = get_post_meta( $post->ID, '_convenio_end_date', true );
+	$provider_id    = get_post_meta( $post->ID, '_convenio_provider_id', true );
+	$recipient_id   = get_post_meta( $post->ID, '_convenio_recipient_id', true );
+	$recipient_type = get_post_meta( $post->ID, '_convenio_recipient_type', true ) ?: 'institution'; // Default: institution
+	$terms          = get_post_meta( $post->ID, '_convenio_terms', true );
+	$discount       = get_post_meta( $post->ID, '_convenio_discount_percentage', true );
+	$max_uses       = get_post_meta( $post->ID, '_convenio_max_uses_per_beneficiary', true );
+	$start_date     = get_post_meta( $post->ID, '_convenio_start_date', true );
+	$end_date       = get_post_meta( $post->ID, '_convenio_end_date', true );
 
 	?>
 	<table class="form-table wpcw-convenio-details">
@@ -95,7 +96,27 @@ function wpcw_render_convenio_details_meta_box( $post ) {
 
 			<tr>
 				<th scope="row">
-					<label for="convenio_recipient_id">
+					<label for="convenio_recipient_type">
+						<?php _e( 'Tipo de Beneficiario', 'wp-cupon-whatsapp' ); ?>
+						<span class="required">*</span>
+					</label>
+				</th>
+				<td>
+					<select id="convenio_recipient_type" name="convenio_recipient_type" class="regular-text" required onchange="wpcwToggleRecipientField(this.value)">
+						<option value="institution" <?php selected( $recipient_type, 'institution' ); ?>>
+							<?php _e( 'Institución (empleados de la institución)', 'wp-cupon-whatsapp' ); ?>
+						</option>
+						<option value="business" <?php selected( $recipient_type, 'business' ); ?>>
+							<?php _e( 'Comercio (empleados del comercio - B2B)', 'wp-cupon-whatsapp' ); ?>
+						</option>
+					</select>
+					<p class="description"><?php _e( 'Selecciona si el beneficio es para empleados de una institución o de otro comercio (B2B).', 'wp-cupon-whatsapp' ); ?></p>
+				</td>
+			</tr>
+
+			<tr class="convenio-recipient-field convenio-recipient-institution" style="<?php echo $recipient_type === 'business' ? 'display:none;' : ''; ?>">
+				<th scope="row">
+					<label for="convenio_recipient_institution_id">
 						<?php _e( 'Institución Beneficiaria', 'wp-cupon-whatsapp' ); ?>
 						<span class="required">*</span>
 					</label>
@@ -112,7 +133,7 @@ function wpcw_render_convenio_details_meta_box( $post ) {
 						)
 					);
 					?>
-					<select id="convenio_recipient_id" name="convenio_recipient_id" class="regular-text" required>
+					<select id="convenio_recipient_institution_id" name="convenio_recipient_institution_id" class="regular-text">
 						<option value=""><?php _e( '-- Seleccionar Institución --', 'wp-cupon-whatsapp' ); ?></option>
 						<?php foreach ( $institutions as $institution ) : ?>
 							<option value="<?php echo esc_attr( $institution->ID ); ?>" <?php selected( $recipient_id, $institution->ID ); ?>>
@@ -120,7 +141,38 @@ function wpcw_render_convenio_details_meta_box( $post ) {
 							</option>
 						<?php endforeach; ?>
 					</select>
-					<p class="description"><?php _e( 'La institución cuyos miembros recibirán el beneficio.', 'wp-cupon-whatsapp' ); ?></p>
+					<p class="description"><?php _e( 'Los empleados de esta institución podrán usar el beneficio.', 'wp-cupon-whatsapp' ); ?></p>
+				</td>
+			</tr>
+
+			<tr class="convenio-recipient-field convenio-recipient-business" style="<?php echo $recipient_type === 'institution' ? 'display:none;' : ''; ?>">
+				<th scope="row">
+					<label for="convenio_recipient_business_id">
+						<?php _e( 'Comercio Beneficiario (B2B)', 'wp-cupon-whatsapp' ); ?>
+						<span class="required">*</span>
+					</label>
+				</th>
+				<td>
+					<?php
+					$businesses_recipient = get_posts(
+						array(
+							'post_type'      => 'wpcw_business',
+							'numberposts'    => -1,
+							'orderby'        => 'title',
+							'order'          => 'ASC',
+							'post_status'    => 'publish',
+						)
+					);
+					?>
+					<select id="convenio_recipient_business_id" name="convenio_recipient_business_id" class="regular-text">
+						<option value=""><?php _e( '-- Seleccionar Comercio --', 'wp-cupon-whatsapp' ); ?></option>
+						<?php foreach ( $businesses_recipient as $business_rec ) : ?>
+							<option value="<?php echo esc_attr( $business_rec->ID ); ?>" <?php selected( $recipient_id, $business_rec->ID ); ?>>
+								<?php echo esc_html( $business_rec->post_title ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+					<p class="description"><?php _e( 'Los empleados de este comercio podrán usar el beneficio (convenio B2B).', 'wp-cupon-whatsapp' ); ?></p>
 				</td>
 			</tr>
 
@@ -162,7 +214,7 @@ function wpcw_render_convenio_details_meta_box( $post ) {
 					<input type="number" id="convenio_max_uses_per_beneficiary" name="convenio_max_uses_per_beneficiary"
 						   value="<?php echo esc_attr( $max_uses ); ?>"
 						   min="0" step="1" class="small-text">
-					<p class="description"><?php _e( 'Número máximo de veces que un beneficiario puede usar cupones de este convenio (0 = ilimitado).', 'wp-cupon-whatsapp' ); ?></p>
+					<p class="description"><?php _e( 'Número máximo de veces que un empleado puede usar cupones de este convenio (0 = ilimitado).', 'wp-cupon-whatsapp' ); ?></p>
 				</td>
 			</tr>
 
@@ -195,6 +247,25 @@ function wpcw_render_convenio_details_meta_box( $post ) {
 			</tr>
 		</tbody>
 	</table>
+
+	<script>
+	function wpcwToggleRecipientField(type) {
+		var institutionField = document.querySelector('.convenio-recipient-institution');
+		var businessField = document.querySelector('.convenio-recipient-business');
+
+		if (type === 'institution') {
+			institutionField.style.display = '';
+			businessField.style.display = 'none';
+			// Clear business value
+			document.getElementById('convenio_recipient_business_id').value = '';
+		} else {
+			institutionField.style.display = 'none';
+			businessField.style.display = '';
+			// Clear institution value
+			document.getElementById('convenio_recipient_institution_id').value = '';
+		}
+	}
+	</script>
 	<?php
 }
 
@@ -294,13 +365,22 @@ function wpcw_save_convenio_meta( $post_id ) {
 		return;
 	}
 
-	// Save provider and recipient
+	// Save provider
 	if ( isset( $_POST['convenio_provider_id'] ) ) {
 		update_post_meta( $post_id, '_convenio_provider_id', absint( $_POST['convenio_provider_id'] ) );
 	}
 
-	if ( isset( $_POST['convenio_recipient_id'] ) ) {
-		update_post_meta( $post_id, '_convenio_recipient_id', absint( $_POST['convenio_recipient_id'] ) );
+	// Save recipient type
+	if ( isset( $_POST['convenio_recipient_type'] ) ) {
+		$recipient_type = sanitize_text_field( $_POST['convenio_recipient_type'] );
+		update_post_meta( $post_id, '_convenio_recipient_type', $recipient_type );
+
+		// Save the correct recipient based on type
+		if ( $recipient_type === 'institution' && isset( $_POST['convenio_recipient_institution_id'] ) ) {
+			update_post_meta( $post_id, '_convenio_recipient_id', absint( $_POST['convenio_recipient_institution_id'] ) );
+		} elseif ( $recipient_type === 'business' && isset( $_POST['convenio_recipient_business_id'] ) ) {
+			update_post_meta( $post_id, '_convenio_recipient_id', absint( $_POST['convenio_recipient_business_id'] ) );
+		}
 	}
 
 	// Save terms
@@ -368,7 +448,7 @@ function wpcw_add_convenio_columns( $columns ) {
 
 		if ( $key === 'title' ) {
 			$new_columns['provider']  = __( 'Proveedor', 'wp-cupon-whatsapp' );
-			$new_columns['recipient'] = __( 'Institución', 'wp-cupon-whatsapp' );
+			$new_columns['recipient'] = __( 'Beneficiario', 'wp-cupon-whatsapp' );
 			$new_columns['status']    = __( 'Estado', 'wp-cupon-whatsapp' );
 		}
 	}
@@ -399,10 +479,13 @@ function wpcw_populate_convenio_columns( $column, $post_id ) {
 
 		case 'recipient':
 			$recipient_id = get_post_meta( $post_id, '_convenio_recipient_id', true );
+			$recipient_type = get_post_meta( $post_id, '_convenio_recipient_type', true ) ?: 'institution';
+
 			if ( $recipient_id ) {
 				$recipient = get_post( $recipient_id );
 				if ( $recipient ) {
-					echo '<a href="' . get_edit_post_link( $recipient_id ) . '">' . esc_html( $recipient->post_title ) . '</a>';
+					$type_label = $recipient_type === 'business' ? '🏪 ' : '🏫 ';
+					echo $type_label . '<a href="' . get_edit_post_link( $recipient_id ) . '">' . esc_html( $recipient->post_title ) . '</a>';
 				}
 			} else {
 				echo '—';
