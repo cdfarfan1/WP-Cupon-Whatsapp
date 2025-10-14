@@ -30,6 +30,15 @@ function wpcw_add_convenio_meta_boxes() {
 		'side',
 		'high'
 	);
+
+	add_meta_box(
+		'wpcw_convenio_negotiation',
+		__( 'Negociación', 'wp-cupon-whatsapp' ),
+		'wpcw_render_convenio_negotiation_meta_box',
+		'wpcw_convenio',
+		'normal',
+		'default'
+	);
 }
 add_action( 'add_meta_boxes', 'wpcw_add_convenio_meta_boxes' );
 
