@@ -65,6 +65,7 @@ require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php'; // Página de configur
 require_once WPCW_PLUGIN_DIR . 'admin/canjes-page.php'; // Página de canjes - Corregido Error #15
 require_once WPCW_PLUGIN_DIR . 'admin/institution-dashboard-page.php'; // Carga del nuevo panel
 require_once WPCW_PLUGIN_DIR . 'admin/business-convenios-page.php'; // Carga del panel de convenios para negocios
+require_once WPCW_PLUGIN_DIR . 'admin/institution-convenios-page.php'; // Carga del panel de convenios para instituciones
 require_once WPCW_PLUGIN_DIR . 'admin/validate-redemption-page.php'; // Carga de la página de validación de canjes
 require_once WPCW_PLUGIN_DIR . 'admin/migration-notice.php'; // Aviso de migración de base de datos
 

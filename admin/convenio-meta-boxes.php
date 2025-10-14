@@ -207,10 +207,25 @@ function wpcw_render_convenio_status_meta_box( $post ) {
 		<p>
 			<label for="convenio_status"><strong><?php _e( 'Estado del Convenio:', 'wp-cupon-whatsapp' ); ?></strong></label><br>
 			<select id="convenio_status" name="convenio_status" class="widefat">
-				<option value="pending" <?php selected( $status, 'pending' ); ?>><?php _e( 'Pendiente', 'wp-cupon-whatsapp' ); ?></option>
-				<option value="active" <?php selected( $status, 'active' ); ?>><?php _e( 'Activo', 'wp-cupon-whatsapp' ); ?></option>
-				<option value="rejected" <?php selected( $status, 'rejected' ); ?>><?php _e( 'Rechazado', 'wp-cupon-whatsapp' ); ?></option>
-				<option value="expired" <?php selected( $status, 'expired' ); ?>><?php _e( 'Expirado', 'wp-cupon-whatsapp' ); ?></option>
+				<optgroup label="<?php _e( 'En Proceso', 'wp-cupon-whatsapp' ); ?>">
+					<option value="draft" <?php selected( $status, 'draft' ); ?>><?php _e( '📝 Borrador', 'wp-cupon-whatsapp' ); ?></option>
+					<option value="pending_review" <?php selected( $status, 'pending_review' ); ?>><?php _e( '👀 Pendiente de Revisión', 'wp-cupon-whatsapp' ); ?></option>
+					<option value="under_negotiation" <?php selected( $status, 'under_negotiation' ); ?>><?php _e( '💬 En Negociación', 'wp-cupon-whatsapp' ); ?></option>
+					<option value="counter_offered" <?php selected( $status, 'counter_offered' ); ?>><?php _e( '🔄 Contraoferta Enviada', 'wp-cupon-whatsapp' ); ?></option>
+					<option value="awaiting_approval" <?php selected( $status, 'awaiting_approval' ); ?>><?php _e( '⏳ Esperando Aprobación', 'wp-cupon-whatsapp' ); ?></option>
+					<option value="pending_supervisor" <?php selected( $status, 'pending_supervisor' ); ?>><?php _e( '👔 Pendiente Supervisor', 'wp-cupon-whatsapp' ); ?></option>
+				</optgroup>
+				<optgroup label="<?php _e( 'Activos', 'wp-cupon-whatsapp' ); ?>">
+					<option value="approved" <?php selected( $status, 'approved' ); ?>><?php _e( '✅ Aprobado', 'wp-cupon-whatsapp' ); ?></option>
+					<option value="active" <?php selected( $status, 'active' ); ?>><?php _e( '🟢 Activo', 'wp-cupon-whatsapp' ); ?></option>
+					<option value="paused" <?php selected( $status, 'paused' ); ?>><?php _e( '⏸️ Pausado', 'wp-cupon-whatsapp' ); ?></option>
+					<option value="near_expiry" <?php selected( $status, 'near_expiry' ); ?>><?php _e( '⚠️ Próximo a Vencer', 'wp-cupon-whatsapp' ); ?></option>
+				</optgroup>
+				<optgroup label="<?php _e( 'Finalizados', 'wp-cupon-whatsapp' ); ?>">
+					<option value="rejected" <?php selected( $status, 'rejected' ); ?>><?php _e( '❌ Rechazado', 'wp-cupon-whatsapp' ); ?></option>
+					<option value="expired" <?php selected( $status, 'expired' ); ?>><?php _e( '⏰ Expirado', 'wp-cupon-whatsapp' ); ?></option>
+					<option value="cancelled" <?php selected( $status, 'cancelled' ); ?>><?php _e( '🚫 Cancelado', 'wp-cupon-whatsapp' ); ?></option>
+				</optgroup>
 			</select>
 		</p>
 
@@ -388,17 +403,35 @@ function wpcw_populate_convenio_columns( $column, $post_id ) {
 		case 'status':
 			$status = get_post_meta( $post_id, '_convenio_status', true );
 			$status_labels = array(
-				'pending'  => __( 'Pendiente', 'wp-cupon-whatsapp' ),
-				'active'   => __( 'Activo', 'wp-cupon-whatsapp' ),
-				'rejected' => __( 'Rechazado', 'wp-cupon-whatsapp' ),
-				'expired'  => __( 'Expirado', 'wp-cupon-whatsapp' ),
+				'draft'                => __( 'Borrador', 'wp-cupon-whatsapp' ),
+				'pending_review'       => __( 'Pendiente Revisión', 'wp-cupon-whatsapp' ),
+				'under_negotiation'    => __( 'En Negociación', 'wp-cupon-whatsapp' ),
+				'counter_offered'      => __( 'Contraoferta', 'wp-cupon-whatsapp' ),
+				'awaiting_approval'    => __( 'Esperando Aprobación', 'wp-cupon-whatsapp' ),
+				'pending_supervisor'   => __( 'Pendiente Supervisor', 'wp-cupon-whatsapp' ),
+				'approved'             => __( 'Aprobado', 'wp-cupon-whatsapp' ),
+				'active'               => __( 'Activo', 'wp-cupon-whatsapp' ),
+				'paused'               => __( 'Pausado', 'wp-cupon-whatsapp' ),
+				'near_expiry'          => __( 'Próximo a Vencer', 'wp-cupon-whatsapp' ),
+				'rejected'             => __( 'Rechazado', 'wp-cupon-whatsapp' ),
+				'expired'              => __( 'Expirado', 'wp-cupon-whatsapp' ),
+				'cancelled'            => __( 'Cancelado', 'wp-cupon-whatsapp' ),
 			);
 
 			$status_colors = array(
-				'pending'  => '#f0ad4e',
-				'active'   => '#5cb85c',
-				'rejected' => '#d9534f',
-				'expired'  => '#999',
+				'draft'                => '#95a5a6', // Gray
+				'pending_review'       => '#f39c12', // Orange
+				'under_negotiation'    => '#3498db', // Blue
+				'counter_offered'      => '#9b59b6', // Purple
+				'awaiting_approval'    => '#e67e22', // Dark orange
+				'pending_supervisor'   => '#d35400', // Darker orange
+				'approved'             => '#27ae60', // Green
+				'active'               => '#2ecc71', // Bright green
+				'paused'               => '#7f8c8d', // Dark gray
+				'near_expiry'          => '#f39c12', // Orange warning
+				'rejected'             => '#e74c3c', // Red
+				'expired'              => '#95a5a6', // Gray
+				'cancelled'            => '#c0392b', // Dark red
 			);
 
 			$label = isset( $status_labels[ $status ] ) ? $status_labels[ $status ] : __( 'Sin estado', 'wp-cupon-whatsapp' );
