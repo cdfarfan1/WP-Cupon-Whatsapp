@@ -48,6 +48,7 @@ require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-dashboard.php';
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-business-manager.php';
 require_once WPCW_PLUGIN_DIR . 'includes/utils.php'; // Carga de funciones de utilidad
 require_once WPCW_PLUGIN_DIR . 'includes/managers/class-wpcw-institution-manager.php'; // Carga del nuevo gestor
+require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-convenio-metrics.php'; // Sistema de métricas y KPIs
 
 // WooCommerce-dependent files - Load after WooCommerce is ready
 // Moved to wpcw_load_woocommerce_dependencies() function below
@@ -66,6 +67,7 @@ require_once WPCW_PLUGIN_DIR . 'admin/canjes-page.php'; // Página de canjes - C
 require_once WPCW_PLUGIN_DIR . 'admin/institution-dashboard-page.php'; // Carga del nuevo panel
 require_once WPCW_PLUGIN_DIR . 'admin/business-convenios-page.php'; // Carga del panel de convenios para negocios
 require_once WPCW_PLUGIN_DIR . 'admin/institution-convenios-page.php'; // Carga del panel de convenios para instituciones
+require_once WPCW_PLUGIN_DIR . 'admin/convenio-statistics-page.php'; // Dashboard de estadísticas y KPIs
 require_once WPCW_PLUGIN_DIR . 'admin/validate-redemption-page.php'; // Carga de la página de validación de canjes
 require_once WPCW_PLUGIN_DIR . 'admin/migration-notice.php'; // Aviso de migración de base de datos
 

@@ -1,0 +1,261 @@
+/**
+ * WPCW Statistics Dashboard Styles
+ */
+
+.wpcw-statistics-wrap {
+	max-width: 1400px;
+	margin: 20px auto;
+}
+
+.wpcw-statistics-wrap h1 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 30px;
+}
+
+/* KPI Grid */
+.wpcw-kpi-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 20px;
+	margin-bottom: 30px;
+}
+
+.wpcw-kpi-card {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	display: flex;
+	gap: 15px;
+	align-items: flex-start;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.wpcw-kpi-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.wpcw-kpi-card .kpi-icon {
+	width: 60px;
+	height: 60px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.wpcw-kpi-card .kpi-icon .dashicons {
+	color: #fff;
+	font-size: 32px;
+	width: 32px;
+	height: 32px;
+}
+
+.wpcw-kpi-card .kpi-content {
+	flex: 1;
+}
+
+.wpcw-kpi-card h3 {
+	margin: 0 0 10px 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #555;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.wpcw-kpi-card .kpi-value {
+	font-size: 32px;
+	font-weight: 700;
+	color: #2c3e50;
+	margin-bottom: 8px;
+	line-height: 1;
+}
+
+.wpcw-kpi-card .kpi-meta {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.wpcw-kpi-card .badge {
+	display: inline-block;
+	padding: 4px 10px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.wpcw-kpi-card .badge-success {
+	background-color: #d4edda;
+	color: #155724;
+}
+
+.wpcw-kpi-card .badge-warning {
+	background-color: #fff3cd;
+	color: #856404;
+}
+
+.wpcw-kpi-card .badge-danger {
+	background-color: #f8d7da;
+	color: #721c24;
+}
+
+.wpcw-kpi-card .kpi-target {
+	font-size: 12px;
+	color: #999;
+}
+
+.wpcw-kpi-card .kpi-secondary {
+	font-size: 13px;
+	color: #666;
+}
+
+/* Charts Grid */
+.wpcw-charts-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	gap: 20px;
+	margin-bottom: 30px;
+}
+
+.wpcw-chart-card {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.wpcw-chart-card h2 {
+	margin: 0 0 20px 0;
+	font-size: 18px;
+	font-weight: 600;
+	color: #2c3e50;
+}
+
+.wpcw-chart-card canvas {
+	max-width: 100%;
+	height: auto !important;
+}
+
+/* Details Section */
+.wpcw-details-section {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	margin-bottom: 20px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.wpcw-details-section h2 {
+	margin: 0 0 20px 0;
+	font-size: 18px;
+	font-weight: 600;
+	color: #2c3e50;
+}
+
+.wpcw-details-section table {
+	margin-top: 15px;
+}
+
+.wpcw-details-section table th {
+	font-weight: 600;
+	color: #2c3e50;
+	width: 40%;
+}
+
+.wpcw-details-section table td {
+	color: #555;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+	.wpcw-kpi-grid {
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	}
+
+	.wpcw-charts-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 768px) {
+	.wpcw-kpi-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.wpcw-kpi-card .kpi-value {
+		font-size: 28px;
+	}
+
+	.wpcw-kpi-card .kpi-icon {
+		width: 50px;
+		height: 50px;
+	}
+
+	.wpcw-kpi-card .kpi-icon .dashicons {
+		font-size: 26px;
+		width: 26px;
+		height: 26px;
+	}
+}
+
+/* Loading State */
+.wpcw-loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 40px;
+	color: #999;
+}
+
+.wpcw-loading .dashicons {
+	animation: wpcw-spin 1s linear infinite;
+	margin-right: 8px;
+}
+
+@keyframes wpcw-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Empty State */
+.wpcw-empty-state {
+	text-align: center;
+	padding: 60px 20px;
+	color: #999;
+}
+
+.wpcw-empty-state .dashicons {
+	font-size: 64px;
+	width: 64px;
+	height: 64px;
+	margin-bottom: 20px;
+	color: #ddd;
+}
+
+.wpcw-empty-state h3 {
+	font-size: 20px;
+	margin-bottom: 10px;
+	color: #666;
+}
+
+.wpcw-empty-state p {
+	font-size: 14px;
+	max-width: 500px;
+	margin: 0 auto;
+}
