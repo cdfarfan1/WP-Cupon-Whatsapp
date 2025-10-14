@@ -480,6 +480,11 @@ class WPCW_Convenio_Approval {
         );
 
         wp_mail($supervisor->user_email, $subject, $message);
+
+        // Send in-app notification
+        if (class_exists('WPCW_Notifications')) {
+            WPCW_Notifications::notify_supervisor_approval_needed($convenio_id, $supervisor_id);
+        }
     }
 
     /**
@@ -507,6 +512,11 @@ class WPCW_Convenio_Approval {
         );
 
         wp_mail($originator->user_email, $subject, $message);
+
+        // Send in-app notification
+        if (class_exists('WPCW_Notifications')) {
+            WPCW_Notifications::notify_convenio_approved($convenio_id, $originator_id);
+        }
     }
 
     /**
@@ -535,6 +545,11 @@ class WPCW_Convenio_Approval {
         );
 
         wp_mail($originator->user_email, $subject, $message);
+
+        // Send in-app notification
+        if (class_exists('WPCW_Notifications')) {
+            WPCW_Notifications::notify_convenio_rejected($convenio_id, $originator_id, $reason);
+        }
     }
 
     /**
@@ -566,6 +581,11 @@ class WPCW_Convenio_Approval {
         );
 
         wp_mail($originator->user_email, $subject, $message);
+
+        // Send in-app notification
+        if (class_exists('WPCW_Notifications')) {
+            WPCW_Notifications::notify_changes_requested($convenio_id, $originator_id, $feedback);
+        }
     }
 }
 

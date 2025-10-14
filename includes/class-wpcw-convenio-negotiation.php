@@ -332,6 +332,15 @@ class WPCW_Convenio_Negotiation {
 		$message .= admin_url( 'post.php?post=' . $convenio_id . '&action=edit' );
 
 		wp_mail( $recipient_email, $subject, $message );
+
+		// Send in-app notification
+		if (class_exists('WPCW_Notifications')) {
+			// Get user ID associated with recipient entity
+			$recipient_user_id = self::get_user_from_entity($recipient_id);
+			if ($recipient_user_id) {
+				WPCW_Notifications::notify_counter_offer($convenio_id, $recipient_user_id);
+			}
+		}
 	}
 
 	/**
@@ -366,6 +375,19 @@ class WPCW_Convenio_Negotiation {
 		foreach ( $emails as $email ) {
 			wp_mail( $email, $subject, $message );
 		}
+
+		// Send in-app notifications to both parties
+		if (class_exists('WPCW_Notifications')) {
+			$provider_user_id = self::get_user_from_entity($provider_id);
+			$recipient_user_id = self::get_user_from_entity($recipient_id);
+
+			if ($provider_user_id) {
+				WPCW_Notifications::notify_convenio_approved($convenio_id, $provider_user_id);
+			}
+			if ($recipient_user_id) {
+				WPCW_Notifications::notify_convenio_approved($convenio_id, $recipient_user_id);
+			}
+		}
 	}
 
 	/**
@@ -391,6 +413,34 @@ class WPCW_Convenio_Negotiation {
 		$message .= admin_url( 'post.php?post=' . $convenio_id . '&action=edit' );
 
 		wp_mail( $provider_email, $subject, $message );
+
+		// Send in-app notification
+		if (class_exists('WPCW_Notifications')) {
+			$provider_user_id = self::get_user_from_entity($provider_id);
+			if ($provider_user_id) {
+				WPCW_Notifications::notify_convenio_rejected($convenio_id, $provider_user_id, $reason);
+			}
+		}
+	}
+
+	/**
+	 * Get user ID associated with an entity (business or institution)
+	 *
+	 * @param int $entity_id Post ID of business or institution
+	 * @return int|null User ID or null
+	 */
+	private static function get_user_from_entity($entity_id) {
+		global $wpdb;
+
+		// Look for users with this business or institution ID
+		$user_id = $wpdb->get_var($wpdb->prepare("
+			SELECT user_id FROM {$wpdb->usermeta}
+			WHERE (meta_key = '_wpcw_business_id' OR meta_key = '_wpcw_institution_id')
+			AND meta_value = %d
+			LIMIT 1
+		", $entity_id));
+
+		return $user_id ? (int) $user_id : null;
 	}
 
 	/**

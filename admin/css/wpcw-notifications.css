@@ -1,0 +1,144 @@
+/**
+ * WPCW Notifications CSS
+ *
+ * Styles for notification bell, badge, and dropdown
+ */
+
+/* Notification Bell in Admin Bar */
+#wp-admin-bar-wpcw-notifications .ab-item {
+    position: relative;
+}
+
+#wp-admin-bar-wpcw-notifications .wpcw-notification-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #d63638;
+    color: white;
+    border-radius: 10px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 18px;
+    text-align: center;
+    line-height: 1.3;
+    animation: wpcw-pulse 2s infinite;
+}
+
+@keyframes wpcw-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Notification Dropdown (Future Enhancement) */
+.wpcw-notifications-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 380px;
+    max-height: 500px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 99999;
+    display: none;
+}
+
+.wpcw-notifications-dropdown.open {
+    display: block;
+}
+
+.wpcw-notifications-dropdown-header {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.wpcw-notifications-dropdown-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.wpcw-notifications-dropdown-body {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.wpcw-notifications-dropdown-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.wpcw-notifications-dropdown-item:hover {
+    background-color: #f9f9f9;
+}
+
+.wpcw-notifications-dropdown-item.unread {
+    background-color: #f0f6fc;
+}
+
+.wpcw-notifications-dropdown-footer {
+    padding: 12px 15px;
+    border-top: 1px solid #f0f0f0;
+    text-align: center;
+}
+
+.wpcw-notifications-dropdown-footer a {
+    text-decoration: none;
+    color: #2271b1;
+    font-weight: 600;
+}
+
+/* Loading Spinner */
+.wpcw-notifications-loading {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+}
+
+.wpcw-notifications-loading .spinner {
+    display: inline-block;
+    visibility: visible;
+    float: none;
+    margin: 0 auto;
+}
+
+/* Empty State */
+.wpcw-notifications-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: #666;
+}
+
+.wpcw-notifications-empty .dashicons {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #ccc;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 782px) {
+    .wpcw-notifications-dropdown {
+        width: 100%;
+        max-width: 380px;
+        right: 10px;
+    }
+
+    #wp-admin-bar-wpcw-notifications .wpcw-notification-badge {
+        top: 3px;
+        right: 3px;
+        font-size: 10px;
+        padding: 1px 5px;
+    }
+}
