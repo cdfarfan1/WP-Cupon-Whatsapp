@@ -45,6 +45,7 @@ class WPCW_Roles_Manager {
         $supervisor_caps = [
             'read' => true,
             'approve_beneficiary_requests' => true,
+            'approve_convenios' => true, // Can approve convenios requiring supervisor approval
             'view_business_reports' => true, // Can see reports but not manage other settings
         ];
 
@@ -67,6 +68,7 @@ class WPCW_Roles_Manager {
             $admin->add_cap( 'redeem_coupons' );
             $admin->add_cap( 'view_institution_dashboard' );
             $admin->add_cap( 'approve_beneficiary_requests' );
+            $admin->add_cap( 'approve_convenios' );
         }
     }
 
@@ -90,8 +92,8 @@ register_deactivation_hook( WPCW_PLUGIN_FILE, [ 'WPCW_Roles_Manager', 'remove_ro
 
 // Also add a hook to run it manually if needed, e.g., after an update
 add_action( 'admin_init', function() {
-    if ( get_option( 'wpcw_roles_version' ) !== '1.0' ) {
+    if ( get_option( 'wpcw_roles_version' ) !== '1.1' ) {
         WPCW_Roles_Manager::add_roles();
-        update_option( 'wpcw_roles_version', '1.0' );
+        update_option( 'wpcw_roles_version', '1.1' );
     }
 } );

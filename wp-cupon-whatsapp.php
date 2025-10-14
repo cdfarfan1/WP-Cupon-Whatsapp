@@ -50,6 +50,7 @@ require_once WPCW_PLUGIN_DIR . 'includes/utils.php'; // Carga de funciones de ut
 require_once WPCW_PLUGIN_DIR . 'includes/managers/class-wpcw-institution-manager.php'; // Carga del nuevo gestor
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-convenio-metrics.php'; // Sistema de métricas y KPIs
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-convenio-negotiation.php'; // Sistema de negociación
+require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-convenio-approval.php'; // Sistema de aprobación multi-nivel
 
 // WooCommerce-dependent files - Load after WooCommerce is ready
 // Moved to wpcw_load_woocommerce_dependencies() function below
@@ -62,6 +63,7 @@ require_once WPCW_PLUGIN_DIR . 'admin/business-management.php';
 require_once WPCW_PLUGIN_DIR . 'admin/coupon-meta-boxes.php';
 require_once WPCW_PLUGIN_DIR . 'admin/convenio-meta-boxes.php';
 require_once WPCW_PLUGIN_DIR . 'admin/convenio-negotiation-metabox.php';
+require_once WPCW_PLUGIN_DIR . 'admin/convenio-approval-metabox.php';
 require_once WPCW_PLUGIN_DIR . 'admin/dashboard-pages.php';
 require_once WPCW_PLUGIN_DIR . 'admin/stats-page.php'; // Página de estadísticas - Corregido Error #13
 require_once WPCW_PLUGIN_DIR . 'admin/settings-page.php'; // Página de configuración - Corregido Error #14

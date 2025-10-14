@@ -182,6 +182,86 @@ function wpcw_render_admin_dashboard( $metrics ) {
 		</div>
 	</div>
 
+	<!-- Approval Metrics Section (Admin Only) -->
+	<?php
+	$approval_metrics = WPCW_Convenio_Approval::calculate_approval_metrics();
+	if ( $approval_metrics['pending_approval_count'] > 0 || $approval_metrics['supervisor_response_rate'] > 0 ) :
+	?>
+	<div class="wpcw-approval-section">
+		<h2>
+			<span class="dashicons dashicons-yes-alt"></span>
+			<?php _e( 'Métricas de Aprobación', 'wp-cupon-whatsapp' ); ?>
+		</h2>
+		<div class="wpcw-kpi-grid" style="margin-top: 20px;">
+			<!-- Pending Approvals -->
+			<div class="wpcw-kpi-card">
+				<div class="kpi-icon" style="background-color: #f39c12;">
+					<span class="dashicons dashicons-hourglass"></span>
+				</div>
+				<div class="kpi-content">
+					<h3><?php _e( 'Pendientes de Aprobación', 'wp-cupon-whatsapp' ); ?></h3>
+					<div class="kpi-value"><?php echo esc_html( $approval_metrics['pending_approval_count'] ); ?></div>
+					<div class="kpi-meta">
+						<?php if ( $approval_metrics['pending_approval_count'] > 5 ) : ?>
+							<span class="badge badge-warning"><?php _e( 'Requiere atención', 'wp-cupon-whatsapp' ); ?></span>
+						<?php else : ?>
+							<span class="badge badge-success"><?php _e( 'Normal', 'wp-cupon-whatsapp' ); ?></span>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+
+			<!-- Average Approval Time -->
+			<div class="wpcw-kpi-card">
+				<div class="kpi-icon" style="background-color: #3498db;">
+					<span class="dashicons dashicons-clock"></span>
+				</div>
+				<div class="kpi-content">
+					<h3><?php _e( 'Tiempo Promedio de Aprobación', 'wp-cupon-whatsapp' ); ?></h3>
+					<div class="kpi-value"><?php echo esc_html( $approval_metrics['average_approval_hours'] ); ?> <?php _e( 'hrs', 'wp-cupon-whatsapp' ); ?></div>
+					<div class="kpi-meta">
+						<?php
+						$avg_hours = $approval_metrics['average_approval_hours'];
+						if ( $avg_hours <= 24 ) {
+							echo '<span class="badge badge-success">' . esc_html__( 'Excelente', 'wp-cupon-whatsapp' ) . '</span>';
+						} elseif ( $avg_hours <= 48 ) {
+							echo '<span class="badge badge-warning">' . esc_html__( 'Bueno', 'wp-cupon-whatsapp' ) . '</span>';
+						} else {
+							echo '<span class="badge badge-danger">' . esc_html__( 'Lento', 'wp-cupon-whatsapp' ) . '</span>';
+						}
+						?>
+						<span class="kpi-target"><?php _e( 'Meta: <24hrs', 'wp-cupon-whatsapp' ); ?></span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Supervisor Response Rate -->
+			<div class="wpcw-kpi-card">
+				<div class="kpi-icon" style="background-color: #27ae60;">
+					<span class="dashicons dashicons-admin-users"></span>
+				</div>
+				<div class="kpi-content">
+					<h3><?php _e( 'Tasa de Respuesta Supervisores', 'wp-cupon-whatsapp' ); ?></h3>
+					<div class="kpi-value"><?php echo esc_html( $approval_metrics['supervisor_response_rate'] ); ?>%</div>
+					<div class="kpi-meta">
+						<?php
+						$response_rate = $approval_metrics['supervisor_response_rate'];
+						if ( $response_rate >= 90 ) {
+							echo '<span class="badge badge-success">' . esc_html__( 'Excelente', 'wp-cupon-whatsapp' ) . '</span>';
+						} elseif ( $response_rate >= 70 ) {
+							echo '<span class="badge badge-warning">' . esc_html__( 'Bueno', 'wp-cupon-whatsapp' ) . '</span>';
+						} else {
+							echo '<span class="badge badge-danger">' . esc_html__( 'Bajo', 'wp-cupon-whatsapp' ) . '</span>';
+						}
+						?>
+						<span class="kpi-target"><?php _e( 'Meta: >90%', 'wp-cupon-whatsapp' ); ?></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php endif; ?>
+
 	<!-- Charts Section -->
 	<div class="wpcw-charts-grid">
 		<!-- Status Distribution Chart -->
@@ -217,6 +297,17 @@ function wpcw_render_admin_dashboard( $metrics ) {
 				<tr>
 					<th><?php _e( 'Nuevos Convenios (30 días)', 'wp-cupon-whatsapp' ); ?></th>
 					<td><?php echo esc_html( $metrics['new_convenios_30d'] ); ?></td>
+				</tr>
+				<tr>
+					<th><?php _e( 'Convenios Pendientes Supervisor', 'wp-cupon-whatsapp' ); ?></th>
+					<td>
+						<?php echo esc_html( $approval_metrics['pending_approval_count'] ); ?>
+						<?php if ( $approval_metrics['pending_approval_count'] > 0 ) : ?>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wpcw_convenio&convenio_status=pending_supervisor' ) ); ?>" class="button button-small" style="margin-left: 10px;">
+								<?php _e( 'Ver Pendientes', 'wp-cupon-whatsapp' ); ?>
+							</a>
+						<?php endif; ?>
+					</td>
 				</tr>
 				<tr>
 					<th><?php _e( 'Última Actualización', 'wp-cupon-whatsapp' ); ?></th>
