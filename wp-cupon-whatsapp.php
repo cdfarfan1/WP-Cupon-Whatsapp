@@ -52,7 +52,7 @@ require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-convenio-metrics.php'; // Si
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-convenio-negotiation.php'; // Sistema de negociación
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-convenio-approval.php'; // Sistema de aprobación multi-nivel
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-notifications.php'; // Sistema de notificaciones in-app
-require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-whatsapp-notifications.php'; // Sistema de notificaciones WhatsApp
+require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-whatsapp-links.php'; // Sistema wa.me WhatsApp Links (sin APIs)
 
 // WooCommerce-dependent files - Load after WooCommerce is ready
 // Moved to wpcw_load_woocommerce_dependencies() function below

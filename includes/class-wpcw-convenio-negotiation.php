@@ -342,9 +342,12 @@ class WPCW_Convenio_Negotiation {
 			}
 		}
 
-		// Send WhatsApp notification
-		if (class_exists('WPCW_WhatsApp_Notifications')) {
-			WPCW_WhatsApp_Notifications::notify_counter_offer($convenio_id, $recipient_id);
+		// Send WhatsApp notification (wa.me link)
+		if (class_exists('WPCW_WhatsApp_Links')) {
+			$wa_link = WPCW_WhatsApp_Links::get_counter_offer_link($convenio_id, $recipient_id);
+			if ($wa_link) {
+				update_post_meta($convenio_id, '_wa_link_counter_offer', $wa_link);
+			}
 		}
 	}
 
@@ -394,10 +397,17 @@ class WPCW_Convenio_Negotiation {
 			}
 		}
 
-		// Send WhatsApp notifications to both parties
-		if (class_exists('WPCW_WhatsApp_Notifications')) {
-			WPCW_WhatsApp_Notifications::notify_convenio_approved($convenio_id, $provider_id);
-			WPCW_WhatsApp_Notifications::notify_convenio_approved($convenio_id, $recipient_id);
+		// Send WhatsApp notifications to both parties (wa.me links)
+		if (class_exists('WPCW_WhatsApp_Links')) {
+			$wa_link_provider = WPCW_WhatsApp_Links::get_convenio_approved_link($convenio_id, $provider_id);
+			$wa_link_recipient = WPCW_WhatsApp_Links::get_convenio_approved_link($convenio_id, $recipient_id);
+
+			if ($wa_link_provider) {
+				update_post_meta($convenio_id, '_wa_link_approved_provider', $wa_link_provider);
+			}
+			if ($wa_link_recipient) {
+				update_post_meta($convenio_id, '_wa_link_approved_recipient', $wa_link_recipient);
+			}
 		}
 	}
 
@@ -433,9 +443,12 @@ class WPCW_Convenio_Negotiation {
 			}
 		}
 
-		// Send WhatsApp notification
-		if (class_exists('WPCW_WhatsApp_Notifications')) {
-			WPCW_WhatsApp_Notifications::notify_convenio_rejected($convenio_id, $provider_id, $reason);
+		// Send WhatsApp notification (wa.me link)
+		if (class_exists('WPCW_WhatsApp_Links')) {
+			$wa_link = WPCW_WhatsApp_Links::get_convenio_rejected_link($convenio_id, $provider_id, $reason);
+			if ($wa_link) {
+				update_post_meta($convenio_id, '_wa_link_negotiation_rejected', $wa_link);
+			}
 		}
 	}
 
