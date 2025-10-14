@@ -8,13 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Adds the Developer Tools submenu page, only if debug mode is on.
+ * Adds the Developer Tools submenu page.
+ * Always available for administrators to seed/clear test data.
  */
 function wpcw_add_developer_tools_menu() {
-    if ( ! defined( 'WPCW_DEBUG_MODE' ) || ! WPCW_DEBUG_MODE ) {
-        return;
-    }
-
     add_submenu_page(
         'wpcw-main-dashboard',
         __( 'Herramientas de Desarrollo', 'wp-cupon-whatsapp' ),
@@ -187,19 +184,25 @@ function wpcw_render_developer_tools_page() {
         <div class="postbox" style="margin-top: 20px;">
             <h2 class="hndle"><span>📚 Información de Uso</span></h2>
             <div class="inside">
-                <h4>Para acceder a esta página:</h4>
-                <ol>
-                    <li>Debes tener el modo debug activado</li>
-                    <li>Agrega esta línea en <code>wp-config.php</code>: <code style="background: #f5f5f5; padding: 2px 6px;">define('WPCW_DEBUG_MODE', true);</code></li>
-                    <li>Esta página aparecerá en el menú del plugin</li>
-                </ol>
+                <h4>Acceso a esta página:</h4>
+                <p>Esta página está disponible para todos los administradores en <strong>WP Cupón WhatsApp → Herramientas DEV</strong></p>
 
-                <h4>Después de generar datos:</h4>
+                <h4>Datos generados - Características:</h4>
                 <ul>
-                    <li>✅ Todos los usuarios tendrán contraseñas predecibles para testing</li>
-                    <li>✅ Los emails usarán el sistema de aliases de Gmail (+sufijo) para evitar duplicados</li>
-                    <li>✅ Todos los datos estarán marcados con metadato especial para poder eliminarlos</li>
-                    <li>✅ Los canjes tendrán fechas aleatorias en los últimos 90 días</li>
+                    <li>✅ <strong>Contraseñas predecibles</strong> para testing (ver arriba)</li>
+                    <li>✅ <strong>Emails reales</strong> con aliases de Gmail (+sufijo) para evitar duplicados</li>
+                    <li>✅ <strong>Metadatos especiales</strong> en todos los elementos para identificación y eliminación</li>
+                    <li>✅ <strong>Fechas realistas</strong> - canjes distribuidos en los últimos 90 días</li>
+                    <li>✅ <strong>Distribución temporal</strong>: 16% últimos 7 días, 34% últimos 30 días</li>
+                    <li>✅ <strong>Horarios comerciales</strong>: Canjes entre 8am-8pm para estadísticas realistas</li>
+                </ul>
+
+                <h4>Casos de uso:</h4>
+                <ul>
+                    <li>🧪 <strong>Testing</strong> - Probar funcionalidad sin afectar datos reales</li>
+                    <li>📊 <strong>Demos</strong> - Mostrar el sistema con datos completos</li>
+                    <li>🎓 <strong>Capacitación</strong> - Entrenar usuarios con datos de ejemplo</li>
+                    <li>🔍 <strong>Desarrollo</strong> - Debuggear con datasets consistentes</li>
                 </ul>
             </div>
         </div>
