@@ -485,6 +485,11 @@ class WPCW_Convenio_Approval {
         if (class_exists('WPCW_Notifications')) {
             WPCW_Notifications::notify_supervisor_approval_needed($convenio_id, $supervisor_id);
         }
+
+        // Send WhatsApp notification
+        if (class_exists('WPCW_WhatsApp_Notifications')) {
+            WPCW_WhatsApp_Notifications::notify_supervisor_approval_needed($convenio_id, $supervisor_id);
+        }
     }
 
     /**
@@ -516,6 +521,12 @@ class WPCW_Convenio_Approval {
         // Send in-app notification
         if (class_exists('WPCW_Notifications')) {
             WPCW_Notifications::notify_convenio_approved($convenio_id, $originator_id);
+        }
+
+        // Send WhatsApp notification (need entity ID, not user ID)
+        if (class_exists('WPCW_WhatsApp_Notifications')) {
+            $provider_id = get_post_meta($convenio_id, '_convenio_provider_id', true);
+            WPCW_WhatsApp_Notifications::notify_convenio_approved($convenio_id, $provider_id);
         }
     }
 
@@ -549,6 +560,12 @@ class WPCW_Convenio_Approval {
         // Send in-app notification
         if (class_exists('WPCW_Notifications')) {
             WPCW_Notifications::notify_convenio_rejected($convenio_id, $originator_id, $reason);
+        }
+
+        // Send WhatsApp notification
+        if (class_exists('WPCW_WhatsApp_Notifications')) {
+            $provider_id = get_post_meta($convenio_id, '_convenio_provider_id', true);
+            WPCW_WhatsApp_Notifications::notify_convenio_rejected($convenio_id, $provider_id, $reason);
         }
     }
 
@@ -585,6 +602,12 @@ class WPCW_Convenio_Approval {
         // Send in-app notification
         if (class_exists('WPCW_Notifications')) {
             WPCW_Notifications::notify_changes_requested($convenio_id, $originator_id, $feedback);
+        }
+
+        // Send WhatsApp notification
+        if (class_exists('WPCW_WhatsApp_Notifications')) {
+            $provider_id = get_post_meta($convenio_id, '_convenio_provider_id', true);
+            WPCW_WhatsApp_Notifications::notify_changes_requested($convenio_id, $provider_id, $feedback);
         }
     }
 }

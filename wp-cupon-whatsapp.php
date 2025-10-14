@@ -52,6 +52,7 @@ require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-convenio-metrics.php'; // Si
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-convenio-negotiation.php'; // Sistema de negociación
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-convenio-approval.php'; // Sistema de aprobación multi-nivel
 require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-notifications.php'; // Sistema de notificaciones in-app
+require_once WPCW_PLUGIN_DIR . 'includes/class-wpcw-whatsapp-notifications.php'; // Sistema de notificaciones WhatsApp
 
 // WooCommerce-dependent files - Load after WooCommerce is ready
 // Moved to wpcw_load_woocommerce_dependencies() function below
@@ -74,6 +75,7 @@ require_once WPCW_PLUGIN_DIR . 'admin/business-convenios-page.php'; // Carga del
 require_once WPCW_PLUGIN_DIR . 'admin/institution-convenios-page.php'; // Carga del panel de convenios para instituciones
 require_once WPCW_PLUGIN_DIR . 'admin/convenio-statistics-page.php'; // Dashboard de estadísticas y KPIs
 require_once WPCW_PLUGIN_DIR . 'admin/notifications-page.php'; // Centro de notificaciones in-app
+require_once WPCW_PLUGIN_DIR . 'admin/whatsapp-settings-page.php'; // Página de configuración WhatsApp
 require_once WPCW_PLUGIN_DIR . 'admin/validate-redemption-page.php'; // Carga de la página de validación de canjes
 require_once WPCW_PLUGIN_DIR . 'admin/migration-notice.php'; // Aviso de migración de base de datos
 
