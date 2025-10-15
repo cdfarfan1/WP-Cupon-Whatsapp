@@ -306,6 +306,16 @@ function wpcw_register_plugin_admin_menu() {
         'wpcw_render_superadmin_stats_page_content_wrapper' // Callback
     );
 
+    // Notificaciones
+    add_submenu_page(
+        'wpcw-main-dashboard',
+        __( 'Notificaciones', 'wp-cupon-whatsapp' ),
+        __( 'Notificaciones', 'wp-cupon-whatsapp' ),
+        'read',
+        'wpcw-notifications',
+        'wpcw_render_notifications_page'
+    );
+
     // Configuración
     add_submenu_page(
         'wpcw-main-dashboard',                   // Slug del menú padre (actualizado)
@@ -314,6 +324,26 @@ function wpcw_register_plugin_admin_menu() {
         'manage_options',                        // Capacidad requerida
         'wpcw-settings',                         // Slug de este submenú
         'wpcw_render_plugin_settings_page'       // Callback
+    );
+
+    // WhatsApp
+    add_submenu_page(
+        'wpcw-main-dashboard',
+        __( 'Configuración WhatsApp', 'wp-cupon-whatsapp' ),
+        __( 'WhatsApp', 'wp-cupon-whatsapp' ),
+        'manage_options',
+        'wpcw-whatsapp-settings',
+        'wpcw_render_whatsapp_settings_page'
+    );
+
+    // Herramientas de Desarrollo
+    add_submenu_page(
+        'wpcw-main-dashboard',
+        __( 'Herramientas de Desarrollo', 'wp-cupon-whatsapp' ),
+        __( 'Herramientas DEV', 'wp-cupon-whatsapp' ),
+        'manage_options',
+        'wpcw-dev-tools',
+        'wpcw_render_developer_tools_page'
     );
 
     // Los submenús específicos para comercios e instituciones se manejan dentro de las estadísticas generales

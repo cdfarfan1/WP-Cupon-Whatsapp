@@ -9,7 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * Register WhatsApp settings menu
+ * DISABLED: Will be registered in admin-menu.php for better organization
+ */
 function wpcw_register_whatsapp_settings_menu() {
+    // Commented out - will be added to admin-menu.php
+    /*
     add_submenu_page(
         'wpcw-main-dashboard',
         __( 'Configuración WhatsApp', 'wp-cupon-whatsapp' ),
@@ -18,8 +24,9 @@ function wpcw_register_whatsapp_settings_menu() {
         'wpcw-whatsapp-settings',
         'wpcw_render_whatsapp_settings_page'
     );
+    */
 }
-add_action( 'admin_menu', 'wpcw_register_whatsapp_settings_menu', 99 );
+// add_action( 'admin_menu', 'wpcw_register_whatsapp_settings_menu', 99 ); // Disabled
 
 function wpcw_render_whatsapp_settings_page() {
     if ( ! current_user_can( 'manage_options' ) ) {

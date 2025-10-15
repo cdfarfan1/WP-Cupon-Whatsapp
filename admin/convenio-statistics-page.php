@@ -464,8 +464,12 @@ function wpcw_render_entity_dashboard( $user_type, $entity_id, $metrics ) {
 
 /**
  * Add statistics page to admin menu.
+ * DISABLED: Menu is registered in admin-menu.php to avoid duplication
  */
 function wpcw_add_statistics_menu() {
+	// Commented out to prevent duplicate "Estadísticas" menu
+	// Menu is now registered in admin/admin-menu.php
+	/*
 	add_submenu_page(
 		'wpcw-main-dashboard',
 		__( 'Estadísticas', 'wp-cupon-whatsapp' ),
@@ -475,5 +479,6 @@ function wpcw_add_statistics_menu() {
 		'wpcw_render_convenio_statistics_page',
 		10
 	);
+	*/
 }
-add_action( 'admin_menu', 'wpcw_add_statistics_menu', 12 );
+// add_action( 'admin_menu', 'wpcw_add_statistics_menu', 12 ); // Disabled to prevent duplicate

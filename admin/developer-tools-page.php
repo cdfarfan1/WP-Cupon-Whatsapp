@@ -9,9 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Adds the Developer Tools submenu page.
- * Always available for administrators to seed/clear test data.
+ * DISABLED: Now registered in admin-menu.php for better organization
  */
 function wpcw_add_developer_tools_menu() {
+    // Commented out - now in admin-menu.php
+    /*
     add_submenu_page(
         'wpcw-main-dashboard',
         __( 'Herramientas de Desarrollo', 'wp-cupon-whatsapp' ),
@@ -21,8 +23,9 @@ function wpcw_add_developer_tools_menu() {
         'wpcw_render_developer_tools_page',
         99
     );
+    */
 }
-add_action( 'admin_menu', 'wpcw_add_developer_tools_menu', 99 );
+// add_action( 'admin_menu', 'wpcw_add_developer_tools_menu', 99 ); // Disabled
 
 /**
  * Renders the content of the developer tools page.

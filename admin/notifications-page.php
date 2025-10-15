@@ -13,8 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Register the notifications menu page
+ * DISABLED: Will be registered in admin-menu.php for better organization
  */
 function wpcw_register_notifications_menu() {
+    // Commented out - will be added to admin-menu.php
+    /*
     add_submenu_page(
         'wpcw-main-dashboard',
         __( 'Notificaciones', 'wp-cupon-whatsapp' ),
@@ -24,8 +27,9 @@ function wpcw_register_notifications_menu() {
         'wpcw_render_notifications_page',
         1 // Position at top of submenu
     );
+    */
 }
-add_action( 'admin_menu', 'wpcw_register_notifications_menu', 12 );
+// add_action( 'admin_menu', 'wpcw_register_notifications_menu', 12 ); // Disabled
 
 /**
  * Render the notifications center page
